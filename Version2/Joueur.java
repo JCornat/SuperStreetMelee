@@ -24,7 +24,7 @@ public class Joueur extends Observable {
 	}
 	
 	public void run() {
-		vitesse = 3;
+		vitesse = 4;
 	}
 	
 	

@@ -12,7 +12,7 @@ public class Game {
 	static Collision c;
 	static ArrayList<Decor> tabDecor;
 	static int tailleDecor;
-	public boolean collisionLeft, collisionRight, collisionTop, collisionBottom;
+	public int collisionLeft, collisionRight, collisionTop, collisionBottom;
 	
 	//Creation de la fenetre de jeu
 	public Game() {
@@ -54,10 +54,10 @@ public class Game {
 		c = new Collision();
 		
 		
-		collisionLeft = false;
-		collisionRight = false; 
-		collisionTop = false; 
-		collisionBottom = false;
+		collisionLeft = -1;
+		collisionRight = -1; 
+		collisionTop = -1; 
+		collisionBottom = -1;
 		
 	}
 				
@@ -100,7 +100,9 @@ public class Game {
 	public void left() {
 		int x = j.getX() - j.vitesse ;
 		collisionLeft = c.Collision(x,j.getY(),j.getW(),j.getH(),tabDecor);
-		if (!collisionLeft) {
+		if (collisionLeft > -1) {
+			j.setX(j.getX()+tabDecor.get(collisionLeft).x+tabDecor.get(collisionLeft).w-j.getX());
+		} else {
 			j.setX(x);
 		}
 	}
@@ -108,7 +110,9 @@ public class Game {
 	public void right() {
 		int x = j.getX() + j.vitesse ;
 		collisionRight = c.Collision(x,j.getY(),j.getW(),j.getH(),tabDecor);
-		if (!collisionRight) {
+		if (collisionRight > -1) {
+			j.setX(j.getX()+tabDecor.get(collisionRight).x-j.getX()-j.getW());
+		} else {
 			j.setX(x);
 		}
 	}
@@ -116,7 +120,9 @@ public class Game {
 	public void jump() {
 		int y = j.getY() - j.vitesse ;
 		collisionTop = c.Collision(j.getX(),y,j.getW(),j.getH(),tabDecor);
-		if (!collisionTop) {
+		if (collisionTop > -1) {
+			j.setY(j.getY()+tabDecor.get(collisionTop).y+tabDecor.get(collisionTop).h-j.getY());
+		} else {
 			j.setY(y);
 		}
 	}
@@ -124,7 +130,9 @@ public class Game {
 	public void crouch() {
 		int y = j.getY() + j.vitesse ;
 		collisionBottom = c.Collision(j.getX(),y,j.getW(),j.getH(),tabDecor);
-		if (!collisionBottom) {
+		if (collisionBottom > -1) {
+			j.setY(j.getY()+tabDecor.get(collisionBottom).y-j.getY()-j.getH());
+		} else {
 			j.setY(y);
 		}
 	}
