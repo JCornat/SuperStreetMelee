@@ -10,8 +10,9 @@ public class Game {
 	static JFrame frame;
 	static JFrame fStats;
 	static Collision c;
-	static ArrayList<Decor> tabDecore;
+	static ArrayList<Decor> tabDecor;
 	static int tailleDecor;
+	public boolean collisionLeft, collisionRight, collisionTop, collisionBottom;
 	
 	//Creation de la fenetre de jeu
 	public Game() {
@@ -20,29 +21,25 @@ public class Game {
 		//Creation du joueur
 		j = new Joueur(50,330,60,100);
 		
-		//Creation du sol
-		tabDecore = new ArrayList<Decor>();
-		tabDecore.clear();
-		tabDecore.add(new Decor(30,500,500,10));
+		//Creation du terrain
+		tabDecor = new ArrayList<Decor>();
+		tabDecor.clear();
+		tabDecor.add(new Decor(30,500,500,10));
+		tabDecor.add(new Decor(600,500,200,10));
+		tabDecor.add(new Decor(200,300,400,10));
+		tabDecor.add(new Decor(520,440,10,60));
 		
-		
-		tabDecore.add(new Decor(500,500,10,60));
-		
-		//Appel et ajout du pattern d'affichage
-		
-		VueGraphique vg = new VueGraphique(j,tabDecore);
-		
+		//Appel et ajout du pattern d'affichage	
+		VueGraphique vg = new VueGraphique(j,tabDecor);
 		frame.add(vg);
-
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		Point p = frame.getLocation();
 		
+		//Ajout des controles
 		ControleurGraphique cg = new ControleurGraphique(frame, j);
-		
-		
 		
 		//Creation de la fenetre de stats du joeur
 		fStats = new JFrame();
@@ -53,11 +50,15 @@ public class Game {
 		fStats.setVisible(true);
 		p.x = p.x - fStats.getWidth();
 		fStats.setLocation(p);
-		
-		frame.requestFocus();	
-		tailleDecor = tabDecore.size();
-		System.out.println(tailleDecor);
+		frame.requestFocus();
 		c = new Collision();
+		
+		
+		collisionLeft = false;
+		collisionRight = false; 
+		collisionTop = false; 
+		collisionBottom = false;
+		
 	}
 				
 	
@@ -94,71 +95,36 @@ public class Game {
 		if (j.crouch) {
 			crouch();
 		}
-		
-		
 	}
-	
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-	
-	
-	//C'est ici que je gère les collisions
-	
-	
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-///////////////////////////////////////////////////////
-	
+
 	public void left() {
-		boolean collide = false;
 		int x = j.getX() - j.vitesse ;
-		for (int i = 0; i<tailleDecor; i++) {
-			if (c.Collision(j.x, j.y, j.w, j.h, tabDecore.get(i).x, tabDecore.get(i).y, tabDecore.get(i).w, tabDecore.get(i).h)) {
-				collide = true;
-			}
-		}
-		if (!collide) {
+		collisionLeft = c.Collision(x,j.getY(),j.getW(),j.getH(),tabDecor);
+		if (!collisionLeft) {
 			j.setX(x);
 		}
 	}
 	
 	public void right() {
-		boolean collide = false;
 		int x = j.getX() + j.vitesse ;
-		for (int i = 0; i<tailleDecor; i++) {
-			if (c.Collision(j.x, j.y, j.w, j.h, tabDecore.get(i).x, tabDecore.get(i).y, tabDecore.get(i).w, tabDecore.get(i).h)) {
-				collide = true;
-			}
-		}
-		if (!collide) {
+		collisionRight = c.Collision(x,j.getY(),j.getW(),j.getH(),tabDecor);
+		if (!collisionRight) {
 			j.setX(x);
 		}
 	}
 	
 	public void jump() {
-		boolean collide = false;
 		int y = j.getY() - j.vitesse ;
-		for (int i = 0; i<tailleDecor; i++) {
-			if (c.Collision(j.x, j.y, j.w, j.h, tabDecore.get(i).x, tabDecore.get(i).y, tabDecore.get(i).w, tabDecore.get(i).h)) {
-				collide = true;
-			}
-		}
-		if (!collide) {
+		collisionTop = c.Collision(j.getX(),y,j.getW(),j.getH(),tabDecor);
+		if (!collisionTop) {
 			j.setY(y);
 		}
 	}
 	
 	public void crouch() {
-		boolean collide = false;
 		int y = j.getY() + j.vitesse ;
-		for (int i = 0; i<tailleDecor; i++) {
-			if (c.Collision(j.x, j.y, j.w, j.h, tabDecore.get(i).x, tabDecore.get(i).y, tabDecore.get(i).w, tabDecore.get(i).h)) {
-				collide = true;
-			}
-		}
-		if (!collide) {
+		collisionBottom = c.Collision(j.getX(),y,j.getW(),j.getH(),tabDecor);
+		if (!collisionBottom) {
 			j.setY(y);
 		}
 	}

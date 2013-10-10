@@ -18,10 +18,6 @@ public class Joueur extends Observable {
 		crouch = false;
 		vitesse = 2;
 	}
-	
-	
-	
-	
 
 	public void notrun() {
 		vitesse = 2;
@@ -118,12 +114,5 @@ public class Joueur extends Observable {
 		notifyObservers();
 	}
 	
-	
-
-	
-	
-	
-	
-
 	
 }
