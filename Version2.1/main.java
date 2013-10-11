@@ -22,10 +22,14 @@ public class main extends JFrame {
 			g.update();
 			g.render();
 			long apres = System.currentTimeMillis();
+			long sleep = duree - (apres - avant);
+			long diff = apres - avant;
+			if (diff > duree)
+				diff = duree;
 			
 			try {
-				Thread.sleep(duree - (apres - avant));
-			} catch (InterruptedException e) {
+				Thread.sleep(duree - diff);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			

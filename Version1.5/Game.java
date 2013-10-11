@@ -7,7 +7,6 @@ public class Game {
 
 	static Joueur j;
 	static JFrame frame;
-	static JFrame fStats;
 	
 	//Creation de la fenetre de jeu
 	public Game() {
@@ -27,16 +26,6 @@ public class Game {
 		
 		ControleurGraphique cg = new ControleurGraphique(frame, j);
 		
-		//Creation de la fenetre de stats du joeur
-		fStats = new JFrame();
-		VueStats vs = new VueStats(j);
-		fStats.add(vs);
-		fStats.pack();
-		fStats.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		fStats.setVisible(true);
-		p.x = p.x - fStats.getWidth();
-		fStats.setLocation(p);
-		
 		frame.requestFocus();	
 	}
 				
@@ -53,6 +42,5 @@ public class Game {
 	
 	public void render() {
 		frame.repaint();
-		fStats.repaint();
 	}
 }

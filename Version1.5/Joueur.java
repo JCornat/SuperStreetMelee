@@ -20,7 +20,7 @@ public class Joueur extends Observable {
 	}
 	
 	public void checkKeys() {
-		if(jump) {
+		if (jump) {
 			jump();
 		}
 		if (left) {

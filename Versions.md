@@ -48,3 +48,7 @@ Version 9 - Thème : IA
 Ajout d'une IA.
 Augmenter le nombre de joueurs à 4 sur le terrain.
 Difficulté : Gérer l'IA !
+
+
+
+Idées : Générer monde aléatoirement

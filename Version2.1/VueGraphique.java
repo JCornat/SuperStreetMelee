@@ -20,10 +20,6 @@ public class VueGraphique extends JPanel implements Observer {
 		d = de;
 	}
 	
-
-	
-	
-	
 	public void paint(Graphics g) {
 		super.paint(g);
 		//Affichage du joueur
@@ -36,14 +32,12 @@ public class VueGraphique extends JPanel implements Observer {
 			g.fillRect(d.get(i).getX(), d.get(i).getY(), d.get(i).getW(), d.get(i).getH());
 		}
 		
-		
-		
 		//Trace des traits autour du joueur, pour le debugging
 		g.setColor(Color.RED);
 		g.drawLine(0, j.getY(), 1000, j.getY());
-		g.drawLine(0, j.getY()+j.getH()-1, 1000, j.getY()+j.getH()-1);
+		g.drawLine(0, j.getY()+j.getH(), 1000, j.getY()+j.getH());
 		g.drawLine(j.getX(), 0, j.getX(), 900);
-		g.drawLine(j.getX()+j.getW()-1, 0, j.getX()+j.getW()-1, 900);
+		g.drawLine(j.getX()+j.getW(), 0, j.getX()+j.getW(), 900);
 		
 	}
 	
