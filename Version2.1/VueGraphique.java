@@ -5,26 +5,34 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 
 public class VueGraphique extends JPanel implements Observer {
 
-	Joueur j;
+	ArrayList<Joueur> tabJoueurs;
 	ArrayList<Decor> d;
 	
-	public VueGraphique(Joueur p, ArrayList<Decor> de) {
-		j = p;
+	public VueGraphique(ArrayList<Joueur> p, ArrayList<Decor> de) {
+		this.tabJoueurs = p;
 		this.setPreferredSize(new Dimension(1000,700));
-		j.addObserver(this);
+		for (Joueur j : this.tabJoueurs){
+			j.addObserver(this);
+		}
 		d = de;
 	}
 	
 	public void paint(Graphics g) {
 		super.paint(g);
 		//Affichage du joueur
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(j.getX(), j.getY(), j.getW(), j.getH());
+		int index ;
+		
+		for (Joueur j : this.tabJoueurs){
+			g.setColor(Color.DARK_GRAY);
+			g.fillRect(j.getX(), j.getY(), j.getW(), j.getH());
+		}
 		
 		//Affichage du sol
 		g.setColor(Color.gray);
@@ -33,12 +41,13 @@ public class VueGraphique extends JPanel implements Observer {
 		}
 		
 		//Trace des traits autour du joueur, pour le debugging
-		g.setColor(Color.RED);
-		g.drawLine(0, j.getY(), 1000, j.getY());
-		g.drawLine(0, j.getY()+j.getH(), 1000, j.getY()+j.getH());
-		g.drawLine(j.getX(), 0, j.getX(), 900);
-		g.drawLine(j.getX()+j.getW(), 0, j.getX()+j.getW(), 900);
-		
+		for (Joueur j : this.tabJoueurs){
+			g.setColor(Color.RED);
+			g.drawLine(0, j.getY(), 1000, j.getY());
+			g.drawLine(0, j.getY()+j.getH(), 1000, j.getY()+j.getH());
+			g.drawLine(j.getX(), 0, j.getX(), 900);
+			g.drawLine(j.getX()+j.getW(), 0, j.getX()+j.getW(), 900);
+		}
 	}
 	
 	@Override

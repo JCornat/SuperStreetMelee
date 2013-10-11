@@ -6,6 +6,7 @@ public class Joueur extends Observable {
 
 	int x,y,w,h,vitesseH;
 	boolean jump, left, right, crouch, isJumping, canJump;
+	int health;
 	
 	public Joueur(int i, int j, int k, int l) {
 		x = i;
@@ -18,6 +19,7 @@ public class Joueur extends Observable {
 		crouch = false;
 		vitesseH = 2;
 		canJump = false;
+		health = 100 ;
 	}
 
 	public void notrun() {
@@ -113,6 +115,10 @@ public class Joueur extends Observable {
 		crouch = b;
 		setChanged();
 		notifyObservers();
+	}
+	
+	public void receiveHit(int hit){
+		this.health -= hit ;
 	}
 	
 	
