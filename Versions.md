@@ -52,3 +52,8 @@ Difficulté : Gérer l'IA !
 
 
 Idées : Générer monde aléatoirement
+
+A faire : 
+- Zoom
+- Sous-type de Décor : 
+	- Décor traversable depuis le bas et le côté (Plate-forme simple) et peut-être déplaçable
