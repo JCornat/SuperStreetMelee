@@ -2,8 +2,7 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
-//Pourquoi quand moi je fais les modifs ca reecrit pas tout le fichier, et que pour toi, ça le fait Besson ??? XD
-// Faut régler ce probleme de merde, car je vais supporter je crois ! :o
+
 public class main extends JFrame {
 
 	static Game g;
