@@ -21,9 +21,12 @@ public class Joueur {
 	public final static int STATE_ATTACKING = 1;
 	public final static int STATE_IN_COOLDOWN = 2;
 	
+	
+	public static int RUN_SPEED = 30;
+	
 	String name;
-	int x,y,w,h,vitesseH, state, health;
-	boolean jump, left, right, crouch, isJumping, canJump, turnedRight, isAlive;
+	int x,y,w,h,vitesseX, vitesseY, state, health;
+	boolean jump, left, right, crouch, isJumping, turnedRight, isAlive, keyJumpPushed;
 	
 	Attaque currentAttack;
 	ArrayList<Attaque> tabAttaques;
@@ -33,13 +36,13 @@ public class Joueur {
 	long GCDTimer;
 	
 	/**
-	 * Constructeur pour créer un joueur
+	 * Constructeur pour creer un joueur
 	 * @param name nom du joueur
 	 * @param i Abscisse du joueur
-	 * @param j Ordonnée du joueur
+	 * @param j Ordonnee du joueur
 	 * @param k Largeur du joueur
 	 * @param l Hauteur du joueur
-	 * @param attaques liste d'attaques spécifiques au joueur
+	 * @param attaques liste d'attaques specifiques au joueur
 	 */
 	public Joueur(String name, int i, int j, int k, int l, ArrayList<Attaque> attaques) {
 		this.name = name;
@@ -47,8 +50,8 @@ public class Joueur {
 		w = k; h = l;
 		jump = false; crouch = false;
 		left = false; right = false;
-		vitesseH = 2;
-		canJump = false;
+		vitesseX = RUN_SPEED;
+		vitesseY = 0;
 		health = MAX_HEALTH;
 		isAlive = true;
 		turnedRight = true;
@@ -57,6 +60,7 @@ public class Joueur {
 		GCDTimer = -1;
 		this.tabAttaques = attaques;
 		state = STATE_READY;
+		keyJumpPushed = false;
 	}
 	
 	public String getName() {
@@ -87,22 +91,43 @@ public class Joueur {
 		h = i;
 	}
 	public void setVitesseH(int i) {
-		vitesseH = i;
+		vitesseX = i;
 	}
 	public void setJump(boolean b) {
+		if (b && !isJumping && !keyJumpPushed) {
+			keyJumpPushed = true;
+			vitesseY = -100;
+			isJumping = true;
+		} else if(!b) {
+			keyJumpPushed = false;
+		}
 		jump = b;
 	}
 	public boolean getJump() {
 		return jump;
 	}
 	public void setLeft(boolean b) {
+		if (b) {
+			vitesseX = RUN_SPEED;
+		} else {
+			//La touche vient d'etre relachee
+			//TODO Decrementation de la vitesse a faire
+		}
 		left = b;
+		
 	}
 	public boolean getLeft() {
 		return left;
 	}
 	public void setRight(boolean b) {
+		if (b) {
+			vitesseX = RUN_SPEED;
+		} else {
+			//La touche vient d'etre relachee
+			//TODO Decrementation de la vitesse a faire
+		}
 		right = b;
+		
 	}
 	public boolean getRight() {
 		return right;
@@ -114,15 +139,15 @@ public class Joueur {
 		return crouch;
 	}
 	public void notrun() {
-		vitesseH = 2;
+		vitesseX = 2;
 	}
 	public void run() {
-		vitesseH = 4;
+		vitesseX = 4;
 	}
 	
 	/**
-	 * Méthode utilisée quand le joueur se tourne d'un coté
-	 * @param right côté duquel le joueur est tourné : droite->vrai, gauche->faux
+	 * Methode utilisee quand le joueur se tourne d'un cote
+	 * @param right cote duquel le joueur est tourne : droite->vrai, gauche->faux
 	 */
 	public void setTurned(boolean right) {
 		turnedRight = right;
@@ -140,9 +165,9 @@ public class Joueur {
 	/* ******************************************************* */
 	
 	/**
-	 * Méthode utilisée lorsque le joueur lance une attaque.
-	 * Détermine si l'attaque est disponible pour le joueur, s'il peut la lancer,
-	 * si oui lance l'attaque, et enlève des points de vie à un joueur si il y a collision avec ce dernier
+	 * Methode utilisee lorsque le joueur lance une attaque.
+	 * Determine si l'attaque est disponible pour le joueur, s'il peut la lancer,
+	 * si oui lance l'attaque, et enleve des points de vie a un joueur si il y a collision avec ce dernier
 	 * @param n nom de l'attaque
 	 * @param tabJoueurs tous les joueurs du jeu
 	 */
@@ -167,13 +192,13 @@ public class Joueur {
 							}
 						}
 						long time = System.currentTimeMillis();
-						// Durée de l'affichage de l'attaque
+						// Duee de l'affichage de l'attaque
 						lastTimerAttack = time + tabAttaques.get(i).getTime();
 						// Temps de recharge de l'attaque
 						tabAttaques.get(i).setEffectiveCooldown(time + tabAttaques.get(i).getInfoCooldown());
 						// Global Cooldown
 						GCDTimer = time + GLOBAL_COOLDOWN;
-						// L'attaque est en train d'être produite
+						// L'attaque est en train d'etre produite
 						state = STATE_ATTACKING;
 						break;
 					} else currentAttack = null;
@@ -181,7 +206,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Méthode utilisée pour connaître l'attaque que le joueur est en train de lancer
+	 * Methode utilisee pour connaitre l'attaque que le joueur est en train de lancer
 	 * @return l'attaque que le joueur est en train de lancer
 	 */
 	public Attaque getAttaque() {
@@ -189,7 +214,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Méthode utilisée pour savoir si le joueur a l'attaque passée en paramètre en temps de recharge
+	 * Methode utilisee pour savoir si le joueur a l'attaque passee en parametre en temps de recharge
 	 * @param a attaque 
 	 * @return vrai si le joueur a l'attaque en cours de recharge autrement faux
 	 */
@@ -202,7 +227,7 @@ public class Joueur {
 	}
 	
 	/**
-	 * Méthode utilisée pour savoir si le joueur a le temps de recharge global (ne peut pas lancer d'attaque)
+	 * Methode utilisee pour savoir si le joueur a le temps de recharge global (ne peut pas lancer d'attaque)
 	 * @return vrai si il a le temps de recharge global
 	 */
 	public boolean hasGlobalCooldown() {
@@ -212,18 +237,18 @@ public class Joueur {
 	}
 	
 	/**
-	 * Méthode utilisée pour connaître le moment de la dernière attaque du joueur
-	 * @return le temps system en millisecondes où le joueur à lancé sa dernière attaque
+	 * Methode utilisee pour connaitre le moment de la derniere attaque du joueur
+	 * @return le temps system en millisecondes où le joueur a lance sa derniere attaque
 	 */
 	public long getLastTimerAttack() {
 		return lastTimerAttack;
 	}
 	
 	/**
-	 * Méthode permettant de mettre à jour 
+	 * Methode permettant de mettre a jour 
 	 * le temps de recharge des attaques du joueur,
 	 * son temps de recharge global
-	 * et l'affichage de sa dernière attaque
+	 * et l'affichage de sa derniere attaque
 	 */
 	public void updateTimeAttack() {
 		long time = System.currentTimeMillis();
@@ -258,10 +283,10 @@ public class Joueur {
 	}
 	
 	/**
-	 * Méthode permettant de connaître l'état du joueur dans son combat
+	 * Methode permettant de connaitre l'etat du joueur dans son combat
 	 * @return STATE_ATTACKING : le joueur est en train de lancer une attaque,
 	 * STATE_IN_COOLDOWN : le joueur a son temps de recharge global actif,
-	 * STATE_READY : le joueur est prêt à lancer des attaques
+	 * STATE_READY : le joueur est pret a lancer des attaques
 	 */
 	public int getState() {
 		return state;

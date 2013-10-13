@@ -20,8 +20,9 @@ public class main extends JFrame {
 			g.render();
 			long apres = System.currentTimeMillis();
 			long sleep = REFRESH_TIME - (apres - avant);
-			if (sleep < 0)
+			if (sleep < 0) {
 				sleep = REFRESH_TIME;
+			}
 			try {
 				Thread.sleep(sleep);
 			} catch (Exception e) {

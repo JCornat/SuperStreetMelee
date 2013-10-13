@@ -30,12 +30,6 @@ public class VueGraphique extends JPanel {
 			g.drawString(j.getName(), (j.getX() + (j.getW()/2) - 25), j.getY() - 25);
 			g.drawString(String.valueOf(j.health), (j.getX() + (j.getW()/2) - 10), j.getY() - 10);
 			
-			//Affichage du sol
-			g.setColor(Color.gray);
-			for (int i = 0; i< tabDecors.size();i++) {
-				g.fillRect(tabDecors.get(i).getX(), tabDecors.get(i).getY(), tabDecors.get(i).getW(), tabDecors.get(i).getH());
-			}
-			
 			Attaque att = j.getAttaque();
 			// Affichage de l'attaque
 			if (att != null)
@@ -45,6 +39,10 @@ public class VueGraphique extends JPanel {
 				g.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);
 			}		
 			
+			//Trait de gravite
+			g.setColor(Color.BLUE);
+			g.drawLine(j.getX()+j.getW()/2, j.getY()+j.getH()/2, j.getX()+j.getW()/2,j.getY()+j.getH()/2+j.vitesseY*2);
+			
 			//Trace des traits autour du joueur, pour le debugging
 			g.setColor(Color.RED);
 			g.drawLine(0, j.getY(), 1000, j.getY());
@@ -52,6 +50,12 @@ public class VueGraphique extends JPanel {
 			g.drawLine(j.getX(), 0, j.getX(), 900);
 			g.drawLine(j.getX()+j.getW()-1, 0, j.getX()+j.getW()-1, 900);
 		}
+		//Affichage du sol
+		g.setColor(Color.gray);
+		for (int i = 0; i< tabDecors.size();i++) {
+			g.fillRect(tabDecors.get(i).getX(), tabDecors.get(i).getY(), tabDecors.get(i).getW(), tabDecors.get(i).getH());
+		}
+		
 		
 	}
 }

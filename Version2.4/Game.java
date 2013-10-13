@@ -20,11 +20,11 @@ public class Game {
 	public Game() {
 		frame = new JFrame();
 		
-		// Création des attaques
+		// Creation des attaques
 		tabAttaques = new ArrayList<Attaque>();
 		tabAttaques.clear();
-		tabAttaques.add(new Attaque("Base", 5, 5, 2, 100, 500));
-		tabAttaques.add(new Attaque("Grosse", 20, 10, 5, 300, 2000));
+		tabAttaques.add(new Attaque("Base", 5, 5, 5, 100, 300));
+		tabAttaques.add(new Attaque("Grosse", 20, 10, 15, 300, 1300));
 		
 		// Creation des joueurs
 		tabJoueurs = new ArrayList<Joueur>();
@@ -73,8 +73,8 @@ public class Game {
 			System.out.println("Collision");
 		}*/
 		for (Joueur j : tabJoueurs) {
-			//gravity(j);
-			// on met à jour les temps liés aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
+			gravity(j);
+			// on met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
 			j.updateTimeAttack();
 		}
 		checkKeys();
@@ -83,15 +83,33 @@ public class Game {
 	}
 	
 	private void gravity(Joueur j) {
-		int y = j.getY() + GRAVITY_MAX;
-		collisionBottom = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
-		if (collisionBottom > -1) {
-			j.setY(j.getY() + tabDecor.get(collisionBottom).y - j.getY()
-					- j.getH());
-			j.canJump = true;
+		j.vitesseY = j.vitesseY + GRAVITY_MAX;
+		if (j.vitesseY > 50) {
+			j.vitesseY = 50;
+		}
+		int y = j.getY()  + j.vitesseY/10;
+		
+		if (j.vitesseY > 0) {
+			//Le personnage est en train d'aller vers le bas
+			collisionBottom = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
+			if (collisionBottom > -1) {
+				j.setY(j.getY() + tabDecor.get(collisionBottom).y - j.getY() - j.getH());
+				j.isJumping = false;
+			} else {
+				j.setY(y);
+				j.isJumping = true;
+				collisionBottom = -1;
+			}
 		} else {
-			j.setY(y);
-			j.canJump = false;
+			//Le personnage est en train d'aller vers le haut
+			collisionTop = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
+			if (collisionTop > -1) {
+				j.setY(j.getY() + tabDecor.get(collisionTop).y+ tabDecor.get(collisionTop).h - j.getY());
+				j.vitesseY = 0;
+			} else {
+				j.setY(y);
+			}
+			
 		}
 
 	}
@@ -107,12 +125,8 @@ public class Game {
 		//////
 		for (Joueur j : tabJoueurs) {
 			if (j.isAlive) {
-				if (j.jump) {
-					jump(j);
-					/*if (j.canJump) {
-						jump(j);
-						j.canJump = false;
-					}*/
+				if (j.jump && !j.isJumping) {
+					
 				}
 				if (j.left) {
 					left(j);
@@ -129,7 +143,7 @@ public class Game {
 
 	public void left(Joueur j) {
 	
-		int x = j.getX() - j.vitesseH;
+		int x = j.getX() - j.vitesseX/10;
 		collisionLeft = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
 		if (j.left) {
 			if (collisionLeft > -1) {
@@ -143,7 +157,7 @@ public class Game {
 	
 	public void right(Joueur j) {
 	
-		int x = j.getX() + j.vitesseH;
+		int x = j.getX() + j.vitesseX/10;
 		collisionRight = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
 		if (j.right) {
 			if (collisionRight > -1) {
@@ -155,22 +169,6 @@ public class Game {
 		}
 	}
 	
-	public void jump(Joueur j) {
-	
-		int y = j.getY() - 2/*130*/;
-		// TODO Faire verification si decor au dessus du joueur
-	
-		//
-		collisionTop = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
-		if (j.jump) {
-			if (collisionTop > -1) {
-				j.setY(j.getY() + tabDecor.get(collisionTop).y
-						+ tabDecor.get(collisionTop).h - j.getY());
-			} else {
-				j.setY(y);
-			}
-		}
-	}
 	
 	public void crouch(Joueur j) {
 	

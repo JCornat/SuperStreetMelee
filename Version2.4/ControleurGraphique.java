@@ -25,9 +25,9 @@ public class ControleurGraphique {
             	tabJoueurs.get(0).setLeft(true);
             	tabJoueurs.get(0).setTurned(Joueur.TURNED_LEFT);
             	break;
-            case KeyEvent.VK_S: 
+            /*case KeyEvent.VK_S: 
             	tabJoueurs.get(0).setCrouch(true); 
-            	break;
+            	break;*/
             case KeyEvent.VK_D: 
             	tabJoueurs.get(0).setRight(true); 
             	tabJoueurs.get(0).setTurned(Joueur.TURNED_RIGHT);
@@ -57,9 +57,9 @@ public class ControleurGraphique {
 				tabJoueurs.get(1).setLeft(true);
             	tabJoueurs.get(1).setTurned(Joueur.TURNED_LEFT);
 				break;
-			case KeyEvent.VK_DOWN:
+			/*case KeyEvent.VK_DOWN:
 				tabJoueurs.get(1).setCrouch(true);
-				break;
+				break;*/
 			case KeyEvent.VK_RIGHT:
 				tabJoueurs.get(1).setRight(true);
             	tabJoueurs.get(1).setTurned(Joueur.TURNED_RIGHT);
@@ -106,6 +106,9 @@ public class ControleurGraphique {
 				case KeyEvent.VK_RIGHT:
 					tabJoueurs.get(1).setRight(false);
 					break;
+				case KeyEvent.VK_3: 
+	            	tabJoueurs.get(1).notrun(); 
+	            	break;
 				default:
 		        	 break;
 			}
