@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 public class main extends JFrame {
 
 	static Game g;
-	final static long REFRESH_TIME = 70;
+	final static long REFRESH_TIME = 6;
 	
 	public static void main(String[] args) {
 		

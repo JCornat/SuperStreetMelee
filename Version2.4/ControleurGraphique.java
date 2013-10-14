@@ -29,22 +29,13 @@ public class ControleurGraphique {
             	tabJoueurs.get(0).setRight(true); 
             	tabJoueurs.get(0).setTurned(Joueur.TURNED_RIGHT);
             	break;
-            case KeyEvent.VK_R: 
-            	for (int i = 0; i < tabJoueurs.size(); i++) {
-            		tabJoueurs.get(i).setX(i*250+250);
-    				tabJoueurs.get(i).setY(110);
-    				tabJoueurs.get(i).resetLife();
-            	}
-            	break;
-            case KeyEvent.VK_SHIFT: 
-            	tabJoueurs.get(0).run(); 
-            	break;
             case KeyEvent.VK_E: 
             	tabJoueurs.get(0).attack("Base", tabJoueurs);
             	break;
             case KeyEvent.VK_A: 
             	tabJoueurs.get(0).attack("Grosse", tabJoueurs);
                	break;
+               	
 /* ******************** PLAYER 2 ******************** */
 			case KeyEvent.VK_UP:
 				tabJoueurs.get(1).setJump(true);
@@ -63,6 +54,16 @@ public class ControleurGraphique {
 	         case KeyEvent.VK_NUMPAD2: 
 	           	tabJoueurs.get(1).attack("Grosse", tabJoueurs);
 	           	break;
+	           	
+
+/* ******************** COMMANDE ******************** */	           	
+	         case KeyEvent.VK_R: 
+	            	for (int i = 0; i < tabJoueurs.size(); i++) {
+	            		tabJoueurs.get(i).setX(i*250+250);
+	    				tabJoueurs.get(i).setY(110);
+	    				tabJoueurs.get(i).resetLife();
+	            	}
+	            	break;
 	         default:
 	        	 break;
 			}
@@ -80,9 +81,7 @@ public class ControleurGraphique {
 	            case KeyEvent.VK_D: 
 	            	tabJoueurs.get(0).setRight(false); 
 	            	break;
-	            case KeyEvent.VK_SHIFT: 
-	            	tabJoueurs.get(0).notrun(); 
-	            	break;
+	            	
 /* ******************** PLAYER 2 ******************** */
 	            case KeyEvent.VK_UP:
 					tabJoueurs.get(1).setJump(false);
@@ -93,9 +92,6 @@ public class ControleurGraphique {
 				case KeyEvent.VK_RIGHT:
 					tabJoueurs.get(1).setRight(false);
 					break;
-				case KeyEvent.VK_3: 
-	            	tabJoueurs.get(1).notrun(); 
-	            	break;
 				default:
 		        	 break;
 			}

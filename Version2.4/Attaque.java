@@ -5,17 +5,17 @@ public class Attaque {
 	int width, height, power;
 	/* 	effectiveCooldown est le temps de recharge effectif de l'attaque pour un joueur.
 		InfoCooldown n'est qu'une information,
-		et est utilisée notamment pour la mise à jour d 'effectiveCooldown. */
+		et est utilisee notamment pour la mise a jour d'effectiveCooldown. */
 	long time, infoCooldown, effectiveCooldown;
 	
 	/**
-	 * Constructeur pour créer une attaque
+	 * Constructeur pour creer une attaque
 	 * @param n nom de l'attaque
 	 * @param width largeur de l'attaque
 	 * @param height hauteur de l'attaque
 	 * @param power puissance de l'attaque
 	 * @param time temps d'affichage de l'attaque
-	 * @param infoCooldown temps de recharge de l'attaque (à titre d'information, jamais modifié en jeu)
+	 * @param infoCooldown temps de recharge de l'attaque (a titre d'information, jamais modifie en jeu)
 	 */
 	public Attaque(String n, int width, int height, int power, long time, long infoCooldown) {
 		this.name = n;
@@ -40,7 +40,7 @@ public class Attaque {
 	}
 
 	/**
-	 * Méthode utilisée pour connaître la puissance de l'attaque
+	 * Methode utilisee pour connaitre la puissance de l'attaque
 	 * @return la puissance de l'attaque
 	 */
 	public int getPower() {
@@ -48,7 +48,7 @@ public class Attaque {
 	}
 	
 	/**
-	 * Méthode utilisée pour connaître la durée d'affichage de l'attaque
+	 * Methode utilisee pour connaitre la duree d'affichage de l'attaque
 	 * @return le temps d'affichage en millisecondes de l'attaque
 	 */
 	public long getTime() {
@@ -56,7 +56,7 @@ public class Attaque {
 	}
 	
 	/**
-	 * Méthode utilisée pour connaître le temps de recharge d'une attaque à titre d'information (infoCooldown n'est jamais modifiée en jeu)
+	 * Methode utilisee pour connaitre le temps de recharge d'une attaque a titre d'information (infoCooldown n'est jamais modifiee en jeu)
 	 * @return le temps de recharge de l'attaque
 	 */
 	public long getInfoCooldown() {
@@ -64,7 +64,7 @@ public class Attaque {
 	}
 	
 	/**
-	 * Méthode utiliée pour connaître le temps de recharge effectif de l'attaque pour un joueur
+	 * Methode utiliee pour connaitre le temps de recharge effectif de l'attaque pour un joueur
 	 * @return le temps de recharge effectif de l'attaque pour un joueur
 	 */
 	public long getEffectiveCooldown() {
@@ -72,18 +72,18 @@ public class Attaque {
 	}
 	
 	/**
-	 * Méthode utiliée pour mettre à jour le temps de recharge effectif de l'attaque pour un joueur
+	 * Methode utiliee pour mettre a jour le temps de recharge effectif de l'attaque pour un joueur
 	 */
 	public void setEffectiveCooldown(long cooldown) {
 		effectiveCooldown = cooldown;
 	}
 	
 	/**
-	 * Méthode utilisée pour calculer la position de l'attaque (son affichage) par rapport à un joueur
+	 * Methode utilisee pour calculer la position de l'attaque (son affichage) par rapport a un joueur
 	 * @param j le joueur qui lance l'attaque
 	 * @return un tableau de int de taille 4.
 	 * En 0 on a : l'abscisse de l'attaque,
-	 * en 1 on a : l'ordonnée de l'attaque,
+	 * en 1 on a : l'ordonnee de l'attaque,
 	 * en 2 on a : la largeur de l'attaque,
 	 * en 3 on a : la hauteur de l'attaque.
 	 */

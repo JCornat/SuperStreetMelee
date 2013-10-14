@@ -118,12 +118,6 @@ public class Joueur {
 	public boolean getRight() {
 		return right;
 	}
-	public void notrun() {
-		vitesseX = 2;
-	}
-	public void run() {
-		vitesseX = 4;
-	}
 	
 	/**
 	 * Methode utilisee quand le joueur se tourne d'un cote

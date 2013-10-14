@@ -6,14 +6,11 @@ public class Decor extends Observable {
 	int x,y,w,h;
 	
 	public Decor(int a,int b,int c,int d) {
-		
 		x = a;
 		y = b;
 		w = c;
 		h = d;
-		
 	}
-	
 	
 	public int getX() {
 		return x;
