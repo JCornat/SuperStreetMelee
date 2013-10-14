@@ -26,7 +26,7 @@ public class Joueur {
 	
 	String name;
 	int x,y,w,h,vitesseX, vitesseY, state, health;
-	boolean jump, left, right, crouch, isJumping, turnedRight, isAlive, keyJumpPushed;
+	boolean jump, left, right, isJumping, turnedRight, isAlive, keyJumpPushed;
 	
 	Attaque currentAttack;
 	ArrayList<Attaque> tabAttaques;
@@ -44,13 +44,13 @@ public class Joueur {
 	 * @param l Hauteur du joueur
 	 * @param attaques liste d'attaques specifiques au joueur
 	 */
-	public Joueur(String name, int i, int j, int k, int l, ArrayList<Attaque> attaques) {
-		this.name = name;
+	public Joueur(String n, int i, int j, int k, int l, ArrayList<Attaque> attaques) {
+		name = n;
 		x = i; y = j;
 		w = k; h = l;
-		jump = false; crouch = false;
+		jump = false;
 		left = false; right = false;
-		vitesseX = RUN_SPEED;
+		vitesseX = 0;
 		vitesseY = 0;
 		health = MAX_HEALTH;
 		isAlive = true;
@@ -58,7 +58,7 @@ public class Joueur {
 		currentAttack = null;
 		lastTimerAttack = -1;
 		GCDTimer = -1;
-		this.tabAttaques = attaques;
+		tabAttaques = attaques;
 		state = STATE_READY;
 		keyJumpPushed = false;
 	}
@@ -96,7 +96,7 @@ public class Joueur {
 	public void setJump(boolean b) {
 		if (b && !isJumping && !keyJumpPushed) {
 			keyJumpPushed = true;
-			vitesseY = -100;
+			vitesseY = -80;
 			isJumping = true;
 		} else if(!b) {
 			keyJumpPushed = false;
@@ -108,7 +108,7 @@ public class Joueur {
 	}
 	public void setLeft(boolean b) {
 		if (b) {
-			vitesseX = RUN_SPEED;
+			vitesseX = -RUN_SPEED;
 		} else {
 			//La touche vient d'etre relachee
 			//TODO Decrementation de la vitesse a faire
@@ -131,12 +131,6 @@ public class Joueur {
 	}
 	public boolean getRight() {
 		return right;
-	}
-	public void setCrouch(boolean b) {
-		crouch = b;
-	}
-	public boolean getCrouch() {
-		return crouch;
 	}
 	public void notrun() {
 		vitesseX = 2;
@@ -186,7 +180,7 @@ public class Joueur {
 							boolean collisionJoueur = false;
 							// Collision avec des joueurs ?
 							for (Joueur j : tabJoueurs) {
-								collisionJoueur = c.collisionJoueur(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], j.getX(), j.getY(), j.getW(), j.getH());
+								collisionJoueur = c.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], j.getX(), j.getY(), j.getW(), j.getH());
 								if (collisionJoueur)
 									j.receiveHit(currentAttack.getPower());
 							}

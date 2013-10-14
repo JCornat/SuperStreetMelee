@@ -25,20 +25,16 @@ public class ControleurGraphique {
             	tabJoueurs.get(0).setLeft(true);
             	tabJoueurs.get(0).setTurned(Joueur.TURNED_LEFT);
             	break;
-            /*case KeyEvent.VK_S: 
-            	tabJoueurs.get(0).setCrouch(true); 
-            	break;*/
             case KeyEvent.VK_D: 
             	tabJoueurs.get(0).setRight(true); 
             	tabJoueurs.get(0).setTurned(Joueur.TURNED_RIGHT);
             	break;
             case KeyEvent.VK_R: 
-				tabJoueurs.get(0).setX(250);
-				tabJoueurs.get(0).setY(110);
-				tabJoueurs.get(0).resetLife();
-				tabJoueurs.get(1).setX(500);
-				tabJoueurs.get(1).setY(110);
-				tabJoueurs.get(1).resetLife();
+            	for (int i = 0; i < tabJoueurs.size(); i++) {
+            		tabJoueurs.get(i).setX(i*250+250);
+    				tabJoueurs.get(i).setY(110);
+    				tabJoueurs.get(i).resetLife();
+            	}
             	break;
             case KeyEvent.VK_SHIFT: 
             	tabJoueurs.get(0).run(); 
@@ -57,9 +53,6 @@ public class ControleurGraphique {
 				tabJoueurs.get(1).setLeft(true);
             	tabJoueurs.get(1).setTurned(Joueur.TURNED_LEFT);
 				break;
-			/*case KeyEvent.VK_DOWN:
-				tabJoueurs.get(1).setCrouch(true);
-				break;*/
 			case KeyEvent.VK_RIGHT:
 				tabJoueurs.get(1).setRight(true);
             	tabJoueurs.get(1).setTurned(Joueur.TURNED_RIGHT);
@@ -84,9 +77,6 @@ public class ControleurGraphique {
 	            case KeyEvent.VK_Q: 
 	            	tabJoueurs.get(0).setLeft(false);
 	            	break;
-	            case KeyEvent.VK_S: 
-	            	tabJoueurs.get(0).setCrouch(false); 
-	            	break;
 	            case KeyEvent.VK_D: 
 	            	tabJoueurs.get(0).setRight(false); 
 	            	break;
@@ -99,9 +89,6 @@ public class ControleurGraphique {
 					break;
 				case KeyEvent.VK_LEFT:
 					tabJoueurs.get(1).setLeft(false);
-					break;
-				case KeyEvent.VK_DOWN:
-					tabJoueurs.get(1).setCrouch(false);
 					break;
 				case KeyEvent.VK_RIGHT:
 					tabJoueurs.get(1).setRight(false);

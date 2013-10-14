@@ -77,7 +77,6 @@ public class Game {
 			// on met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
 			j.updateTimeAttack();
 		}
-		checkKeys();
 		// Intelligence artificielle
 		
 	}
@@ -88,7 +87,7 @@ public class Game {
 			j.vitesseY = 50;
 		}
 		int y = j.getY()  + j.vitesseY/10;
-		
+		int x = j.getX() + j.vitesseX/10;
 		if (j.vitesseY > 0) {
 			//Le personnage est en train d'aller vers le bas
 			collisionBottom = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
@@ -100,7 +99,7 @@ public class Game {
 				j.isJumping = true;
 				collisionBottom = -1;
 			}
-		} else {
+		} else if (j.vitesseY < 0) {
 			//Le personnage est en train d'aller vers le haut
 			collisionTop = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
 			if (collisionTop > -1) {
@@ -108,6 +107,31 @@ public class Game {
 				j.vitesseY = 0;
 			} else {
 				j.setY(y);
+			}
+			
+		}
+		if (j.vitesseX > 0) {
+			//Le personnage est en train d'aller vers la droite
+			
+			collisionRight = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
+			if (j.right) {
+				if (collisionRight > -1) {
+					j.setX(j.getX() + tabDecor.get(collisionRight).x - j.getX()
+							- j.getW());
+				} else {
+					j.setX(x);
+				}
+			}
+		} else if (j.vitesseX < 0) {
+			//Le personnage est en train d'aller vers la gauche
+			collisionLeft = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
+			if (j.left) {
+				if (collisionLeft > -1) {
+					j.setX(j.getX() + tabDecor.get(collisionLeft).x
+							+ tabDecor.get(collisionLeft).w - j.getX());
+				} else {
+					j.setX(x);
+				}
 			}
 			
 		}
@@ -119,68 +143,7 @@ public class Game {
 	}
 	
 	
-	public void checkKeys() {
-		/////////
-		//TODO Compter les secondes avant utilisation du jump !!!
-		//////
-		for (Joueur j : tabJoueurs) {
-			if (j.isAlive) {
-				if (j.jump && !j.isJumping) {
-					
-				}
-				if (j.left) {
-					left(j);
-				}
-				if (j.right) {
-					right(j);
-				}
-				if (j.crouch) {
-					crouch(j);
-				}
-			}
-		}
-	}
+	
 
-	public void left(Joueur j) {
 	
-		int x = j.getX() - j.vitesseX/10;
-		collisionLeft = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
-		if (j.left) {
-			if (collisionLeft > -1) {
-				j.setX(j.getX() + tabDecor.get(collisionLeft).x
-						+ tabDecor.get(collisionLeft).w - j.getX());
-			} else {
-				j.setX(x);
-			}
-		}
-	}
-	
-	public void right(Joueur j) {
-	
-		int x = j.getX() + j.vitesseX/10;
-		collisionRight = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
-		if (j.right) {
-			if (collisionRight > -1) {
-				j.setX(j.getX() + tabDecor.get(collisionRight).x - j.getX()
-						- j.getW());
-			} else {
-				j.setX(x);
-			}
-		}
-	}
-	
-	
-	public void crouch(Joueur j) {
-	
-		int y = j.getY() + 2;
-		collisionBottom = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
-		if (j.crouch) {
-			if (collisionBottom > -1) {
-				j.setY(j.getY() + tabDecor.get(collisionBottom).y - j.getY()
-						- j.getH());
-			} else {
-				j.setY(y);
-			}
-		}
-	}
 }

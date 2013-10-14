@@ -39,9 +39,13 @@ public class VueGraphique extends JPanel {
 				g.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);
 			}		
 			
-			//Trait de gravite
+			//Vecteur vitesse Y
 			g.setColor(Color.BLUE);
 			g.drawLine(j.getX()+j.getW()/2, j.getY()+j.getH()/2, j.getX()+j.getW()/2,j.getY()+j.getH()/2+j.vitesseY*2);
+			
+			//Vecteur vitesse X
+			g.setColor(Color.ORANGE);
+			g.drawLine(j.getX()+j.getW()/2, j.getY()+j.getH()/2, j.getX()+j.getW()/2+j.vitesseX*2,j.getY()+j.getH()/2);
 			
 			//Trace des traits autour du joueur, pour le debugging
 			g.setColor(Color.RED);
