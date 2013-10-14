@@ -47,6 +47,10 @@ public class VueGraphique extends JPanel {
 			g.setColor(Color.ORANGE);
 			g.drawLine(j.getX()+j.getW()/2, j.getY()+j.getH()/2, j.getX()+j.getW()/2+j.vitesseX*2,j.getY()+j.getH()/2);
 			
+			//Vecteur vitesse X
+			g.setColor(Color.CYAN);
+			g.drawLine(j.getX()+j.getW()/2, j.getY()+j.getH()/2, j.getX()+j.getW()/2+j.vitesseX*2,j.getY()+j.getH()/2+j.vitesseY*2);
+			
 			//Trace des traits autour du joueur, pour le debugging
 			g.setColor(Color.RED);
 			g.drawLine(0, j.getY(), 1000, j.getY());

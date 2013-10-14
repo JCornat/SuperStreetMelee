@@ -86,6 +86,20 @@ public class Game {
 		if (j.vitesseY > 50) {
 			j.vitesseY = 50;
 		}
+		
+		if (j.left) {
+			j.vitesseX = -j.RUN_SPEED;
+		}
+		
+		if (j.right) {
+			j.vitesseX = j.RUN_SPEED;
+		}
+		
+		if (!j.right && !j.left) {
+			j.vitesseX = 0;
+		}
+		
+		
 		int y = j.getY()  + j.vitesseY/10;
 		int x = j.getX() + j.vitesseX/10;
 		if (j.vitesseY > 0) {
@@ -135,6 +149,8 @@ public class Game {
 			}
 			
 		}
+		
+		
 
 	}
 

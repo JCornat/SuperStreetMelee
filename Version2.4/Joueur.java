@@ -107,27 +107,13 @@ public class Joueur {
 		return jump;
 	}
 	public void setLeft(boolean b) {
-		if (b) {
-			vitesseX = -RUN_SPEED;
-		} else {
-			//La touche vient d'etre relachee
-			//TODO Decrementation de la vitesse a faire
-		}
 		left = b;
-		
 	}
 	public boolean getLeft() {
 		return left;
 	}
 	public void setRight(boolean b) {
-		if (b) {
-			vitesseX = RUN_SPEED;
-		} else {
-			//La touche vient d'etre relachee
-			//TODO Decrementation de la vitesse a faire
-		}
 		right = b;
-		
 	}
 	public boolean getRight() {
 		return right;
