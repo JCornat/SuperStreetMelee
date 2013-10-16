@@ -62,6 +62,12 @@ public class ControleurGraphique {
 	            		tabJoueurs.get(i).setX(i*250+250);
 	    				tabJoueurs.get(i).setY(110);
 	    				tabJoueurs.get(i).resetLife();
+	    				tabJoueurs.get(i).vitesseX = 0;
+	    				tabJoueurs.get(i).vitesseY = 0;
+	    				tabJoueurs.get(i).left = false;
+	    				tabJoueurs.get(i).right = false;
+	    				tabJoueurs.get(i).jump = false;
+	    				tabJoueurs.get(i).isJumping = false;
 	            	}
 	            	break;
 	         default:
