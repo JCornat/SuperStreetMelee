@@ -27,7 +27,6 @@ public class Joueur {
 	String name;
 	int x,y,w,h,vitesseX, vitesseY, state, health;
 	boolean jump, left, right, isJumping, turnedRight, isAlive, keyJumpPushed;
-	boolean leftBackup, rightBackup;
 	
 	Attaque currentAttack;
 	ArrayList<Attaque> tabAttaques;
@@ -155,8 +154,6 @@ public class Joueur {
 						// Traitement de l'attaque
 						if (currentAttack != null)
 						{
-							leftBackup = left;
-							rightBackup = right;
 							left = false;
 							right = false;
 							// Calcul de la position de l'attaque
