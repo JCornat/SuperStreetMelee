@@ -190,19 +190,6 @@ public class Joueur {
 	}
 	
 	/**
-	 * Methode utilisee pour savoir si le joueur a l'attaque passee en parametre en temps de recharge
-	 * @param a attaque 
-	 * @return vrai si le joueur a l'attaque en cours de recharge autrement faux
-	 */
-	public boolean hasCooldown(Attaque a) {
-		for (int i = 0; i < tabAttaques.size(); i++)
-			if (tabAttaques.get(i).getName() == a.getName())
-				if (tabAttaques.get(i).getEffectiveCooldown() > 0)
-					return true;
-		return false;	
-	}
-	
-	/**
 	 * Methode utilisee pour savoir si le joueur a le temps de recharge global (ne peut pas lancer d'attaque)
 	 * @return vrai si il a le temps de recharge global
 	 */
