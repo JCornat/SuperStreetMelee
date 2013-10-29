@@ -1,0 +1,11 @@
+Salut à tous,
+
+A la demande de Monsieur Thomas, j'ai réorganisé le GitHub, et on prossèdera d'une manière plus conventionnelle et efficace.
+Donc déjà, on oublie la séparation des versions en dossiers, GitHub s'en charge tout seul avec les backups, et on bosse tous sur le même fichier comme ça.
+J'ai ajouté le sujet, et surtout, un pdf pouvant être associé à une véritable mine d'or.
+Le gros de nos questions y est résumé. C'est le "Killer Game Programming". 
+Je vous ai mis un pdf qui rassemble non pas tout le livre, car il fait à peu près 1000 pages, mais j'ai modifié le pdf pour garder uniquement
+ce qui nous intéresse, c'est à dire, les chapitres 1 à 12. Cela comprend 350 pages, c'est déjà pas mal. Bien-sûr, on ne va pas tout lire tout seul car c'est trop long,
+mais on s'en inspirera pour réponde à certaines de nos questions !
+
+Voili voilou !
