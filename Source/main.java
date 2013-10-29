@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 public class main extends JFrame {
 
 	static Game g;
+	
+	//Vitesse du jeu (6 pour vitesse normale)
 	final static long REFRESH_TIME = 6;
 	
 	public static void main(String[] args) {
@@ -13,7 +15,7 @@ public class main extends JFrame {
 		boolean jeuFonctionne = true;
 		g = new Game();
 		
-		while(true) {
+		while(jeuFonctionne) {
 			//Pour obtenir un framerate constant
 			long avant = System.currentTimeMillis();
 			g.update();

@@ -5,7 +5,7 @@ public class Attaque {
 	int width, height, power;
 	/* 	effectiveCooldown est le temps de recharge effectif de l'attaque pour un joueur.
 		InfoCooldown n'est qu'une information,
-		et est utilisee notamment pour la mise a jour d'effectiveCooldown. */
+		et est utilisee notamment pour la mise a jour d 'effectiveCooldown. */
 	long time, infoCooldown, effectiveCooldown;
 	
 	/**

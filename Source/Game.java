@@ -14,8 +14,8 @@ public class Game {
 	static ArrayList<Attaque> tabAttaques;
 	static int tailleDecor;
 	public int collisionLeft, collisionRight, collisionTop, collisionBottom;
-	static int GRAVITY_MAX = 2;
-	static int INERTIE = 2;
+	final static int GRAVITY_MAX = 2;
+	final static int INERTIE = 2;
 	//Creation de la fenetre de jeu
 	public Game() {
 		frame = new JFrame();
@@ -43,6 +43,9 @@ public class Game {
 		tabDecor.add(new Decor(800,420,60,20));
 		tabDecor.add(new Decor(939,380,60,40));
 		tabDecor.add(new Decor(660,340,80,20));
+		tabDecor.add(new Decor(0,690,1000,10));
+		tabDecor.add(new Decor(0,0,10,700));
+		tabDecor.add(new Decor(990,0,10,700));
 		
 		//Appel et ajout du pattern d'affichage	
 		VueGraphique vg = new VueGraphique(j, tabDecor, tabAttaques, tabJoueurs);
@@ -68,7 +71,7 @@ public class Game {
 	public void update() {
 		
 		// Lois du monde
-
+		
 		for (Joueur j : tabJoueurs) {
 			gravity(j);
 			// on met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
@@ -79,61 +82,52 @@ public class Game {
 	}
 	
 	private void gravity(Joueur j) {
-		
-		//Applciaiton de la gravite
 		j.vitesseY = j.vitesseY + GRAVITY_MAX;
-		
-		//Vitesse de chute cap
 		if (j.vitesseY > 50) {
 			j.vitesseY = 50;
 		}
-
 		int y = j.getY()  + j.vitesseY/10;
+		int x = j.getX() + j.vitesseX/10;
 		
 		if (j.vitesseY > 0) {
-			//Le personnage est en train d'aller vers le bas
-			int collisions = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
-			if (collisions > -1) {
-				//Detection detectee par le bas
-				j.setY(j.getY() + tabDecor.get(collisions).y - j.getY() - j.getH());
-				j.isJumping = false;
-			} else {
-				//Pas de collision par le bas
-				j.setY(y);
-				j.isJumping = true;
-				collisionBottom = -1;
-			}
 			
+			//Le personnage est en train d'aller vers le bas
+			collisionBottom = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
+			if (collisionBottom > -1) {
+				//Contact avec le sol
+				j.setY(j.getY() + tabDecor.get(collisionBottom).y - j.getY() - j.getH());
+				j.vitesseY=0;
+				j.jumps = j.jumpsBase;
+			} else {
+				//Le personnage tombe
+				j.setY(y);
+				collisionBottom=-1;
+			}
 		} else if (j.vitesseY < 0) {
 			//Le personnage est en train d'aller vers le haut
-			int collisions = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
-			if (collisions > -1) {
-				//Detection detectee par le haut
-				j.setY(j.getY() + tabDecor.get(collisions).y+ tabDecor.get(collisions).h - j.getY());
-				j.vitesseY = 0;
+			collisionTop = c.collisionCalculation(j.getX(), y, j.getW(), j.getH(), tabDecor);
+			if (collisionTop > -1) {
+				//Contact avec un decor situe au-dessus
+				j.setY(j.getY() + tabDecor.get(collisionTop).y+ tabDecor.get(collisionTop).h - j.getY());
+				j.vitesseY=0;
 			} else {
-				//Pas de collision par le haut
+				//Le personnage monte
 				j.setY(y);
+				
 			}
+			
 		}
 		
-		
-		//Pas de vitesse en X
 		if (j.vitesseX == 0){
 			if (j.right && j.isJumping) {
-				//Augmentation de l'inertie quand le joueur est en train de sauter
 				j.vitesseX += INERTIE/2;
 			} else if (j.left && j.isJumping) {
-				//Augmentation de l'inertie quand le joueur est en train de sauter
 				j.vitesseX -= INERTIE/2;
 			} else if (j.right) {
-				//Le joueur va a droite en parant d'une vitesse nulle
 				j.vitesseX += INERTIE;
 			} else if (j.left ) {
-				//Le joueur va a gauche en parant d'une vitesse nulle
 				j.vitesseX -= INERTIE;
 			} 
-			
 		} else if (j.vitesseX > 0) {
 			//Le personnage est en train d'aller vers la droite
 			
@@ -146,19 +140,19 @@ public class Game {
 					j.vitesseX = j.RUN_SPEED;
 				}
 			}
-			
-			int x = j.getX() + j.vitesseX/10;
+			x = j.getX() + j.vitesseX/10;
 			collisionRight = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
-			
 			if (collisionRight > -1) {
-				//Collision detectee par la droite
+				//Contact avec le decor sur la droite
 				j.vitesseX = 0;
 				j.setX(j.getX() + tabDecor.get(collisionRight).x - j.getX() - j.getW());
 			} else {
-				//Pas de collision par la gauche
+				//Le personnage se deplace sur la droite
 				j.setX(x);
 			}
 			 
+			
+			
 		} else if (j.vitesseX < 0) {
 			//Le personnage est en train d'aller vers la gauche
 			
@@ -171,14 +165,14 @@ public class Game {
 					j.vitesseX = -j.RUN_SPEED;
 				}
 			}
-			int x = j.getX() + j.vitesseX/10;
+			x = j.getX() + j.vitesseX/10;
 			collisionLeft = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
 			if (collisionLeft > -1) {
-				//Collision detectee par la gauche
+				//Contact avec le décor sur la gauche
 				j.vitesseX = 0;
 				j.setX(j.getX() + tabDecor.get(collisionLeft).x + tabDecor.get(collisionLeft).w - j.getX());
 			} else {
-				//Pas de collision par la gauche
+				//Le personnage se déplace sur la gauche
 				j.setX(x);
 			}
 		} 

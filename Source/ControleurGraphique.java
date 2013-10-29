@@ -55,7 +55,7 @@ public class ControleurGraphique {
 	           	tabJoueurs.get(1).attack("Grosse", tabJoueurs);
 	           	break;
 	           	
-
+	           	
 /* ******************** COMMANDE ******************** */	           	
 	         case KeyEvent.VK_R: 
 	            	for (int i = 0; i < tabJoueurs.size(); i++) {
@@ -87,7 +87,6 @@ public class ControleurGraphique {
 	            case KeyEvent.VK_D: 
 	            	tabJoueurs.get(0).setRight(false); 
 	            	break;
-	            	
 /* ******************** PLAYER 2 ******************** */
 	            case KeyEvent.VK_UP:
 					tabJoueurs.get(1).setJump(false);

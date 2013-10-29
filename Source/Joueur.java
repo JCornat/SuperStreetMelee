@@ -1,7 +1,4 @@
-import java.awt.Color;
-import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Observable;
 
 
 public class Joueur {
@@ -25,8 +22,8 @@ public class Joueur {
 	public static int RUN_SPEED = 30;
 	
 	String name;
-	int x,y,w,h,vitesseX, vitesseY, state, health;
-	boolean jump, left, right, isJumping, turnedRight, isAlive, keyJumpPushed;
+	int x,y,w,h,vitesseX, vitesseY, state, health, jumps, jumpsBase;
+	boolean jump, left, right, isJumping, turnedRight, isAlive;
 	
 	Attaque currentAttack;
 	ArrayList<Attaque> tabAttaques;
@@ -49,7 +46,8 @@ public class Joueur {
 		x = i; y = j;
 		w = k; h = l;
 		jump = false;
-		left = false; right = false;
+		left = false; 
+		right = false;
 		vitesseX = 0;
 		vitesseY = 0;
 		health = MAX_HEALTH;
@@ -60,7 +58,8 @@ public class Joueur {
 		GCDTimer = -1;
 		tabAttaques = attaques;
 		state = STATE_READY;
-		keyJumpPushed = false;
+		jumpsBase = 2;
+		jumps = jumpsBase;
 	}
 	
 	public String getName() {
@@ -94,12 +93,11 @@ public class Joueur {
 		vitesseX = i;
 	}
 	public void setJump(boolean b) {
-		if (b && !isJumping && !keyJumpPushed) {
-			keyJumpPushed = true;
+
+		if (b && jumps>0) {
+			jumps--;
 			vitesseY = -80;
 			isJumping = true;
-		} else if(!b) {
-			keyJumpPushed = false;
 		}
 		jump = b;
 	}
@@ -154,8 +152,6 @@ public class Joueur {
 						// Traitement de l'attaque
 						if (currentAttack != null)
 						{
-							left = false;
-							right = false;
 							// Calcul de la position de l'attaque
 							int tabXYWH[] = currentAttack.getAttackPosition(this);
 							Collision c = new Collision();
