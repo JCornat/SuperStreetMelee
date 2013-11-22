@@ -9,7 +9,6 @@ public class ControleurGraphique {
 	ArrayList<Joueur> tabJoueurs;
 	
 	public ControleurGraphique(JFrame f, ArrayList<Joueur> joueurs) {
-		super();
 		this.tabJoueurs = joueurs;
 		f.addKeyListener(new ClavierListener());
 	}

@@ -16,21 +16,9 @@ public class Game {
 	public int collisionLeft, collisionRight, collisionTop, collisionBottom;
 	final static int GRAVITY_MAX = 2;
 	final static int INERTIE = 2;
+	
 	//Creation de la fenetre de jeu
 	public Game() {
-		frame = new JFrame();
-		
-		// Creation des attaques
-		tabAttaques = new ArrayList<Attaque>();
-		tabAttaques.clear();
-		tabAttaques.add(new Attaque("Base", 5, 5, 5, 100, 300));
-		tabAttaques.add(new Attaque("Grosse", 20, 10, 15, 300, 1300));
-		
-		// Creation des joueurs
-		tabJoueurs = new ArrayList<Joueur>();
-		tabJoueurs.clear();
-		tabJoueurs.add(new Joueur("Joueur 1", 250, 10, 60, 100, tabAttaques));
-		tabJoueurs.add(new Joueur("Joueur 2", 500, 10, 60, 100, tabAttaques));
 		
 		//Creation du terrain
 		tabDecor = new ArrayList<Decor>();
@@ -47,17 +35,31 @@ public class Game {
 		tabDecor.add(new Decor(0,0,10,700));
 		tabDecor.add(new Decor(990,0,10,700));
 		
+
+		// Creation des attaques
+		tabAttaques = new ArrayList<Attaque>();
+		tabAttaques.clear();
+		tabAttaques.add(new Attaque("Base", 5, 5, 5, 100, 300));
+		tabAttaques.add(new Attaque("Grosse", 20, 10, 15, 300, 1300));
+		
+		// Creation des joueurs
+		tabJoueurs = new ArrayList<Joueur>();
+		tabJoueurs.clear();
+		tabJoueurs.add(new Joueur("Joueur 1", 250, 10, 60, 100, tabAttaques));
+		tabJoueurs.add(new Joueur("Joueur 2", 500, 10, 60, 100, tabAttaques));
+		
+		
 		//Appel et ajout du pattern d'affichage	
 		VueGraphique vg = new VueGraphique(j, tabDecor, tabAttaques, tabJoueurs);
+		frame = new JFrame();
 		frame.add(vg);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		Point p = frame.getLocation();
 		
 		//Ajout des controles
-		ControleurGraphique cg = new ControleurGraphique(frame, tabJoueurs);
+		new ControleurGraphique(frame, tabJoueurs);
 		
 		c = new Collision();
 		
