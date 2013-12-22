@@ -1,8 +1,5 @@
-import java.awt.Point;
 import java.util.ArrayList;
-
 import javax.swing.JFrame;
-
 
 public class Game {
 
@@ -11,11 +8,12 @@ public class Game {
 	static JFrame frame;
 	static Collision c;
 	static ArrayList<Decor> tabDecor;
-	static ArrayList<Attaque> tabAttaques;
+	ArrayList<Attaque> tabAttaques;
 	static int tailleDecor;
 	public int collisionLeft, collisionRight, collisionTop, collisionBottom;
 	final static int GRAVITY_MAX = 2;
 	final static int INERTIE = 2;
+	final static int GRAVITY_SPEED_CAP = 50;
 	
 	//Creation de la fenetre de jeu
 	public Game() {
@@ -35,12 +33,12 @@ public class Game {
 		tabDecor.add(new Decor(0,0,10,700));
 		tabDecor.add(new Decor(990,0,10,700));
 		
-
 		// Creation des attaques
 		tabAttaques = new ArrayList<Attaque>();
 		tabAttaques.clear();
-		tabAttaques.add(new Attaque("Base", 5, 5, 5, 100, 300));
-		tabAttaques.add(new Attaque("Grosse", 20, 10, 15, 300, 1300));
+		tabAttaques.add(new Attaque("Base", 5, 5, 5, 0, 20, 20));
+		tabAttaques.add(new Attaque("Grosse", 20, 10, 15, 60, 80, 150));
+		//Mettre en focntion de atk et coolldown
 		
 		// Creation des joueurs
 		tabJoueurs = new ArrayList<Joueur>();
@@ -50,7 +48,7 @@ public class Game {
 		
 		
 		//Appel et ajout du pattern d'affichage	
-		VueGraphique vg = new VueGraphique(j, tabDecor, tabAttaques, tabJoueurs);
+		VueGraphique vg = new VueGraphique(tabDecor, tabAttaques, tabJoueurs);
 		frame = new JFrame();
 		frame.add(vg);
 		frame.pack();
@@ -76,6 +74,8 @@ public class Game {
 		
 		for (Joueur j : tabJoueurs) {
 			gravity(j);
+			//on verifie si les joueurs ont lance des attaques
+			j.verificationAttack();
 			// on met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
 			j.updateTimeAttack();
 		}
@@ -85,8 +85,8 @@ public class Game {
 	
 	private void gravity(Joueur j) {
 		j.vitesseY = j.vitesseY + GRAVITY_MAX;
-		if (j.vitesseY > 50) {
-			j.vitesseY = 50;
+		if (j.vitesseY > GRAVITY_SPEED_CAP) {
+			j.vitesseY = GRAVITY_SPEED_CAP;
 		}
 		int y = j.getY()  + j.vitesseY/10;
 		int x = j.getX() + j.vitesseX/10;
@@ -115,12 +115,10 @@ public class Game {
 			} else {
 				//Le personnage monte
 				j.setY(y);
-				
 			}
-			
 		}
 		
-		if (j.vitesseX == 0){
+		if (j.vitesseX == 0) {
 			if (j.right && j.isJumping) {
 				j.vitesseX += INERTIE/2;
 			} else if (j.left && j.isJumping) {
@@ -178,7 +176,6 @@ public class Game {
 				j.setX(x);
 			}
 		} 
-
 	}
 
 	public void render() {

@@ -2,27 +2,30 @@
 public class Attaque {
 	
 	String name;
-	int width, height, power;
+	int width, height, power, time, cast, infoCooldown;
 	/* 	effectiveCooldown est le temps de recharge effectif de l'attaque pour un joueur.
 		InfoCooldown n'est qu'une information,
-		et est utilisee notamment pour la mise a jour d 'effectiveCooldown. */
-	long time, infoCooldown, effectiveCooldown;
+		et est utilisee notamment pour la mise a jour d'effectiveCooldown. */
+	long effectiveCooldown;
 	
 	/**
+	 * /**
 	 * Constructeur pour creer une attaque
 	 * @param n nom de l'attaque
 	 * @param width largeur de l'attaque
 	 * @param height hauteur de l'attaque
 	 * @param power puissance de l'attaque
-	 * @param time temps d'affichage de l'attaque
-	 * @param infoCooldown temps de recharge de l'attaque (a titre d'information, jamais modifie en jeu)
+	 * @param cast frames de chargement de l'attaque
+	 * @param time frames d'affichage de l'attaque
+	 * @param infoCooldown frames de recharge de l'attaque (a titre d'information, jamais modifie en jeu)
 	 */
-	public Attaque(String n, int width, int height, int power, long time, long infoCooldown) {
+	public Attaque(String n, int width, int height, int power, int cast, int time, int infoCooldown) {
 		this.name = n;
 		this.width = width;
 		this.height = height;
 		this.power = power;
 		this.time = time;
+		this.cast = cast;
 		this.infoCooldown = infoCooldown;
 		this.effectiveCooldown = 0;
 	}
@@ -64,7 +67,7 @@ public class Attaque {
 	}
 	
 	/**
-	 * Methode utiliee pour connaitre le temps de recharge effectif de l'attaque pour un joueur
+	 * Methode utilisee pour connaitre le temps de recharge effectif de l'attaque pour un joueur
 	 * @return le temps de recharge effectif de l'attaque pour un joueur
 	 */
 	public long getEffectiveCooldown() {
@@ -72,7 +75,7 @@ public class Attaque {
 	}
 	
 	/**
-	 * Methode utiliee pour mettre a jour le temps de recharge effectif de l'attaque pour un joueur
+	 * Methode utilisee pour mettre a jour le temps de recharge effectif de l'attaque pour un joueur
 	 */
 	public void setEffectiveCooldown(long cooldown) {
 		effectiveCooldown = cooldown;
@@ -90,11 +93,11 @@ public class Attaque {
 	public int[] getAttackPosition(Joueur j) {
 		int x = 0;
 		int y = 0;
-		if (j.getTurned() == Joueur.TURNED_RIGHT)
+		if (j.getTurned() == true)
 		{
 			x = j.getX() + (j.getW() + getWidth());
 			y = j.getY() + (j.getH() / 2);
-		} else if (j.getTurned() == Joueur.TURNED_LEFT) {
+		} else if (j.getTurned() == false) {
 			x = j.getX() - (getWidth() * 2); 
 			y = j.getY() + (j.getH() / 2);
 		}

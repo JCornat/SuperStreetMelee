@@ -1,34 +1,43 @@
-import java.awt.Point;
+public class main {
 
-import javax.swing.JFrame;
-
-
-public class main extends JFrame {
-
-	static Game g;
+	public static Game g;
 	
-	//Vitesse du jeu (6 pour vitesse normale)
-	final static long REFRESH_TIME = 6;
+	public static boolean running = true;
+	public static int frames = 0;
+	public static int averageFrames = 0;
+	//Mise en place de la variable engineLoop quand le diagramme des classes
+	public static long engineLoop = 0;
 	
 	public static void main(String[] args) {
 		
-		boolean jeuFonctionne = true;
 		g = new Game();
+		double nsPerTick = 1000000000D/127D;
+		long timerFPS = System.currentTimeMillis();
+		long lastTime = System.nanoTime();
 		
-		while(jeuFonctionne) {
-			//Pour obtenir un framerate constant
-			long avant = System.currentTimeMillis();
-			g.update();
-			g.render();
-			long apres = System.currentTimeMillis();
-			long sleep = REFRESH_TIME - (apres - avant);
-			if (sleep < 0) {
-				sleep = REFRESH_TIME;
+		while(running) {
+			
+			while(System.nanoTime() <= lastTime + nsPerTick) {
+				//Libération du CPU
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
-			try {
-				Thread.sleep(sleep);
-			} catch (Exception e) {
-				e.printStackTrace();
+			
+			frames++;
+			engineLoop++;
+			g.render();
+			g.update();	
+			
+			lastTime = System.nanoTime();
+
+			if (System.currentTimeMillis()-timerFPS >= 1000) {
+				timerFPS = System.currentTimeMillis();
+				averageFrames = frames;
+				frames = 0;
+				System.out.println(engineLoop);
 			}
 		}
 	}

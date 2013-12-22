@@ -7,16 +7,14 @@ public class Joueur {
 	final int MAX_HEALTH = 100;
 	
 	// Global Cooldown of the player
-	public final static long GLOBAL_COOLDOWN = 500;
+	public final long GLOBAL_COOLDOWN = 300;
 	
-	// Side
-	public final static boolean TURNED_RIGHT = true;
-	public final static boolean TURNED_LEFT = false;
 	
 	// State
-	public final static int STATE_READY = 0;
-	public final static int STATE_ATTACKING = 1;
-	public final static int STATE_IN_COOLDOWN = 2;
+	public final int STATE_READY = 0;
+	public final int STATE_ATTACKING = 1;
+	public final int STATE_IN_COOLDOWN = 2;
+	public final int STATE_CASTING = 3;
 	
 	
 	public static int RUN_SPEED = 30;
@@ -27,10 +25,13 @@ public class Joueur {
 	
 	Attaque currentAttack;
 	ArrayList<Attaque> tabAttaques;
-	long lastTimerAttack;
+	long lastTimerAttack, castingTimer;
 	
 	// Global Cooldown Timer
 	long GCDTimer;
+	ArrayList<Boolean> atk, atkReleased;
+
+	Attaque castingAttack;
 	
 	/**
 	 * Constructeur pour creer un joueur
@@ -60,6 +61,14 @@ public class Joueur {
 		state = STATE_READY;
 		jumpsBase = 2;
 		jumps = jumpsBase;
+		atk = new ArrayList<Boolean>();
+		atk.clear();
+		atk.add(false);
+		atk.add(false);
+		atkReleased = new ArrayList<Boolean>();
+		atkReleased.clear();
+		atkReleased.add(false);
+		atkReleased.add(false);
 	}
 	
 	public String getName() {
@@ -137,44 +146,93 @@ public class Joueur {
 	/* ******************************************************* */
 	
 	/**
+	 * Appelle l'attaque n
+	 * @param b
+	 */
+	public void setAtk(int n, boolean b) {
+		if (b && state == STATE_READY) {
+			atk.set(n, true);
+		} else {
+			atk.set(n, false);
+		}
+		
+		if (!b) {
+			atkReleased.set(n, false);
+		}
+	}
+
+	
+	/**
+	 * Verification et lancement des atatques des joueurs
+	 */
+	public void verificationAttack() {
+		long time = main.engineLoop;
+		if (getState() == STATE_CASTING) {
+			if (time >= castingTimer) {
+				this.attack(tabAttaques.indexOf(castingAttack));
+			}
+		}
+		
+		if (getState() == STATE_READY) {
+			if (atk.get(0) && !atkReleased.get(0)) {
+				atkReleased.set(0, true);
+				castingAttack = tabAttaques.get(0);
+				state = STATE_CASTING;
+				castingTimer = time+tabAttaques.get(0).cast;
+			}
+			if (atk.get(1) && !atkReleased.get(1)) {
+				atkReleased.set(1, true);
+				//System.out.println(atkReleased.get(1));
+				castingAttack = tabAttaques.get(1);
+				state = STATE_CASTING;
+				castingTimer = time+tabAttaques.get(1).cast;
+			}
+		}
+	}
+	
+	/**
 	 * Methode utilisee lorsque le joueur lance une attaque.
 	 * Determine si l'attaque est disponible pour le joueur, s'il peut la lancer,
 	 * si oui lance l'attaque, et enleve des points de vie a un joueur si il y a collision avec ce dernier
 	 * @param n nom de l'attaque
 	 * @param tabJoueurs tous les joueurs du jeu
 	 */
-	public void attack(String n, ArrayList<Joueur> tabJoueurs) {
-		if (getState() == STATE_READY)
-			for (int i = 0; i < tabAttaques.size(); i++)
-				if (tabAttaques.get(i).getName() == n) {
-					if (tabAttaques.get(i).getEffectiveCooldown() == 0) {
-						currentAttack = tabAttaques.get(i);
-						// Traitement de l'attaque
-						if (currentAttack != null)
-						{
-							// Calcul de la position de l'attaque
-							int tabXYWH[] = currentAttack.getAttackPosition(this);
-							Collision c = new Collision();
-							boolean collisionJoueur = false;
-							// Collision avec des joueurs ?
-							for (Joueur j : tabJoueurs) {
-								collisionJoueur = c.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], j.getX(), j.getY(), j.getW(), j.getH());
-								if (collisionJoueur)
-									j.receiveHit(currentAttack.getPower());
-							}
-						}
-						long time = System.currentTimeMillis();
-						// Duee de l'affichage de l'attaque
-						lastTimerAttack = time + tabAttaques.get(i).getTime();
-						// Temps de recharge de l'attaque
-						tabAttaques.get(i).setEffectiveCooldown(time + tabAttaques.get(i).getInfoCooldown());
-						// Global Cooldown
-						GCDTimer = time + GLOBAL_COOLDOWN;
-						// L'attaque est en train d'etre produite
-						state = STATE_ATTACKING;
-						break;
-					} else currentAttack = null;
+	public void attack(int n) {
+		castingAttack = null;
+		currentAttack = tabAttaques.get(n);
+		// Traitement de l'attaque
+		long time = main.engineLoop;
+		// Duee de l'affichage de l'attaque
+		lastTimerAttack = time + tabAttaques.get(n).getTime();
+		// Temps de recharge de l'attaque
+		tabAttaques.get(n).setEffectiveCooldown(time + tabAttaques.get(n).getInfoCooldown());
+		// Global Cooldown
+		GCDTimer = time + tabAttaques.get(n).infoCooldown;
+		// L'attaque est en train d'etre produite
+		state = STATE_ATTACKING;
+	}
+	
+	/**
+	 * Methode pour determiner si une attaque touche un adversaire
+	 * @return vrai si touché, faux, si non touché
+	 */
+	public boolean collisionAtk() {
+		// Calcul de la position de l'attaque
+		int tabXYWH[] = currentAttack.getAttackPosition(this);
+		Collision c = new Collision();
+		boolean collisionJoueur = false;
+		boolean hasHit = false;
+		// Collision avec des joueurs ?
+		for (Joueur j : Game.tabJoueurs) {
+			if (j != this) {
+				collisionJoueur = c.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], j.getX(), j.getY(), j.getW(), j.getH());
+				if (collisionJoueur) {
+					j.receiveHit(currentAttack.getPower());
+					hasHit = true;
 				}
+			}
+		}
+		return hasHit;
 	}
 	
 	/**
@@ -190,9 +248,11 @@ public class Joueur {
 	 * @return vrai si il a le temps de recharge global
 	 */
 	public boolean hasGlobalCooldown() {
-		if (GCDTimer > -1)
+		if (GCDTimer == -1) {
+			return false;
+		} else {
 			return true;
-		return false;
+		}
 	}
 	
 	/**
@@ -210,24 +270,24 @@ public class Joueur {
 	 * et l'affichage de sa derniere attaque
 	 */
 	public void updateTimeAttack() {
-		long time = System.currentTimeMillis();
+		long time = main.engineLoop;
 		// Update des temps de recharge des attaques
-		for (int i = 0; i < tabAttaques.size(); i++)
-			if (tabAttaques.get(i).getEffectiveCooldown() <= time)
+		for (int i = 0; i < tabAttaques.size(); i++) {
+			if (tabAttaques.get(i).getEffectiveCooldown() <= time) {
 				tabAttaques.get(i).setEffectiveCooldown(0);
-		switch (state)
-		{
+			}
+		}
+		
+		switch (state) {
 		case STATE_ATTACKING:
-			if (lastTimerAttack <= time)
-			{
+			if (collisionAtk() || lastTimerAttack <= time) {
 				currentAttack = null;
 				state = STATE_IN_COOLDOWN;
 				lastTimerAttack = -1;
 			}
 			break;
 		case STATE_IN_COOLDOWN:
-			if (GCDTimer != -1 && time >= GCDTimer)
-			{
+			if (GCDTimer != -1 && time >= GCDTimer)	{
 				state = STATE_READY;
 				GCDTimer = -1;
 			}
@@ -243,24 +303,37 @@ public class Joueur {
 	
 	/**
 	 * Methode permettant de connaitre l'etat du joueur dans son combat
-	 * @return STATE_ATTACKING : le joueur est en train de lancer une attaque,
-	 * STATE_IN_COOLDOWN : le joueur a son temps de recharge global actif,
+	 * @return STATE_ATTACKING : le joueur est en train de lancer une attaque<br>
+	 * STATE_IN_COOLDOWN : le joueur a son temps de recharge global actif<br>
 	 * STATE_READY : le joueur est pret a lancer des attaques
 	 */
 	public int getState() {
 		return state;
 	}
 	
+	/**
+	 * Methode permettant d'enlever des points de vie au joueur
+	 * @param hit entier qui se soustrait a la vie du joueur
+	 */
 	public void receiveHit(int hit) {
+		if (this.state == 3) {
+			currentAttack = null;
+			state = STATE_READY;
+			lastTimerAttack = -1;
+		}
 		int temp = this.health - hit;
 		if (temp <= 0) {
 			this.isAlive = false;
-			this.health = 0 ;
+			this.health = 0;
 		} else {
-			this.health -= hit ;
+			this.health -= hit;
 		}
 	}
 
+	/**
+	 * Methode permettant de soigner le joueur
+	 * @param heal entier qui s'ajoute a la vie du joueur
+	 */
 	public void receiveHeal(int heal) {
 		int temp = this.health + heal;
 		if (this.isAlive) {
@@ -272,14 +345,13 @@ public class Joueur {
 		}
 	}
 
+	/**
+	 * Methode permettant de maximiser les points de vie du joueur, et de le remettre en vie
+	 */
 	public void resetLife() {
 		health = MAX_HEALTH;
 		isAlive = true;
 	}
 
-	public void getResurected(int heal) {
-		isAlive = true;
-		health = heal;
-	}
-	
+
 }
