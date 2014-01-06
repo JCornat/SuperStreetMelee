@@ -32,7 +32,7 @@ public class main {
 			g.update();	
 			
 			lastTime = System.nanoTime();
-
+			
 			if (System.currentTimeMillis()-timerFPS >= 1000) {
 				timerFPS = System.currentTimeMillis();
 				averageFrames = frames;

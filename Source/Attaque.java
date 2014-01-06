@@ -2,7 +2,7 @@
 public class Attaque {
 	
 	String name;
-	int width, height, power, time, cast, infoCooldown;
+	int width, height, damage, time, cast, infoCooldown, powerX, powerY;
 	/* 	effectiveCooldown est le temps de recharge effectif de l'attaque pour un joueur.
 		InfoCooldown n'est qu'une information,
 		et est utilisee notamment pour la mise a jour d'effectiveCooldown. */
@@ -14,20 +14,24 @@ public class Attaque {
 	 * @param n nom de l'attaque
 	 * @param width largeur de l'attaque
 	 * @param height hauteur de l'attaque
-	 * @param power puissance de l'attaque
+	 * @param damage puissance de l'attaque
 	 * @param cast frames de chargement de l'attaque
 	 * @param time frames d'affichage de l'attaque
 	 * @param infoCooldown frames de recharge de l'attaque (a titre d'information, jamais modifie en jeu)
+	 * @param powerX puissance appliquée en X au joueur qui subira l'attaque
+	 * @param powerY puissance appliquée en Y au joueur qui subira l'attaque
 	 */
-	public Attaque(String n, int width, int height, int power, int cast, int time, int infoCooldown) {
+	public Attaque(String n, int width, int height, int damage, int cast, int time, int infoCooldown, int powerX, int powerY) {
 		this.name = n;
 		this.width = width;
 		this.height = height;
-		this.power = power;
+		this.damage = damage;
 		this.time = time;
 		this.cast = cast;
 		this.infoCooldown = infoCooldown;
 		this.effectiveCooldown = 0;
+		this.powerX = powerX;
+		this.powerY = powerY;
 	}
 	
 	public String getName() {
@@ -46,8 +50,8 @@ public class Attaque {
 	 * Methode utilisee pour connaitre la puissance de l'attaque
 	 * @return la puissance de l'attaque
 	 */
-	public int getPower() {
-		return power;
+	public int getDamage() {
+		return damage;
 	}
 	
 	/**
@@ -104,5 +108,14 @@ public class Attaque {
 		int tab[] = {x, y, getWidth(), getHeight()};
 		return tab;
 	}
+
+	public int getPowerX() {
+		return powerX;
+	}
+	
+	public int getPowerY() {
+		return powerY;
+	}
+
 	
 }

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+
 import javax.swing.JFrame;
 
 public class Game {
@@ -7,9 +8,9 @@ public class Game {
 	static Joueur j;
 	static JFrame frame;
 	static Collision c;
-	static ArrayList<Decor> tabDecor;
 	ArrayList<Attaque> tabAttaques;
 	static int tailleDecor;
+	static ArrayList<Decor> tabDecor;
 	public int collisionLeft, collisionRight, collisionTop, collisionBottom;
 	final static int GRAVITY_MAX = 2;
 	final static int INERTIE = 2;
@@ -18,26 +19,14 @@ public class Game {
 	//Creation de la fenetre de jeu
 	public Game() {
 		
-		//Creation du terrain
-		tabDecor = new ArrayList<Decor>();
-		tabDecor.clear();
-		tabDecor.add(new Decor(30,500,500,10));
-		tabDecor.add(new Decor(600,500,200,10));
-		tabDecor.add(new Decor(200,300,400,10));
-		tabDecor.add(new Decor(520,440,10,60));
-		tabDecor.add(new Decor(820,380,60,40));
-		tabDecor.add(new Decor(800,420,60,20));
-		tabDecor.add(new Decor(939,380,60,40));
-		tabDecor.add(new Decor(660,340,80,20));
-		tabDecor.add(new Decor(0,690,1000,10));
-		tabDecor.add(new Decor(0,0,10,700));
-		tabDecor.add(new Decor(990,0,10,700));
+		Levels a = new Levels();
+		tabDecor = a.levels.get(1);
 		
 		// Creation des attaques
 		tabAttaques = new ArrayList<Attaque>();
 		tabAttaques.clear();
-		tabAttaques.add(new Attaque("Base", 5, 5, 5, 0, 20, 20));
-		tabAttaques.add(new Attaque("Grosse", 20, 10, 15, 60, 80, 150));
+		tabAttaques.add(new Attaque("Base", 5, 5, 5, 0, 10, 10,20,20));
+		tabAttaques.add(new Attaque("Grosse", 20, 10, 15, 60, 80, 150,100,100));
 		//Mettre en focntion de atk et coolldown
 		
 		// Creation des joueurs
@@ -135,11 +124,19 @@ public class Game {
 			if (!j.right) {
 				j.vitesseX -= INERTIE/2;
 			} else {
-				j.vitesseX += INERTIE;
-				if (j.vitesseX >= j.RUN_SPEED) {
-					j.vitesseX = j.RUN_SPEED;
-				}
+				if (j.status == j.EJECTED) {
+					j.vitesseX -= INERTIE/2;
+					if (j.vitesseX <= j.MAX_RUN_SPEED) {
+						j.status = j.NORMAL;
+					}
+				} else {
+					j.vitesseX += INERTIE;
+					if (j.vitesseX >= j.MAX_RUN_SPEED) {
+						j.vitesseX = j.MAX_RUN_SPEED;
+					}
+				}				
 			}
+			
 			x = j.getX() + j.vitesseX/10;
 			collisionRight = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
 			if (collisionRight > -1) {
@@ -160,11 +157,19 @@ public class Game {
 			if (!j.left) {
 				j.vitesseX += INERTIE/2;
 			} else {
-				j.vitesseX -= INERTIE;
-				if (j.vitesseX <= -j.RUN_SPEED) {
-					j.vitesseX = -j.RUN_SPEED;
+				if (j.status == j.EJECTED) {
+					j.vitesseX += INERTIE/2;
+					if (j.vitesseX >= -j.MAX_RUN_SPEED) {
+						j.status = j.NORMAL;
+					}
+				} else {
+					j.vitesseX -= INERTIE;
+					if (j.vitesseX <= -j.MAX_RUN_SPEED) {
+						j.vitesseX = -j.MAX_RUN_SPEED;
+					}
 				}
 			}
+			
 			x = j.getX() + j.vitesseX/10;
 			collisionLeft = c.collisionCalculation(x, j.getY(), j.getW(), j.getH(), tabDecor);
 			if (collisionLeft > -1) {

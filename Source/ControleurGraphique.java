@@ -69,6 +69,9 @@ public class ControleurGraphique {
     				tabJoueurs.get(i).isJumping = false;
             	}
             	break;
+	         case KeyEvent.VK_T:
+	        	 tabJoueurs.get(0).eject(100,50);
+	        	 break;
 	         default:
 	        	 break;
 			}

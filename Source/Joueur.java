@@ -11,16 +11,18 @@ public class Joueur {
 	
 	
 	// State
-	public final int STATE_READY = 0;
-	public final int STATE_ATTACKING = 1;
-	public final int STATE_IN_COOLDOWN = 2;
-	public final int STATE_CASTING = 3;
+	public final int ATK_STATE_READY = 0;
+	public final int ATK_STATE_ATTACKING = 1;
+	public final int ATK_STATE_IN_COOLDOWN = 2;
+	public final int ATK_STATE_CASTING = 3;
 	
+	public final int NORMAL = 0;
+	public final int EJECTED = 1;
 	
-	public static int RUN_SPEED = 30;
+	public int MAX_RUN_SPEED = 30;
 	
 	String name;
-	int x,y,w,h,vitesseX, vitesseY, state, health, jumps, jumpsBase;
+	int x,y,w,h,vitesseX, vitesseY, atkState, health, jumps, jumpsBase, status;
 	boolean jump, left, right, isJumping, turnedRight, isAlive;
 	
 	Attaque currentAttack;
@@ -58,7 +60,7 @@ public class Joueur {
 		lastTimerAttack = -1;
 		GCDTimer = -1;
 		tabAttaques = attaques;
-		state = STATE_READY;
+		atkState = ATK_STATE_READY;
 		jumpsBase = 2;
 		jumps = jumpsBase;
 		atk = new ArrayList<Boolean>();
@@ -69,6 +71,7 @@ public class Joueur {
 		atkReleased.clear();
 		atkReleased.add(false);
 		atkReleased.add(false);
+		status = NORMAL;
 	}
 	
 	public String getName() {
@@ -150,7 +153,7 @@ public class Joueur {
 	 * @param b
 	 */
 	public void setAtk(int n, boolean b) {
-		if (b && state == STATE_READY) {
+		if (b && atkState == ATK_STATE_READY) {
 			atk.set(n, true);
 		} else {
 			atk.set(n, false);
@@ -163,28 +166,28 @@ public class Joueur {
 
 	
 	/**
-	 * Verification et lancement des atatques des joueurs
+	 * Verification et lancement des attaques des joueurs
 	 */
 	public void verificationAttack() {
 		long time = main.engineLoop;
-		if (getState() == STATE_CASTING) {
+		if (getState() == ATK_STATE_CASTING) {
 			if (time >= castingTimer) {
 				this.attack(tabAttaques.indexOf(castingAttack));
 			}
 		}
 		
-		if (getState() == STATE_READY) {
+		if (getState() == ATK_STATE_READY) {
 			if (atk.get(0) && !atkReleased.get(0)) {
 				atkReleased.set(0, true);
 				castingAttack = tabAttaques.get(0);
-				state = STATE_CASTING;
+				atkState = ATK_STATE_CASTING;
 				castingTimer = time+tabAttaques.get(0).cast;
 			}
 			if (atk.get(1) && !atkReleased.get(1)) {
 				atkReleased.set(1, true);
 				//System.out.println(atkReleased.get(1));
 				castingAttack = tabAttaques.get(1);
-				state = STATE_CASTING;
+				atkState = ATK_STATE_CASTING;
 				castingTimer = time+tabAttaques.get(1).cast;
 			}
 		}
@@ -209,7 +212,7 @@ public class Joueur {
 		// Global Cooldown
 		GCDTimer = time + tabAttaques.get(n).infoCooldown;
 		// L'attaque est en train d'etre produite
-		state = STATE_ATTACKING;
+		atkState = ATK_STATE_ATTACKING;
 	}
 	
 	/**
@@ -227,7 +230,12 @@ public class Joueur {
 			if (j != this) {
 				collisionJoueur = c.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], j.getX(), j.getY(), j.getW(), j.getH());
 				if (collisionJoueur) {
-					j.receiveHit(currentAttack.getPower());
+					if(this.turnedRight) {
+						j.receiveHit(currentAttack.getDamage(),currentAttack.getPowerX(),currentAttack.getPowerY());
+					} else {
+						j.receiveHit(currentAttack.getDamage(),-currentAttack.getPowerX(),currentAttack.getPowerY());
+						
+					}
 					hasHit = true;
 				}
 			}
@@ -278,17 +286,17 @@ public class Joueur {
 			}
 		}
 		
-		switch (state) {
-		case STATE_ATTACKING:
+		switch (atkState) {
+		case ATK_STATE_ATTACKING:
 			if (collisionAtk() || lastTimerAttack <= time) {
 				currentAttack = null;
-				state = STATE_IN_COOLDOWN;
+				atkState = ATK_STATE_IN_COOLDOWN;
 				lastTimerAttack = -1;
 			}
 			break;
-		case STATE_IN_COOLDOWN:
+		case ATK_STATE_IN_COOLDOWN:
 			if (GCDTimer != -1 && time >= GCDTimer)	{
-				state = STATE_READY;
+				atkState = ATK_STATE_READY;
 				GCDTimer = -1;
 			}
 			break;
@@ -298,7 +306,7 @@ public class Joueur {
 	}
 	
 	public void setState(int state) {
-		this.state = state;
+		this.atkState = state;
 	}
 	
 	/**
@@ -308,17 +316,17 @@ public class Joueur {
 	 * STATE_READY : le joueur est pret a lancer des attaques
 	 */
 	public int getState() {
-		return state;
+		return atkState;
 	}
 	
 	/**
 	 * Methode permettant d'enlever des points de vie au joueur
 	 * @param hit entier qui se soustrait a la vie du joueur
 	 */
-	public void receiveHit(int hit) {
-		if (this.state == 3) {
+	public void receiveHit(int hit, int powerX, int powerY) {
+		if (this.atkState == 3) {
 			currentAttack = null;
-			state = STATE_READY;
+			atkState = ATK_STATE_READY;
 			lastTimerAttack = -1;
 		}
 		int temp = this.health - hit;
@@ -328,6 +336,8 @@ public class Joueur {
 		} else {
 			this.health -= hit;
 		}
+		eject(powerX,powerY);
+		
 	}
 
 	/**
@@ -351,6 +361,17 @@ public class Joueur {
 	public void resetLife() {
 		health = MAX_HEALTH;
 		isAlive = true;
+	}
+
+	/**
+	 * Appliquer une force a un joueur
+	 * @param i Force en X appliquee au joueur
+	 * @param j	Force en Y appliquee au joueur
+	 */
+	public void eject(int i, int j) {
+		status = EJECTED;
+		vitesseX = i;
+		vitesseY = -j;
 	}
 
 

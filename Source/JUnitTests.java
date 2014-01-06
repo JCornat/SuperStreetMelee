@@ -46,14 +46,14 @@ public class JUnitTests {
 	@Test
 	public void AttaqueTest() {
 		int nbAttaquesBefore = g.tabJoueurs.get(0).tabAttaques.size();
-		g.tabJoueurs.get(0).tabAttaques.add(new Attaque("Test", 10, 20, 30, 35, 40, 50));
+		g.tabJoueurs.get(0).tabAttaques.add(new Attaque("Test", 10, 20, 30, 35, 40, 50, 60 ,70));
 		int nbAttaquesAfter = g.tabJoueurs.get(0).tabAttaques.size();
 		assertTrue(nbAttaquesAfter == nbAttaquesBefore+1);
 		
 		assertTrue(g.tabJoueurs.get(0).tabAttaques.get(2).getName() == "Test");
 		assertTrue(g.tabJoueurs.get(0).tabAttaques.get(2).getWidth() == 10);
 		assertTrue(g.tabJoueurs.get(0).tabAttaques.get(2).getHeight() == 20);
-		assertTrue(g.tabJoueurs.get(0).tabAttaques.get(2).getPower() == 30);
+		assertTrue(g.tabJoueurs.get(0).tabAttaques.get(2).getDamage() == 30);
 		assertTrue(g.tabJoueurs.get(0).tabAttaques.get(2).getTime() == 40);
 		assertTrue(g.tabJoueurs.get(0).tabAttaques.get(2).getInfoCooldown() == 50);
 		assertTrue(g.tabJoueurs.get(0).tabAttaques.get(2).getEffectiveCooldown() == 0);
