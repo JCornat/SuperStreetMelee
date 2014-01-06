@@ -29,7 +29,7 @@ public class main {
 			frames++;
 			engineLoop++;
 			g.render();
-			g.update();	
+			g.update();
 			
 			lastTime = System.nanoTime();
 			
@@ -37,7 +37,8 @@ public class main {
 				timerFPS = System.currentTimeMillis();
 				averageFrames = frames;
 				frames = 0;
-				System.out.println(engineLoop);
+				g.updateTimer();
+				//System.out.println(engineLoop);
 			}
 		}
 	}

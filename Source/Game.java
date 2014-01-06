@@ -15,7 +15,8 @@ public class Game {
 	final static int GRAVITY_MAX = 2;
 	final static int INERTIE = 2;
 	final static int GRAVITY_SPEED_CAP = 50;
-	
+	public static int gameDuration;
+
 	//Creation de la fenetre de jeu
 	public Game() {
 		
@@ -35,6 +36,8 @@ public class Game {
 		tabJoueurs.add(new Joueur("Joueur 1", 250, 10, 60, 100, tabAttaques));
 		tabJoueurs.add(new Joueur("Joueur 2", 500, 10, 60, 100, tabAttaques));
 		
+		// Initilisation de la duree de la partie en sec
+		gameDuration = 120;
 		
 		//Appel et ajout du pattern d'affichage	
 		VueGraphique vg = new VueGraphique(tabDecor, tabAttaques, tabJoueurs);
@@ -69,9 +72,19 @@ public class Game {
 			j.updateTimeAttack();
 		}
 		// Intelligence artificielle
-		
 	}
 	
+	public void updateTimer() {
+		// Timer
+		if (gameDuration > 0)
+			gameDuration--;
+		else {
+			// Temps ecoule, partie terminee
+			gameDuration = 0;
+			main.g = new Game();
+		}
+	}
+
 	private void gravity(Joueur j) {
 		j.vitesseY = j.vitesseY + GRAVITY_MAX;
 		if (j.vitesseY > GRAVITY_SPEED_CAP) {

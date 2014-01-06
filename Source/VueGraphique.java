@@ -81,6 +81,14 @@ public class VueGraphique extends JPanel {
 			g.drawString("Joueur "+(i+1)+" : "+String.valueOf(tabJoueurs.get(i).x)+" "+String.valueOf(tabJoueurs.get(i).y)+" "+String.valueOf(tabJoueurs.get(i).vitesseX), 10, (i+1)*15+20);
 		}
 		
+		// Affichage du temps
+		String zero1 = "";
+		String zero2 = "";
+		if (Game.gameDuration/60 < 10)
+			zero1 = "0";
+		if (Game.gameDuration%60 < 10)
+			zero2 = "0";
+		g.drawString(zero1+Game.gameDuration/60+" : "+zero2+Game.gameDuration%60, getWidth()/2, getHeight()/6);
 		
 		try {
 			g.drawString(Integer.toString(main.averageFrames)+" FPS", 10, 10);

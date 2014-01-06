@@ -17,6 +17,7 @@ public class ControleurGraphique {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			switch (e.getKeyCode()) {
+/* ******************** PLAYER 1 ******************** */
 			case KeyEvent.VK_Z: 
 				tabJoueurs.get(0).setJump(true); 
             	break;
