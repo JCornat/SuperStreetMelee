@@ -1,3 +1,4 @@
+import java.awt.CardLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -58,21 +59,19 @@ public class ControleurGraphique {
 	           	
 /* ******************** COMMANDE ******************** */	           	
 	         case KeyEvent.VK_R: 
-            	for (int i = 0; i < tabJoueurs.size(); i++) {
-            		tabJoueurs.get(i).setX(i*250+250);
-    				tabJoueurs.get(i).setY(110);
-    				tabJoueurs.get(i).resetLife();
-    				tabJoueurs.get(i).vitesseX = 0;
-    				tabJoueurs.get(i).vitesseY = 0;
-    				tabJoueurs.get(i).left = false;
-    				tabJoueurs.get(i).right = false;
-    				tabJoueurs.get(i).jump = false;
-    				tabJoueurs.get(i).isJumping = false;
-            	}
+            	Game.resetGame() ;
             	break;
 	         case KeyEvent.VK_T:
 	        	 tabJoueurs.get(0).eject(100,50);
 	        	 break;
+	         case KeyEvent.VK_ESCAPE:
+					if (Game.CURRENT_STATE == STATE.IN_GAME) {
+						Game.CURRENT_STATE = STATE.PAUSED ;
+						((CardLayout) Menu.cards.getLayout()).show(Menu.cards, "gamepaused");
+					} else {
+						Game.CURRENT_STATE = STATE.IN_GAME ;
+					}
+					break;
 	         default:
 	        	 break;
 			}
@@ -119,7 +118,7 @@ public class ControleurGraphique {
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-			
+	
 		}
 	}
 	
