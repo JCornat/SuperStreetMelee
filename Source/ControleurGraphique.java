@@ -70,6 +70,7 @@ public class ControleurGraphique {
 						((CardLayout) Menu.cards.getLayout()).show(Menu.cards, "gamepaused");
 					} else {
 						Game.CURRENT_STATE = STATE.IN_GAME ;
+						((CardLayout) Menu.cards.getLayout()).show(Menu.cards, "play");
 					}
 					break;
 	         default:
