@@ -1,4 +1,3 @@
-import java.awt.CardLayout;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -99,8 +98,8 @@ public class Game {
 				gameDuration--;
 			else {
 				// Temps ecoule, partie terminee
-				Game.CURRENT_STATE = STATE.IN_MENU ;
-				((CardLayout) Menu.cards.getLayout()).show(Menu.cards, "mainmenu");
+				gameDuration = 0;
+				main.g = new Game();
 			}
 		}
 	}
