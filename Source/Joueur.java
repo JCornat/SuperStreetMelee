@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Joueur {
 
 	// Max Health of the player
-	final int MAX_HEALTH = 100;
+	final int MIN_HEALTH = 0;
 	
 	// Global Cooldown of the player
 	public final long GLOBAL_COOLDOWN = 300;
@@ -53,7 +53,7 @@ public class Joueur {
 		right = false;
 		vitesseX = 0;
 		vitesseY = 0;
-		health = MAX_HEALTH;
+		health = MIN_HEALTH;
 		isAlive = true;
 		turnedRight = true;
 		currentAttack = null;
@@ -329,15 +329,25 @@ public class Joueur {
 			atkState = ATK_STATE_READY;
 			lastTimerAttack = -1;
 		}
-		int temp = this.health - hit;
-		if (temp <= 0) {
-			this.isAlive = false;
-			this.health = 0;
-		} else {
-			this.health -= hit;
+		this.health += hit;
+		double coef = 1 + this.health/5;
+		double puissanceX = (powerX * coef)/10;
+		double puissanceY = (powerY * coef)/10;
+		if (puissanceX > 10) {
+		} else if (puissanceX < -10){
+		} else if (puissanceX > 0){
+			puissanceX = 10;
+		} else if (puissanceX < 0){ 
+			puissanceX = -10;
 		}
-		eject(powerX,powerY);
-		
+		if (puissanceY > 10) {
+		} else if (puissanceY < -10){
+		} else if (puissanceY > 0){
+			puissanceY = 10;
+		} else if (puissanceY < 0){ 
+			puissanceY = -10;
+		}
+		eject((int)puissanceX, (int)puissanceY);
 	}
 
 	/**
@@ -345,12 +355,12 @@ public class Joueur {
 	 * @param heal entier qui s'ajoute a la vie du joueur
 	 */
 	public void receiveHeal(int heal) {
-		int temp = this.health + heal;
+		int temp = this.health - heal;
 		if (this.isAlive) {
-			if (temp > MAX_HEALTH) {
-				this.health = MAX_HEALTH;
+			if (temp < MIN_HEALTH) {
+				this.health = MIN_HEALTH;
 			} else {
-				this.health += heal;
+				this.health -= heal;
 			}
 		}
 	}
@@ -359,7 +369,7 @@ public class Joueur {
 	 * Methode permettant de maximiser les points de vie du joueur, et de le remettre en vie
 	 */
 	public void resetLife() {
-		health = MAX_HEALTH;
+		health = MIN_HEALTH;
 		isAlive = true;
 	}
 
