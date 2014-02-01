@@ -1,5 +1,5 @@
 
-public class Attaque {
+public class Attack {
 	
 	String name;
 	int width, height, damage, time, cast, infoCooldown, powerX, powerY;
@@ -21,7 +21,7 @@ public class Attaque {
 	 * @param powerX puissance appliquée en X au joueur qui subira l'attaque
 	 * @param powerY puissance appliquée en Y au joueur qui subira l'attaque
 	 */
-	public Attaque(String n, int width, int height, int damage, int cast, int time, int infoCooldown, int powerX, int powerY) {
+	public Attack(String n, int width, int height, int damage, int cast, int time, int infoCooldown, int powerX, int powerY) {
 		this.name = n;
 		this.width = width;
 		this.height = height;
@@ -94,7 +94,7 @@ public class Attaque {
 	 * en 2 on a : la largeur de l'attaque,
 	 * en 3 on a : la hauteur de l'attaque.
 	 */
-	public int[] getAttackPosition(Joueur j) {
+	public int[] getAttackPosition(Player j) {
 		int x = 0;
 		int y = 0;
 		if (j.getTurned() == true)

@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class VueGraphique extends JPanel {
+public class GraphicalView extends JPanel {
 
-	ArrayList<Joueur> tabJoueurs;
+	ArrayList<Player> tabJoueurs;
 	ArrayList<Decor> tabDecors;
-	ArrayList<Attaque> tabAttaques;
+	ArrayList<Attack> tabAttaques;
 	
-	public VueGraphique(ArrayList<Decor> de, ArrayList<Attaque> at, ArrayList<Joueur> jo) {
+	public GraphicalView(ArrayList<Decor> de, ArrayList<Attack> at, ArrayList<Player> jo) {
 		this.setPreferredSize(new Dimension(1000,700));
 		tabDecors = de;
 		tabAttaques = at;
@@ -21,22 +21,21 @@ public class VueGraphique extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		
-		for (Joueur j : tabJoueurs) {
+		for (Player j : tabJoueurs) {
 			//Affichage du joueur
 			g.setColor(Color.DARK_GRAY);
 			g.fillRect(j.getX(), j.getY(), j.getW(), j.getH());
 			g.drawString(j.getName(), (j.getX() + (j.getW()/2) - 25), (j.getY() - 25));
 			g.drawString(String.valueOf(j.health), (j.getX() + (j.getW()/2) - 10), (j.getY() - 10));
 			
-			Attaque att = j.getAttaque();
+			Attack att = j.getAttaque();
 			// Affichage de l'attaque
 			if (att != null)
 			{
 				g.setColor(Color.RED);
 				int tabXYWH[] = att.getAttackPosition(j);
 				g.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);
-				
-			} 
+			}
 			
 			if (j.atkState == 1) {
 				g.setColor(Color.RED);
@@ -84,11 +83,11 @@ public class VueGraphique extends JPanel {
 		// Affichage du temps
 		String zero1 = "";
 		String zero2 = "";
-		if (Game.gameDuration/60 < 10)
+		if (GameEngine.gameDuration/60 < 10)
 			zero1 = "0";
-		if (Game.gameDuration%60 < 10)
+		if (GameEngine.gameDuration%60 < 10)
 			zero2 = "0";
-		g.drawString(zero1+Game.gameDuration/60+" : "+zero2+Game.gameDuration%60, getWidth()/2, getHeight()/6);
+		g.drawString(zero1+GameEngine.gameDuration/60+" : "+zero2+GameEngine.gameDuration%60, getWidth()/2, getHeight()/6);
 		
 		try {
 			g.drawString(Integer.toString(main.averageFrames)+" FPS", 10, 10);

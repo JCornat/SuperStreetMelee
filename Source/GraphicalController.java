@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-public class ControleurGraphique {
+public class GraphicalController {
 
-	ArrayList<Joueur> tabJoueurs;
+	ArrayList<Player> tabJoueurs;
 	
-	public ControleurGraphique(JFrame f, ArrayList<Joueur> joueurs) {
+	public GraphicalController(JFrame f, ArrayList<Player> joueurs) {
 		this.tabJoueurs = joueurs;
 		f.addKeyListener(new ClavierListener());
 	}
@@ -59,17 +59,17 @@ public class ControleurGraphique {
 	           	
 /* ******************** COMMANDE ******************** */	           	
 	         case KeyEvent.VK_R: 
-            	Game.resetGame() ;
+            	GameEngine.resetGame() ;
             	break;
 	         case KeyEvent.VK_T:
 	        	 tabJoueurs.get(0).eject(100,50);
 	        	 break;
 	         case KeyEvent.VK_ESCAPE:
-					if (Game.CURRENT_STATE == STATE.IN_GAME) {
-						Game.CURRENT_STATE = STATE.PAUSED ;
+					if (GameEngine.CURRENT_STATE == State.IN_GAME) {
+						GameEngine.CURRENT_STATE = State.PAUSED ;
 						((CardLayout) Menu.cards.getLayout()).show(Menu.cards, "gamepaused");
 					} else {
-						Game.CURRENT_STATE = STATE.IN_GAME ;
+						GameEngine.CURRENT_STATE = State.IN_GAME ;
 						((CardLayout) Menu.cards.getLayout()).show(Menu.cards, "play");
 					}
 					break;

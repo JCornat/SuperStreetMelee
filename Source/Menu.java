@@ -45,8 +45,8 @@ public class Menu extends JFrame {
 	public static ImageIcon imgexitbuttonhover = new ImageIcon(
 			"images/buttons/exitbuttonhover.png");
 
-	public Menu(String titre, VueGraphique vg) {
-		super(titre);
+	public Menu(String title, GraphicalView vg) {
+		super(title);
 
 		setLayout(new BorderLayout());
 
@@ -75,8 +75,8 @@ public class Menu extends JFrame {
 		playbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "play");
-				Game.resetGame();
-				Game.CURRENT_STATE = STATE.IN_GAME;
+				GameEngine.resetGame();
+				GameEngine.CURRENT_STATE = State.IN_GAME;
 			}
 		});
 
@@ -100,7 +100,7 @@ public class Menu extends JFrame {
 		resumebutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "play");
-				Game.CURRENT_STATE = STATE.IN_GAME;
+				GameEngine.CURRENT_STATE = State.IN_GAME;
 			}
 		});
 
@@ -124,7 +124,7 @@ public class Menu extends JFrame {
 		mainmenubutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "mainmenu");
-				Game.CURRENT_STATE = STATE.IN_MENU;
+				GameEngine.CURRENT_STATE = State.IN_MENU;
 			}
 		});
 

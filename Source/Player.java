@@ -1,39 +1,31 @@
 import java.util.ArrayList;
 
 
-public class Joueur {
+public class Player {
 
-	// Max Health of the player
-	final int MIN_HEALTH = 0;
-	
-	// Global Cooldown of the player
-	public final long GLOBAL_COOLDOWN = 300;
 	
 	
 	// State
-	public final int ATK_STATE_READY = 0;
-	public final int ATK_STATE_ATTACKING = 1;
-	public final int ATK_STATE_IN_COOLDOWN = 2;
-	public final int ATK_STATE_CASTING = 3;
-	
-	public final int NORMAL = 0;
-	public final int EJECTED = 1;
-	
-	public int MAX_RUN_SPEED = 30;
+	int ATK_STATE_READY = Constant.ATK_STATE_READY;
+	int ATK_STATE_ATTACKING = Constant.ATK_STATE_ATTACKING;
+	int ATK_STATE_IN_COOLDOWN = Constant.ATK_STATE_IN_COOLDOWN;
+	int ATK_STATE_CASTING = Constant.ATK_STATE_CASTING;
 	
 	String name;
-	int x,y,w,h,vitesseX, vitesseY, atkState, health, jumps, jumpsBase, status;
+	int x,y,w,h,vitesseX, vitesseY, atkState, health, jumps, jumpsBase;
+
+	PlayerStatus status;
 	boolean jump, left, right, isJumping, turnedRight, isAlive;
 	
-	Attaque currentAttack;
-	ArrayList<Attaque> tabAttaques;
+	Attack currentAttack;
+	ArrayList<Attack> tabAttaques;
 	long lastTimerAttack, castingTimer;
 	
 	// Global Cooldown Timer
 	long GCDTimer;
 	ArrayList<Boolean> atk, atkReleased;
 
-	Attaque castingAttack;
+	Attack castingAttack;
 	
 	/**
 	 * Constructeur pour creer un joueur
@@ -44,16 +36,18 @@ public class Joueur {
 	 * @param l Hauteur du joueur
 	 * @param attaques liste d'attaques specifiques au joueur
 	 */
-	public Joueur(String n, int i, int j, int k, int l, ArrayList<Attaque> attaques) {
+	public Player(String n, int i, int j, int k, int l, ArrayList<Attack> attaques) {
 		name = n;
-		x = i; y = j;
-		w = k; h = l;
+		x = i; 
+		y = j;
+		w = k;
+		h = l;
 		jump = false;
 		left = false; 
 		right = false;
 		vitesseX = 0;
 		vitesseY = 0;
-		health = MIN_HEALTH;
+		health = Constant.MIN_HEALTH;
 		isAlive = true;
 		turnedRight = true;
 		currentAttack = null;
@@ -71,7 +65,7 @@ public class Joueur {
 		atkReleased.clear();
 		atkReleased.add(false);
 		atkReleased.add(false);
-		status = NORMAL;
+		status = PlayerStatus.NORMAL;
 	}
 	
 	public String getName() {
@@ -166,39 +160,11 @@ public class Joueur {
 
 	
 	/**
-	 * Verification et lancement des attaques des joueurs
-	 */
-	public void verificationAttack() {
-		long time = main.engineLoop;
-		if (getState() == ATK_STATE_CASTING) {
-			if (time >= castingTimer) {
-				this.attack(tabAttaques.indexOf(castingAttack));
-			}
-		}
-		
-		if (getState() == ATK_STATE_READY) {
-			if (atk.get(0) && !atkReleased.get(0)) {
-				atkReleased.set(0, true);
-				castingAttack = tabAttaques.get(0);
-				atkState = ATK_STATE_CASTING;
-				castingTimer = time+tabAttaques.get(0).cast;
-			}
-			if (atk.get(1) && !atkReleased.get(1)) {
-				atkReleased.set(1, true);
-				//System.out.println(atkReleased.get(1));
-				castingAttack = tabAttaques.get(1);
-				atkState = ATK_STATE_CASTING;
-				castingTimer = time+tabAttaques.get(1).cast;
-			}
-		}
-	}
-	
-	/**
 	 * Methode utilisee lorsque le joueur lance une attaque.
 	 * Determine si l'attaque est disponible pour le joueur, s'il peut la lancer,
 	 * si oui lance l'attaque, et enleve des points de vie a un joueur si il y a collision avec ce dernier
 	 * @param n nom de l'attaque
-	 * @param tabJoueurs tous les joueurs du jeu
+	 * @param listPlayers tous les joueurs du jeu
 	 */
 	public void attack(int n) {
 		castingAttack = null;
@@ -215,39 +181,12 @@ public class Joueur {
 		atkState = ATK_STATE_ATTACKING;
 	}
 	
-	/**
-	 * Methode pour determiner si une attaque touche un adversaire
-	 * @return vrai si touché, faux, si non touché
-	 */
-	public boolean collisionAtk() {
-		// Calcul de la position de l'attaque
-		int tabXYWH[] = currentAttack.getAttackPosition(this);
-		Collision c = new Collision();
-		boolean collisionJoueur = false;
-		boolean hasHit = false;
-		// Collision avec des joueurs ?
-		for (Joueur j : Game.tabJoueurs) {
-			if (j != this) {
-				collisionJoueur = c.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], j.getX(), j.getY(), j.getW(), j.getH());
-				if (collisionJoueur) {
-					if(this.turnedRight) {
-						j.receiveHit(currentAttack.getDamage(),currentAttack.getPowerX(),currentAttack.getPowerY());
-					} else {
-						j.receiveHit(currentAttack.getDamage(),-currentAttack.getPowerX(),currentAttack.getPowerY());
-						
-					}
-					hasHit = true;
-				}
-			}
-		}
-		return hasHit;
-	}
 	
 	/**
 	 * Methode utilisee pour connaitre l'attaque que le joueur est en train de lancer
 	 * @return l'attaque que le joueur est en train de lancer
 	 */
-	public Attaque getAttaque() {
+	public Attack getAttaque() {
 		return currentAttack;
 	}
 	
@@ -287,14 +226,14 @@ public class Joueur {
 		}
 		
 		switch (atkState) {
-		case ATK_STATE_ATTACKING:
-			if (collisionAtk() || lastTimerAttack <= time) {
+		case Constant.ATK_STATE_ATTACKING:
+			if (CollisionAttack.collisionAttack(this) || lastTimerAttack <= time) {
 				currentAttack = null;
 				atkState = ATK_STATE_IN_COOLDOWN;
 				lastTimerAttack = -1;
 			}
 			break;
-		case ATK_STATE_IN_COOLDOWN:
+		case Constant.ATK_STATE_IN_COOLDOWN:
 			if (GCDTimer != -1 && time >= GCDTimer)	{
 				atkState = ATK_STATE_READY;
 				GCDTimer = -1;
@@ -319,36 +258,7 @@ public class Joueur {
 		return atkState;
 	}
 	
-	/**
-	 * Methode permettant d'enlever des points de vie au joueur
-	 * @param hit entier qui se soustrait a la vie du joueur
-	 */
-	public void receiveHit(int hit, int powerX, int powerY) {
-		if (this.atkState == 3) {
-			currentAttack = null;
-			atkState = ATK_STATE_READY;
-			lastTimerAttack = -1;
-		}
-		this.health += hit;
-		double coef = 1 + this.health/5;
-		double puissanceX = (powerX * coef)/10;
-		double puissanceY = (powerY * coef)/10;
-		if (puissanceX > 10) {
-		} else if (puissanceX < -10){
-		} else if (puissanceX > 0){
-			puissanceX = 10;
-		} else if (puissanceX < 0){ 
-			puissanceX = -10;
-		}
-		if (puissanceY > 10) {
-		} else if (puissanceY < -10){
-		} else if (puissanceY > 0){
-			puissanceY = 10;
-		} else if (puissanceY < 0){ 
-			puissanceY = -10;
-		}
-		eject((int)puissanceX, (int)puissanceY);
-	}
+	
 
 	/**
 	 * Methode permettant de soigner le joueur
@@ -357,8 +267,8 @@ public class Joueur {
 	public void receiveHeal(int heal) {
 		int temp = this.health - heal;
 		if (this.isAlive) {
-			if (temp < MIN_HEALTH) {
-				this.health = MIN_HEALTH;
+			if (temp < Constant.MIN_HEALTH) {
+				this.health = Constant.MIN_HEALTH;
 			} else {
 				this.health -= heal;
 			}
@@ -369,7 +279,7 @@ public class Joueur {
 	 * Methode permettant de maximiser les points de vie du joueur, et de le remettre en vie
 	 */
 	public void resetLife() {
-		health = MIN_HEALTH;
+		health = Constant.MIN_HEALTH;
 		isAlive = true;
 	}
 
@@ -379,7 +289,7 @@ public class Joueur {
 	 * @param j	Force en Y appliquee au joueur
 	 */
 	public void eject(int i, int j) {
-		status = EJECTED;
+		status = PlayerStatus.EJECTED;
 		vitesseX = i;
 		vitesseY = -j;
 	}

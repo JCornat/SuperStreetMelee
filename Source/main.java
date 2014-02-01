@@ -1,6 +1,6 @@
 public class main {
 
-	public static Game g;
+	public static GameEngine game;
 	
 	public static boolean running = true;
 	public static int frames = 0;
@@ -9,8 +9,7 @@ public class main {
 	public static long engineLoop = 0;
 	
 	public static void main(String[] args) {
-		
-		g = new Game();
+		game = new GameEngine();
 		double nsPerTick = 1000000000D/127D;
 		long timerFPS = System.currentTimeMillis();
 		long lastTime = System.nanoTime();
@@ -28,8 +27,8 @@ public class main {
 			
 			frames++;
 			engineLoop++;
-			g.render();
-			g.update();
+			game.render();
+			game.update();
 			
 			lastTime = System.nanoTime();
 			
@@ -37,7 +36,7 @@ public class main {
 				timerFPS = System.currentTimeMillis();
 				averageFrames = frames;
 				frames = 0;
-				g.updateTimer();
+				game.updateTimer();
 				//System.out.println(engineLoop);
 			}
 		}
