@@ -42,7 +42,7 @@ public class Gravity {
 		int y = player.getY() + player.vitesseY / 10;
 		if (player.vitesseY > 0) {
 			//Le personnage est en train d'aller vers le bas
-			collisionBottom = Collision.collisionCalculation(player.getX(), y, player.getW(),player.getH(), GameEngine.tabDecor);
+			collisionBottom = Collision.collisionCalculation(player.getX(), y, player.getW(),player.getH(), GameEngine.tabDecor, player);
 			if (collisionBottom > -1) {
 				//Contact avec le sol
 				player.setY(player.getY() + GameEngine.tabDecor.get(collisionBottom).y - player.getY() - player.getH());
@@ -55,7 +55,7 @@ public class Gravity {
 			}
 		} else if (player.vitesseY < 0) {
 			//Le personnage est en train d'aller vers le haut
-			collisionTop = Collision.collisionCalculation(player.getX(), y, player.getW(),player.getH(), GameEngine.tabDecor);
+			collisionTop = Collision.collisionCalculation(player.getX(), y, player.getW(),player.getH(), GameEngine.tabDecor, player);
 			if (collisionTop > -1) {
 				//Contact avec un decor situe au-dessus
 				player.setY(player.getY() + GameEngine.tabDecor.get(collisionTop).y + GameEngine.tabDecor.get(collisionTop).h - player.getY());
@@ -103,7 +103,7 @@ public class Gravity {
 			}
 
 			x = player.getX() + player.vitesseX / 10;
-			collisionRight = Collision.collisionCalculation(x, player.getY(), player.getW(),player.getH(), GameEngine.tabDecor);
+			collisionRight = Collision.collisionCalculation(x, player.getY(), player.getW(),player.getH(), GameEngine.tabDecor, player);
 			if (collisionRight > -1) {
 				//Contact avec le decor sur la droite
 				player.vitesseX = 0;
@@ -134,7 +134,7 @@ public class Gravity {
 			}
 
 			x = player.getX() + player.vitesseX / 10;
-			collisionLeft = Collision.collisionCalculation(x, player.getY(), player.getW(),player.getH(), GameEngine.tabDecor);
+			collisionLeft = Collision.collisionCalculation(x, player.getY(), player.getW(),player.getH(), GameEngine.tabDecor, player);
 			if (collisionLeft > -1) {
 				//Contact avec le décor sur la gauche
 				player.vitesseX = 0;

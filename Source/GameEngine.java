@@ -26,19 +26,17 @@ public class GameEngine {
 		// Creation des attaques
 		tabAttaques = new ArrayList<Attack>();
 		tabAttaques.clear();
-		tabAttaques.add(new Attack("Base", 5, 5, 5, 0, 10, 10,20,20));
-		tabAttaques.add(new Attack("Grosse", 20, 10, 15, 60, 80, 150,100,100));
-		//Mettre en focntion de atk et coolldown
+		tabAttaques.add(new Attack("Small", 5, 5, 5, 0, 10, 10,20,20));
+		tabAttaques.add(new Attack("Big", 16, 10, 15, 60, 80, 150,100,100));
 		
 		// Initilisation de la duree de la partie en sec
 		gameDuration = 120;
 		
-		listPlayers = new ArrayList<Player>();
-
+		
 		listPlayers = new ArrayList<Player>();
 		listPlayers.clear();
-		listPlayers.add(new Player("Joueur 1", 250, 10, 60, 100, tabAttaques));
-		listPlayers.add(new Player("Joueur 2", 500, 10, 60, 100, tabAttaques));
+		listPlayers.add(new Player("Joueur 1", 80, 80, tabAttaques));
+		listPlayers.add(new Player("Joueur 2", 80, 80, tabAttaques));
 		
 		
 		//Appel et ajout du pattern d'affichage	
@@ -56,7 +54,7 @@ public class GameEngine {
 				
 	public static void resetGame() {
 		for (int i = 0; i < listPlayers.size(); i++) {
-			listPlayers.get(i).setX(i*250+250);
+			listPlayers.get(i).setX(i*300+310);
 			listPlayers.get(i).setY(110);
 			listPlayers.get(i).resetLife();
 			listPlayers.get(i).vitesseX = 0;
@@ -74,12 +72,12 @@ public class GameEngine {
 		if (CURRENT_STATE == State.IN_GAME) {
 			for (Player j : listPlayers) {
 				gravity.gravity(j);
-				//on verifie si les joueurs ont lance des attaques
+				//On verifie si les joueurs ont lance des attaques
 				VerificationAttack.verificationAttack(j);
-				// on met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
+				//On met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
 				j.updateTimeAttack();
 			}
-			// Intelligence artificielle
+			//Future intelligence artificielle
 		}
 	}
 	

@@ -1,96 +1,155 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
+
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class GraphicalView extends JPanel {
 
-	ArrayList<Player> tabJoueurs;
-	ArrayList<Decor> tabDecors;
-	ArrayList<Attack> tabAttaques;
+	ArrayList<Player> arrayPlayers;
+	ArrayList<Decor> arrayDecors;
+	ArrayList<Attack> arrayAttack;
+	int spriteAnim = 0;
 	
 	public GraphicalView(ArrayList<Decor> de, ArrayList<Attack> at, ArrayList<Player> jo) {
 		this.setPreferredSize(new Dimension(1000,700));
-		tabDecors = de;
-		tabAttaques = at;
-		tabJoueurs = jo;
+		arrayDecors = de;
+		arrayAttack = at;
+		arrayPlayers = jo;
 	}
 	
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paint(Graphics graphics) {
+		super.paint(graphics);
 		
-		for (Player j : tabJoueurs) {
-			//Affichage du joueur
-			g.setColor(Color.DARK_GRAY);
-			g.fillRect(j.getX(), j.getY(), j.getW(), j.getH());
-			g.drawString(j.getName(), (j.getX() + (j.getW()/2) - 25), (j.getY() - 25));
-			g.drawString(String.valueOf(j.health), (j.getX() + (j.getW()/2) - 10), (j.getY() - 10));
+		//Affichage du sprite du niveau
+		graphics.drawImage(Levels.image, 0, 0, this);
+		
+		
+		for (Player player : arrayPlayers) {
+			//Affichage du nom et des points de degats du joueur
+			graphics.setColor(Color.DARK_GRAY);
+			graphics.drawString(player.getName(), (player.getX() + (player.getW()/2) - 25), (player.getY() - 25));
+			graphics.drawString(String.valueOf(player.health), (player.getX() + (player.getW()/2) - 10), (player.getY() - 10));
 			
-			Attack att = j.getAttaque();
-			// Affichage de l'attaque
+			//Recuperation de l'attaque en cours
+			Attack att = player.getAttaque();
+			
+			//Affichage de l'attaque s'il y a
 			if (att != null)
-			{
-				g.setColor(Color.RED);
+			{	
+				//Si le joueur est tourné à droite
+				if(player.turnedRight) {
+					//En fonction de l'attaque actuelle
+					if(att.name == "Small") {
+						//Nous affichons un bras qui bouge par rapport à sa position normale
+						graphics.drawImage(player.imageArm, player.getX()+65, player.getY()+35, this);
+					} else {
+						graphics.drawImage(player.imageArm, player.getX()+90, player.getY()+35, this);
+					}
+				} else {
+					//Sinon s'il est tourné à gauche...
+					if(att.name == "Small") {
+						graphics.drawImage(player.imageArm, player.getX()-10, player.getY()+35, this);
+					} else {
+						graphics.drawImage(player.imageArm, player.getX()-35, player.getY()+35, this);
+					}
+				}
+
+				//DEBUGGING
+				//Utilise pour savoir la portee des coups, decommenter si on veut aligner le sprite sur l'attaque
+				/*g.setColor(Color.RED);
 				int tabXYWH[] = att.getAttackPosition(j);
-				g.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);
+				g.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);*/
+				
+				//S'il n'attaque pas :
+			} else {
+				//On affiche le bras dans sa position de base
+				if(player.turnedRight) {
+					graphics.drawImage(player.imageArm, player.getX()+60, player.getY()+35, this);
+				} else {
+					graphics.drawImage(player.imageArm, player.getX()-5, player.getY()+35, this);
+				}
 			}
 			
-			if (j.atkState == 1) {
-				g.setColor(Color.RED);
-				g.drawString("ATTACKING", (j.getX() + (j.getW()/2) - 25), (j.getY() - 38));
-			} else if (j.atkState == 2) {
-				g.setColor(Color.BLUE);
-				g.drawString("COOLDOWN", (j.getX() + (j.getW()/2) - 25), (j.getY() - 38));
-			} else if (j.atkState == 3) {
-				g.setColor(Color.GREEN);
-				g.drawString("CASTING", (j.getX() + (j.getW()/2) - 25), (j.getY() - 38));
+			//On affiche le corps et l'autre bras, en fonction de son orientation toujours.
+			if(player.turnedRight) {
+				graphics.drawImage(player.imageBody, player.getX(), player.getY(), this);
+				graphics.drawImage(player.imageArm, player.getX()+23, player.getY()+35, this);
+			} else {
+				graphics.drawImage(player.imageBody, player.getX()+80, player.getY(), -80, 80, null);
+				graphics.drawImage(player.imageArm, player.getX()+35, player.getY()+35, this);
 			}
 			
+			
+			//Affichage de l'etat des coups
+			if (player.atkState == 1) {
+				graphics.setColor(Color.RED);
+				graphics.drawString("ATTACKING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+			} else if (player.atkState == 2) {
+				graphics.setColor(Color.BLUE);
+				graphics.drawString("COOLDOWN", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+			} else if (player.atkState == 3) {
+				graphics.setColor(Color.GREEN);
+				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+			}
+			
+
+			//DEBUGGING
+			//Utilise pour afficher les vecteurs vitesses du personnage
+			/*
 			//Vecteur vitesse Y
-			g.setColor(Color.BLUE);
-			g.drawLine((j.getX()+j.getW()/2), (j.getY()+j.getH()/2), (j.getX()+j.getW()/2),(j.getY()+j.getH()/2+j.vitesseY*2));
+			graphics.setColor(Color.BLUE);
+			graphics.drawLine((player.getX()+player.getW()/2), (player.getY()+player.getH()/2), (player.getX()+player.getW()/2),(player.getY()+player.getH()/2+player.vitesseY*2));
 			
 			//Vecteur vitesse X
-			g.setColor(Color.ORANGE);
-			g.drawLine((j.getX()+j.getW()/2), (j.getY()+j.getH()/2), (j.getX()+j.getW()/2+j.vitesseX*2),(j.getY()+j.getH()/2));
+			graphics.setColor(Color.ORANGE);
+			graphics.drawLine((player.getX()+player.getW()/2), (player.getY()+player.getH()/2), (player.getX()+player.getW()/2+player.vitesseX*2),(player.getY()+player.getH()/2));
 			
 			//Vecteur vitesse X
-			g.setColor(Color.CYAN);
-			g.drawLine((j.getX()+j.getW()/2), (j.getY()+j.getH()/2), (j.getX()+j.getW()/2+j.vitesseX*2), (j.getY()+j.getH()/2+j.vitesseY*2));
+			graphics.setColor(Color.CYAN);
+			graphics.drawLine((player.getX()+player.getW()/2), (player.getY()+player.getH()/2), (player.getX()+player.getW()/2+player.vitesseX*2), (player.getY()+player.getH()/2+player.vitesseY*2));
+			*/
 			
-			//Trace des traits autour du joueur, pour le debugging
-			g.setColor(Color.RED);
+			//DEBUGGING
+			//Trace des traits autour du joueur
+			/*g.setColor(Color.RED);
 			g.drawLine(0, j.getY(), 1000, j.getY());
 			g.drawLine(0, (j.getY()+j.getH()-1), 1000, (j.getY()+j.getH()-1));
 			g.drawLine(j.getX(), 0, j.getX(), 700);
 			g.drawLine((j.getX()+j.getW()-1), 0, (j.getX()+j.getW()-1), 700);
+			g.drawRect(j.getX(), j.getY(), 10, 10);*/
 		}
 		
-		//Affichage du sol
-		g.setColor(Color.gray);
-		for (int i = 0; i< tabDecors.size();i++) {
-			g.fillRect(tabDecors.get(i).getX(), tabDecors.get(i).getY(), tabDecors.get(i).getW(), tabDecors.get(i).getH());
+
+		//Affichage du sol en fonction de son type
+		for (int i = 0; i< arrayDecors.size();i++) {
+			if(arrayDecors.get(i).getClass()==PlatForm.class) {
+				graphics.drawImage(PlatForm.image, arrayDecors.get(i).getX(), arrayDecors.get(i).getY(), this);
+			} else {
+				graphics.drawImage(Ground.image, arrayDecors.get(i).getX(), arrayDecors.get(i).getY(), this);	
+			}
 		}
+
+		//DEBUGGING
+		//Affichage de la position des personnages
+		/*for (int i = 0; i < arrayPlayers.size(); i++) {
+			graphics.drawString("Joueur "+(i+1)+" : "+String.valueOf(arrayPlayers.get(i).x)+" "+String.valueOf(arrayPlayers.get(i).y)+" "+String.valueOf(arrayPlayers.get(i).vitesseX), 10, (i+1)*15+20);
+		}*/
 		
-		for (int i = 0; i < tabJoueurs.size(); i++) {
-//			g.drawString(String.valueOf(tabJoueurs.get(i).tabAttaques.get(0).effectiveCooldown), 30, (i+1)*15+20);
-//			g.drawString(String.valueOf(tabJoueurs.get(i).tabAttaques.get(1).effectiveCooldown), 30, (i+1)*15+50);
-			g.drawString("Joueur "+(i+1)+" : "+String.valueOf(tabJoueurs.get(i).x)+" "+String.valueOf(tabJoueurs.get(i).y)+" "+String.valueOf(tabJoueurs.get(i).vitesseX), 10, (i+1)*15+20);
-		}
 		
-		// Affichage du temps
+		// Affichage du timer
 		String zero1 = "";
 		String zero2 = "";
 		if (GameEngine.gameDuration/60 < 10)
 			zero1 = "0";
 		if (GameEngine.gameDuration%60 < 10)
 			zero2 = "0";
-		g.drawString(zero1+GameEngine.gameDuration/60+" : "+zero2+GameEngine.gameDuration%60, getWidth()/2, getHeight()/6);
-		
+		graphics.drawString(zero1+GameEngine.gameDuration/60+" : "+zero2+GameEngine.gameDuration%60, getWidth()/2, getHeight()/6);
 		try {
-			g.drawString(Integer.toString(main.averageFrames)+" FPS", 10, 10);
+			graphics.drawString(Integer.toString(main.averageFrames)+" FPS", 10, 10);
 		} catch (IndexOutOfBoundsException e) {}
 		
 	}

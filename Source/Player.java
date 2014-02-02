@@ -1,4 +1,10 @@
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
 
 
 public class Player {
@@ -10,6 +16,7 @@ public class Player {
 	int ATK_STATE_ATTACKING = Constant.ATK_STATE_ATTACKING;
 	int ATK_STATE_IN_COOLDOWN = Constant.ATK_STATE_IN_COOLDOWN;
 	int ATK_STATE_CASTING = Constant.ATK_STATE_CASTING;
+   
 	
 	String name;
 	int x,y,w,h,vitesseX, vitesseY, atkState, health, jumps, jumpsBase;
@@ -25,6 +32,11 @@ public class Player {
 	long GCDTimer;
 	ArrayList<Boolean> atk, atkReleased;
 
+	Image imageBody;
+	
+
+	Image imageArm;
+
 	Attack castingAttack;
 	
 	/**
@@ -36,10 +48,10 @@ public class Player {
 	 * @param l Hauteur du joueur
 	 * @param attaques liste d'attaques specifiques au joueur
 	 */
-	public Player(String n, int i, int j, int k, int l, ArrayList<Attack> attaques) {
+	public Player(String n, int k, int l, ArrayList<Attack> attaques) {
 		name = n;
-		x = i; 
-		y = j;
+		x = 0; 
+		y = 0;
 		w = k;
 		h = l;
 		jump = false;
@@ -66,6 +78,12 @@ public class Player {
 		atkReleased.add(false);
 		atkReleased.add(false);
 		status = PlayerStatus.NORMAL;
+		ImageIcon ii = new ImageIcon("images/character/body.png");
+		Image imgBody = ii.getImage();
+		imageBody = imgBody.getScaledInstance(80, -1, Image.SCALE_FAST);
+		ii = new ImageIcon("images/character/arm.png");
+		Image imgArm = ii.getImage();
+		imageArm = imgArm.getScaledInstance(25, -1, Image.SCALE_FAST);
 	}
 	
 	public String getName() {
