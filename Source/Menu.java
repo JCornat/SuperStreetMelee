@@ -22,8 +22,8 @@ import javax.swing.JPanel;
 public class Menu extends JFrame {
 
 	public static JPanel cards;
-	public int WIDTH = 1016;
-	public int HEIGHT = 738;
+	public static int WIDTH = 1016;
+	public static int HEIGHT = 738;
 
 	public Menu(String title, GraphicalView vg) {
 		super(title);

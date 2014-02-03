@@ -80,13 +80,13 @@ public class GameEngine {
 		// Lois du monde
 		if (CURRENT_STATE == State.IN_GAME) {
 			for (Player player : listPlayers) {
-				if ((j.getX() > Menu.WIDTH) || (j.getX() < -100) || (j.getY() > Menu.HEIGHT) || (j.getY() < -150)) {
-					j.decreaseNumberOfLife() ;
-					j.resetLife() ;
-					j.setX(Menu.WIDTH / 2 - j.w);
-					j.setY(110);
-					j.speedOnHorizontalAxis = 0 ;
-					j.speedOnVerticalAxis = 0 ;
+				if ((player.getX() > Menu.WIDTH) || (player.getX() < -100) || (player.getY() > Menu.HEIGHT) || (player.getY() < -150)) {
+					player.decreaseNumberOfLife() ;
+					player.resetLife() ;
+					player.setX(Menu.WIDTH / 2 - player.w);
+					player.setY(110);
+					player.speedOnHorizontalAxis = 0 ;
+					player.speedOnVerticalAxis = 0 ;
 				}
 				gravity.gravity(player);
 				//On verifie si les joueurs ont lance des attaques
