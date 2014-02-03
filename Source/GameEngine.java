@@ -80,6 +80,14 @@ public class GameEngine {
 		// Lois du monde
 		if (CURRENT_STATE == State.IN_GAME) {
 			for (Player j : listPlayers) {
+				if ((j.getX() > Menu.WIDTH) || (j.getX() < -100) || (j.getY() > Menu.HEIGHT) || (j.getY() < -150)) {
+					j.decreaseNumberOfLife() ;
+					j.resetLife() ;
+					j.setX(Menu.WIDTH / 2 - j.w);
+					j.setY(110);
+					j.speedOnHorizontalAxis = 0 ;
+					j.speedOnVerticalAxis = 0 ;
+				}
 				gravity.gravity(j);
 				//On verifie si les joueurs ont lance des attaques
 				VerificationAttack.verificationAttack(j);

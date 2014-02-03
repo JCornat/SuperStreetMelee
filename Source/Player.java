@@ -1,3 +1,4 @@
+import java.awt.CardLayout;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -38,6 +39,8 @@ public class Player {
 	Image imageArm;
 
 	Attack castingAttack;
+	
+	int numberOfLife ;
 	
 	/**
 	 * Constructeur pour creer un joueur
@@ -84,6 +87,7 @@ public class Player {
 		ii = new ImageIcon("images/character/arm.png");
 		Image imgArm = ii.getImage();
 		imageArm = imgArm.getScaledInstance(25, -1, Image.SCALE_FAST);
+		numberOfLife = 5 ;
 	}
 	
 	public String getName() {
@@ -312,5 +316,14 @@ public class Player {
 		speedOnVerticalAxis = -j;
 	}
 
+	public void decreaseNumberOfLife(){
+		int newNumber = this.numberOfLife - 1 ;
+		if (newNumber < 1) {
+			GameEngine.CURRENT_STATE = State.IN_MENU ;
+			((CardLayout) Menu.cards.getLayout()).show(Menu.cards, "mainmenu");
+		} else {
+			this.numberOfLife = newNumber ;
+		}
+	}
 
 }

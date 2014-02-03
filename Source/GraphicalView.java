@@ -36,7 +36,7 @@ public class GraphicalView extends JPanel {
 			graphics.setColor(Color.DARK_GRAY);
 			graphics.drawString(player.getName(), (player.getX() + (player.getW()/2) - 25), (player.getY() - 25));
 			graphics.drawString(String.valueOf(player.health), (player.getX() + (player.getW()/2) - 10), (player.getY() - 10));
-			
+			graphics.drawString(player.getName() + " : " + player.numberOfLife, 250 + (this.arrayPlayers.indexOf(player))*350 , 50) ;
 			//Recuperation de l'attaque en cours
 			Attack currentAttack = player.getAttaque();
 			

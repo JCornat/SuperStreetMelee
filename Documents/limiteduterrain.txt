@@ -1,0 +1,3 @@
+Limite du terrain et nombre de vies :
+Pour cette partie, nous avons décidé de fixer les limites du terrain aux limites de l'écran. Nous prévoyons une refonte du terrain (avec des attributs de limites) pour plustard.
+Les tests pour savoir si le joueur à dépassé les limites de l'écran se feront dans la méthode update() de GameEngine. Si le joueur quitte l'écran (par le haut, le bas, la gauche ou la droite) toutes les forces   qui lui sont appliquées sont annulées, il est également repositionné et une vie lui est décrémenté. Si le nombre de vie d'un joueur tombe à 0 , la partie est terminé et l'écran du menu principal s'affiche (création d'un écran GameOver par la suite).

@@ -22,31 +22,33 @@ import javax.swing.JPanel;
 public class Menu extends JFrame {
 
 	public static JPanel cards;
-	public int WIDTH = 1016;
-	public int HEIGHT = 738;
-	public static ImageIcon imgbackground = new ImageIcon(
-			"images/backgrounds/ssmmainmenu.png");
-	public static ImageIcon imgplaybutton = new ImageIcon(
-			"images/buttons/playbutton.png");
-	public static ImageIcon imgbuttonplayhover = new ImageIcon(
-			"images/buttons/playbuttonhover.png");
-	public static ImageIcon imggamepaused = new ImageIcon(
-			"images/backgrounds/ssmgamepaused.png");
-	public static ImageIcon imgresumebutton = new ImageIcon(
-			"images/buttons/resumebutton.png");
-	public static ImageIcon imgresumebuttonhover = new ImageIcon(
-			"images/buttons/resumebuttonhover.png");
-	public static ImageIcon imgmainmenubutton = new ImageIcon(
-			"images/buttons/mainmenubutton.png");
-	public static ImageIcon imgmainmenubuttonhover = new ImageIcon(
-			"images/buttons/mainmenubuttonhover.png");
-	public static ImageIcon imgexitbutton = new ImageIcon(
-			"images/buttons/exitbutton.png");
-	public static ImageIcon imgexitbuttonhover = new ImageIcon(
-			"images/buttons/exitbuttonhover.png");
+	public static int WIDTH = 1016;
+	public static int HEIGHT = 738;
+	
 
 	public Menu(String title, GraphicalView vg) {
 		super(title);
+		
+		final ImageIcon imgbackground = new ImageIcon(
+				"images/backgrounds/ssmmainmenu.png");
+		final ImageIcon imgplaybutton = new ImageIcon(
+				"images/buttons/playbutton.png");
+		final ImageIcon imgbuttonplayhover = new ImageIcon(
+				"images/buttons/playbuttonhover.png");
+		final ImageIcon imggamepaused = new ImageIcon(
+				"images/backgrounds/ssmgamepaused.png");
+		final ImageIcon imgresumebutton = new ImageIcon(
+				"images/buttons/resumebutton.png");
+		final ImageIcon imgresumebuttonhover = new ImageIcon(
+				"images/buttons/resumebuttonhover.png");
+		final ImageIcon imgmainmenubutton = new ImageIcon(
+				"images/buttons/mainmenubutton.png");
+		final ImageIcon imgmainmenubuttonhover = new ImageIcon(
+				"images/buttons/mainmenubuttonhover.png");
+		final ImageIcon imgexitbutton = new ImageIcon(
+				"images/buttons/exitbutton.png");
+		final ImageIcon imgexitbuttonhover = new ImageIcon(
+				"images/buttons/exitbuttonhover.png");
 
 		setLayout(new BorderLayout());
 
