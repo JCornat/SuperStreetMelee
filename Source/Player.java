@@ -19,10 +19,10 @@ public class Player {
    
 	
 	String name;
-	int x,y,w,h,vitesseX, vitesseY, atkState, health, jumps, jumpsBase;
+	int x,y,w,h,speedOnHorizontalAxis, speedOnVerticalAxis, atkState, health, jumps, jumpsBase;
 
-	PlayerStatus status;
-	boolean jump, left, right, isJumping, turnedRight, isAlive;
+	PlayerStatus currentStatus;
+	boolean jump, left, right, isJumping, isTurningRight, isAlive;
 	
 	Attack currentAttack;
 	ArrayList<Attack> tabAttaques;
@@ -30,7 +30,7 @@ public class Player {
 	
 	// Global Cooldown Timer
 	long GCDTimer;
-	ArrayList<Boolean> atk, atkReleased;
+	ArrayList<Boolean> attack, attackReleased;
 
 	Image imageBody;
 	
@@ -57,11 +57,11 @@ public class Player {
 		jump = false;
 		left = false; 
 		right = false;
-		vitesseX = 0;
-		vitesseY = 0;
+		speedOnHorizontalAxis = 0;
+		speedOnVerticalAxis = 0;
 		health = Constant.MIN_HEALTH;
 		isAlive = true;
-		turnedRight = true;
+		isTurningRight = true;
 		currentAttack = null;
 		lastTimerAttack = -1;
 		GCDTimer = -1;
@@ -69,15 +69,15 @@ public class Player {
 		atkState = ATK_STATE_READY;
 		jumpsBase = 2;
 		jumps = jumpsBase;
-		atk = new ArrayList<Boolean>();
-		atk.clear();
-		atk.add(false);
-		atk.add(false);
-		atkReleased = new ArrayList<Boolean>();
-		atkReleased.clear();
-		atkReleased.add(false);
-		atkReleased.add(false);
-		status = PlayerStatus.NORMAL;
+		attack = new ArrayList<Boolean>();
+		attack.clear();
+		attack.add(false);
+		attack.add(false);
+		attackReleased = new ArrayList<Boolean>();
+		attackReleased.clear();
+		attackReleased.add(false);
+		attackReleased.add(false);
+		currentStatus = PlayerStatus.NORMAL;
 		ImageIcon ii = new ImageIcon("images/character/body.png");
 		Image imgBody = ii.getImage();
 		imageBody = imgBody.getScaledInstance(80, -1, Image.SCALE_FAST);
@@ -114,13 +114,13 @@ public class Player {
 		h = i;
 	}
 	public void setVitesseH(int i) {
-		vitesseX = i;
+		speedOnHorizontalAxis = i;
 	}
 	public void setJump(boolean b) {
 
 		if (b && jumps>0) {
 			jumps--;
-			vitesseY = -80;
+			speedOnVerticalAxis = -80;
 			isJumping = true;
 		}
 		jump = b;
@@ -146,10 +146,10 @@ public class Player {
 	 * @param right cote duquel le joueur est tourne : droite->vrai, gauche->faux
 	 */
 	public void setTurned(boolean right) {
-		turnedRight = right;
+		isTurningRight = right;
 	}
 	public boolean getTurned() {
-		return turnedRight;
+		return isTurningRight;
 	}
 	
 
@@ -166,13 +166,13 @@ public class Player {
 	 */
 	public void setAtk(int n, boolean b) {
 		if (b && atkState == ATK_STATE_READY) {
-			atk.set(n, true);
+			attack.set(n, true);
 		} else {
-			atk.set(n, false);
+			attack.set(n, false);
 		}
 		
 		if (!b) {
-			atkReleased.set(n, false);
+			attackReleased.set(n, false);
 		}
 	}
 
@@ -307,9 +307,9 @@ public class Player {
 	 * @param j	Force en Y appliquee au joueur
 	 */
 	public void eject(int i, int j) {
-		status = PlayerStatus.EJECTED;
-		vitesseX = i;
-		vitesseY = -j;
+		currentStatus = PlayerStatus.EJECTED;
+		speedOnHorizontalAxis = i;
+		speedOnVerticalAxis = -j;
 	}
 
 

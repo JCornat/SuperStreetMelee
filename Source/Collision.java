@@ -36,19 +36,19 @@ public class Collision {
 	 * @param y : Ordonnee du coin inferieur gauche du Joueur
 	 * @param w : Largeur du Joueur
 	 * @param h : Hauteur du Joueur
-	 * @param tabDecor : ArrayList des differents elements du decor.
-	 * @return
+	 * @param arrayDecor : ArrayList des differents elements du decor
+	 * @return : l'id du decor concerne par la collision, sinon -1
 	 */
-	public static int collisionCalculation(int x, int y, int w, int h, ArrayList<Decor> tabDecor, Player p) {
-		for (int i = 0; i<tabDecor.size(); i++) {
+	public static int collisionCalculation(int x, int y, int w, int h, ArrayList<Decor> arrayDecor, Player p) {
+		for (int i = 0; i<arrayDecor.size(); i++) {
 			
 			//Calcul de collision avec le joueur s'il est au-dessus de la platfeforme
-			if(tabDecor.get(i).getClass()==PlatForm.class && y+h<=tabDecor.get(i).y+tabDecor.get(i).h && p.vitesseY>0 ) {
-				if(collision(x, y, w, h, tabDecor.get(i).x, tabDecor.get(i).y, tabDecor.get(i).w, tabDecor.get(i).h)) {
+			if(arrayDecor.get(i).getClass()==PlatForm.class && y+h<=arrayDecor.get(i).y+arrayDecor.get(i).h && p.speedOnVerticalAxis>0 ) {
+				if(collision(x, y, w, h, arrayDecor.get(i).x, arrayDecor.get(i).y, arrayDecor.get(i).w, arrayDecor.get(i).h)) {
 					return i;
 				}
 			//Sinon calcul de collision de base avec le sol
-			} else if (collision(x, y, w, h, tabDecor.get(i).x, tabDecor.get(i).y, tabDecor.get(i).w, tabDecor.get(i).h) && tabDecor.get(i).getClass()!=PlatForm.class) {
+			} else if (collision(x, y, w, h, arrayDecor.get(i).x, arrayDecor.get(i).y, arrayDecor.get(i).w, arrayDecor.get(i).h) && arrayDecor.get(i).getClass()!=PlatForm.class) {
 					return i;
 			}
 			

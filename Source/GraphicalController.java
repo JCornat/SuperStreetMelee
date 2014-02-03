@@ -9,11 +9,19 @@ public class GraphicalController {
 
 	ArrayList<Player> tabJoueurs;
 	
+	/**
+	 * Constructeur pour la detection de touches
+	 * @param f : frame sur laquelle appliquer le Listener
+	 * @param joueurs : liste des joueurs actuels
+	 */
 	public GraphicalController(JFrame f, ArrayList<Player> joueurs) {
 		this.tabJoueurs = joueurs;
 		f.addKeyListener(new ClavierListener());
 	}
 	
+	/**
+	 * Mises a jour de variables en fonction d'appui de touches
+	 */
 	class ClavierListener implements KeyListener {
 		@Override
 		public void keyPressed(KeyEvent e) {

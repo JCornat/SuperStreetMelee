@@ -25,6 +25,9 @@ public class ReceiveHit {
 		p.eject((int)puissanceX, (int)puissanceY);
 	}
 	
+	/**
+	 * Methode de calcul de puissance minimal du coup, utilise pour donner une force minimale
+	 */
 	public static void calculation() {
 		if (puissanceX > 10) {
 		} else if (puissanceX < -10){

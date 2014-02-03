@@ -5,13 +5,18 @@ public class Decor extends Observable {
 	
 	int x,y,w,h;
 	
+	/**
+	 * Constructeur pour créer un décor
+	 * @param a : origine en X du décor
+	 * @param b : origine en Y du décor
+	 * @param c : largeur du décor
+	 * @param d : hauteur du décor
+	 */
 	public Decor(int a,int b,int c,int d) {
-		
 		x = a;
 		y = b;
 		w = c;
 		h = d;
-		
 	}
 	
 	

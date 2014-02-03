@@ -10,17 +10,20 @@ import javax.swing.JPanel;
 public class GraphicalView extends JPanel {
 
 	ArrayList<Player> arrayPlayers;
-	ArrayList<Decor> arrayDecors;
-	ArrayList<Attack> arrayAttack;
+	ArrayList<Decor> arrayOfDecorsForTheLevel;
+	ArrayList<Attack> arrayOfAttacksAvailableForTheCharacter;
 	int spriteAnim = 0;
 	
 	public GraphicalView(ArrayList<Decor> de, ArrayList<Attack> at, ArrayList<Player> jo) {
 		this.setPreferredSize(new Dimension(1000,700));
-		arrayDecors = de;
-		arrayAttack = at;
+		arrayOfDecorsForTheLevel = de;
+		arrayOfAttacksAvailableForTheCharacter = at;
 		arrayPlayers = jo;
 	}
 	
+	/**
+	 * Methode d'affichage du contenu sur la frame
+	 */
 	public void paint(Graphics graphics) {
 		super.paint(graphics);
 		
@@ -35,15 +38,15 @@ public class GraphicalView extends JPanel {
 			graphics.drawString(String.valueOf(player.health), (player.getX() + (player.getW()/2) - 10), (player.getY() - 10));
 			
 			//Recuperation de l'attaque en cours
-			Attack att = player.getAttaque();
+			Attack currentAttack = player.getAttaque();
 			
 			//Affichage de l'attaque s'il y a
-			if (att != null)
+			if (currentAttack != null)
 			{	
 				//Si le joueur est tourné à droite
-				if(player.turnedRight) {
+				if(player.isTurningRight) {
 					//En fonction de l'attaque actuelle
-					if(att.name == "Small") {
+					if(currentAttack.name == "Small") {
 						//Nous affichons un bras qui bouge par rapport à sa position normale
 						graphics.drawImage(player.imageArm, player.getX()+65, player.getY()+35, this);
 					} else {
@@ -51,7 +54,7 @@ public class GraphicalView extends JPanel {
 					}
 				} else {
 					//Sinon s'il est tourné à gauche...
-					if(att.name == "Small") {
+					if(currentAttack.name == "Small") {
 						graphics.drawImage(player.imageArm, player.getX()-10, player.getY()+35, this);
 					} else {
 						graphics.drawImage(player.imageArm, player.getX()-35, player.getY()+35, this);
@@ -67,7 +70,7 @@ public class GraphicalView extends JPanel {
 				//S'il n'attaque pas :
 			} else {
 				//On affiche le bras dans sa position de base
-				if(player.turnedRight) {
+				if(player.isTurningRight) {
 					graphics.drawImage(player.imageArm, player.getX()+60, player.getY()+35, this);
 				} else {
 					graphics.drawImage(player.imageArm, player.getX()-5, player.getY()+35, this);
@@ -75,7 +78,7 @@ public class GraphicalView extends JPanel {
 			}
 			
 			//On affiche le corps et l'autre bras, en fonction de son orientation toujours.
-			if(player.turnedRight) {
+			if(player.isTurningRight) {
 				graphics.drawImage(player.imageBody, player.getX(), player.getY(), this);
 				graphics.drawImage(player.imageArm, player.getX()+23, player.getY()+35, this);
 			} else {
@@ -125,11 +128,11 @@ public class GraphicalView extends JPanel {
 		
 
 		//Affichage du sol en fonction de son type
-		for (int i = 0; i< arrayDecors.size();i++) {
-			if(arrayDecors.get(i).getClass()==PlatForm.class) {
-				graphics.drawImage(PlatForm.image, arrayDecors.get(i).getX(), arrayDecors.get(i).getY(), this);
+		for (int i = 0; i< arrayOfDecorsForTheLevel.size();i++) {
+			if(arrayOfDecorsForTheLevel.get(i).getClass()==PlatForm.class) {
+				graphics.drawImage(PlatForm.image, arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), this);
 			} else {
-				graphics.drawImage(Ground.image, arrayDecors.get(i).getX(), arrayDecors.get(i).getY(), this);	
+				graphics.drawImage(Ground.image, arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), this);	
 			}
 		}
 

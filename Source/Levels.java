@@ -12,12 +12,14 @@ public class Levels {
 
 	static Image image;
 	
+	/**
+	 * Creation des differents niveaux
+	 */
 	public Levels() {
 
-		//Creation du terrain
+		//LEVEL 0
 		tabDecor = new ArrayList<Decor>();
 		tabDecor.clear();
-		
 		tabDecor.add(new Decor(30,500,500,10));
 		tabDecor.add(new Decor(600,500,200,10));
 		tabDecor.add(new Decor(200,300,400,10));
@@ -29,11 +31,11 @@ public class Levels {
 		tabDecor.add(new Decor(0,690,1000,10));
 		tabDecor.add(new Decor(0,0,10,700));
 		tabDecor.add(new Decor(990,0,10,700));
-		
 		levels.add(tabDecor);
 		
-		tabDecor.clear();
 		
+		//LEVEL 1
+		tabDecor.clear();
 		for(int i=2;i<18;i++) {
 			tabDecor.add(new Ground(i*50,500,100,100));
 		}
@@ -42,7 +44,6 @@ public class Levels {
 		}
 		tabDecor.add(new PlatForm(100,300,200,15));
 		tabDecor.add(new PlatForm(700,300,200,15));
-
 		ImageIcon ii = new ImageIcon("images/level/level.jpg");
 		Image img = ii.getImage();
 		image = img.getScaledInstance(1000, -1, Image.SCALE_FAST);
