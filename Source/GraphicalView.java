@@ -37,6 +37,7 @@ public class GraphicalView extends JPanel {
 			graphics.drawString(player.getName(), (player.getX() + (player.getW()/2) - 25), (player.getY() - 25));
 			graphics.drawString(String.valueOf(player.health), (player.getX() + (player.getW()/2) - 10), (player.getY() - 10));
 			graphics.drawString(player.getName() + " : " + player.numberOfLife, 250 + (this.arrayPlayers.indexOf(player))*350 , 50) ;
+			
 			//Recuperation de l'attaque en cours
 			Attack currentAttack = player.getAttaque();
 			
@@ -118,12 +119,12 @@ public class GraphicalView extends JPanel {
 			
 			//DEBUGGING
 			//Trace des traits autour du joueur
-			/*g.setColor(Color.RED);
-			g.drawLine(0, j.getY(), 1000, j.getY());
-			g.drawLine(0, (j.getY()+j.getH()-1), 1000, (j.getY()+j.getH()-1));
-			g.drawLine(j.getX(), 0, j.getX(), 700);
-			g.drawLine((j.getX()+j.getW()-1), 0, (j.getX()+j.getW()-1), 700);
-			g.drawRect(j.getX(), j.getY(), 10, 10);*/
+			graphics.setColor(Color.RED);
+			graphics.drawLine(0, player.getY(), 1000, player.getY());
+			graphics.drawLine(0, (player.getY()+player.getH()-1), 1000, (player.getY()+player.getH()-1));
+			graphics.drawLine(player.getX(), 0, player.getX(), 700);
+			graphics.drawLine((player.getX()+player.getW()-1), 0, (player.getX()+player.getW()-1), 700);
+			graphics.drawRect(player.getX(), player.getY(), 10, 10);
 		}
 		
 
@@ -133,6 +134,7 @@ public class GraphicalView extends JPanel {
 				graphics.drawImage(PlatForm.image, arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), this);
 			} else {
 				graphics.drawImage(Ground.image, arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), this);	
+				graphics.drawLine(arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), arrayOfDecorsForTheLevel.get(i).getX()+50, arrayOfDecorsForTheLevel.get(i).getY()+50);
 			}
 		}
 

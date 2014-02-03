@@ -10,6 +10,7 @@ public class Constant {
 	final static int INERTIE = 2;
 	final static int GRAVITY_SPEED_CAP = 50;
 	final static int MIN_HEALTH = 0;
+	final static int JUMP_BASE = 2;
 	final static long GLOBAL_COOLDOWN = 300;
 	
 }

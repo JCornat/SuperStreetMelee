@@ -55,7 +55,7 @@ public class Gravity {
 				//Contact avec le sol
 				player.setY(player.getY() + GameEngine.arrayDecor.get(collisionOnBottomSide).y - player.getY() - player.getH());
 				player.speedOnVerticalAxis = 0;
-				player.jumps = player.jumpsBase;
+				player.jumps = Constant.JUMP_BASE;
 			} else {
 				//Le personnage tombe
 				player.setY(y);

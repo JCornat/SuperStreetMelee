@@ -1,45 +1,27 @@
-import java.awt.CardLayout;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
+import java.awt.CardLayout;
 import javax.swing.ImageIcon;
 
 
 public class Player {
 
-	
-	
-	// State
-	int ATK_STATE_READY = Constant.ATK_STATE_READY;
-	int ATK_STATE_ATTACKING = Constant.ATK_STATE_ATTACKING;
-	int ATK_STATE_IN_COOLDOWN = Constant.ATK_STATE_IN_COOLDOWN;
-	int ATK_STATE_CASTING = Constant.ATK_STATE_CASTING;
-   
-	
 	String name;
-	int x,y,w,h,speedOnHorizontalAxis, speedOnVerticalAxis, atkState, health, jumps, jumpsBase;
-
+	int x,y,w,h,speedOnHorizontalAxis, speedOnVerticalAxis, atkState, health, jumps;
 	PlayerStatus currentStatus;
 	boolean jump, left, right, isJumping, isTurningRight, isAlive;
-	
 	Attack currentAttack;
 	ArrayList<Attack> tabAttaques;
 	long lastTimerAttack, castingTimer;
-	
 	// Global Cooldown Timer
 	long GCDTimer;
 	ArrayList<Boolean> attack, attackReleased;
-
 	Image imageBody;
-	
-
 	Image imageArm;
-
 	Attack castingAttack;
-	
 	int numberOfLife ;
 	
 	/**
@@ -69,9 +51,8 @@ public class Player {
 		lastTimerAttack = -1;
 		GCDTimer = -1;
 		tabAttaques = attaques;
-		atkState = ATK_STATE_READY;
-		jumpsBase = 2;
-		jumps = jumpsBase;
+		atkState = Constant.ATK_STATE_READY;
+		jumps = Constant.JUMP_BASE;
 		attack = new ArrayList<Boolean>();
 		attack.clear();
 		attack.add(false);
@@ -87,7 +68,7 @@ public class Player {
 		ii = new ImageIcon("images/character/arm.png");
 		Image imgArm = ii.getImage();
 		imageArm = imgArm.getScaledInstance(25, -1, Image.SCALE_FAST);
-		numberOfLife = 5 ;
+		numberOfLife = 5;
 	}
 	
 	public String getName() {
@@ -169,7 +150,7 @@ public class Player {
 	 * @param b
 	 */
 	public void setAtk(int n, boolean b) {
-		if (b && atkState == ATK_STATE_READY) {
+		if (b && atkState == Constant.ATK_STATE_READY) {
 			attack.set(n, true);
 		} else {
 			attack.set(n, false);
@@ -200,7 +181,7 @@ public class Player {
 		// Global Cooldown
 		GCDTimer = time + tabAttaques.get(n).infoCooldown;
 		// L'attaque est en train d'etre produite
-		atkState = ATK_STATE_ATTACKING;
+		atkState = Constant.ATK_STATE_ATTACKING;
 	}
 	
 	
@@ -249,15 +230,15 @@ public class Player {
 		
 		switch (atkState) {
 		case Constant.ATK_STATE_ATTACKING:
-			if (CollisionAttack.collisionAttack(this) || lastTimerAttack <= time) {
+			if (this.collisionAttack() || lastTimerAttack <= time) {
 				currentAttack = null;
-				atkState = ATK_STATE_IN_COOLDOWN;
+				atkState = Constant.ATK_STATE_IN_COOLDOWN;
 				lastTimerAttack = -1;
 			}
 			break;
 		case Constant.ATK_STATE_IN_COOLDOWN:
 			if (GCDTimer != -1 && time >= GCDTimer)	{
-				atkState = ATK_STATE_READY;
+				atkState = Constant.ATK_STATE_READY;
 				GCDTimer = -1;
 			}
 			break;
@@ -315,6 +296,103 @@ public class Player {
 		speedOnHorizontalAxis = i;
 		speedOnVerticalAxis = -j;
 	}
+	
+	
+	/**
+	 * Methode permettant d'enlever des points de vie au joueur
+	 * @param hit entier qui se soustrait a la vie du joueur
+	 */
+	public void receiveHit(int hit, int powerX, int powerY) {
+		if (this.atkState == 3) {
+			this.currentAttack = null;
+			this.atkState = Constant.ATK_STATE_READY;
+			this.lastTimerAttack = -1;
+		}
+		this.health += hit;
+		double coef = 1 + this.health/5;
+		double puissanceX = (powerX * coef)/10;
+		double puissanceY = (powerY * coef)/10;
+		calculation(puissanceX,puissanceY);
+		this.eject((int)puissanceX, (int)puissanceY);
+	}
+	
+	/**
+	 * Methode de calcul de puissance minimal du coup, utilise pour donner une force minimale
+	 */
+	public static void calculation(double puissanceX, double puissanceY) {
+		if (puissanceX > 10) {
+		} else if (puissanceX < -10){
+		} else if (puissanceX > 0){
+			puissanceX = 10;
+		} else if (puissanceX < 0){ 
+			puissanceX = -10;
+		}
+		if (puissanceY > 10) {
+		} else if (puissanceY < -10){
+		} else if (puissanceY > 0){
+			puissanceY = 10;
+		} else if (puissanceY < 0){ 
+			puissanceY = -10;
+		}
+	}
+	
+
+	/**
+	 * Verification et lancement des attaques des joueurs
+	 */
+	public void verificationAttack() {
+		long time = main.engineLoop;
+		if (this.getState() == Constant.ATK_STATE_CASTING) {
+			if (time >= this.castingTimer) {
+				this.attack(this.tabAttaques.indexOf(this.castingAttack));
+			}
+		}
+		
+		if (this.getState() == Constant.ATK_STATE_READY) {
+			if (this.attack.get(0) && !this.attackReleased.get(0)) {
+				this.attackReleased.set(0, true);
+				this.castingAttack = this.tabAttaques.get(0);
+				this.atkState = Constant.ATK_STATE_CASTING;
+				this.castingTimer = time+this.tabAttaques.get(0).cast;
+			}
+			if (this.attack.get(1) && !this.attackReleased.get(1)) {
+				this.attackReleased.set(1, true);
+				//System.out.println(atkReleased.get(1));
+				this.castingAttack = this.tabAttaques.get(1);
+				this.atkState = Constant.ATK_STATE_CASTING;
+				this.castingTimer = time+this.tabAttaques.get(1).cast;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Methode pour determiner si une attaque touche un adversaire
+	 * @param player : Joueur actuel
+	 * @return vrai si touché, faux, si non touché
+	 */
+	public boolean collisionAttack() {
+		// Calcul de la position de l'attaque
+		int tabXYWH[] = this.currentAttack.getAttackPosition(this);
+		boolean collisionJoueur = false;
+		boolean hasHit = false;
+		// Collision avec des joueurs ?
+		for (Player otherPlayer : GameEngine.listPlayers) {
+			if (otherPlayer != this) {
+				collisionJoueur = Collision.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], otherPlayer.getX(), otherPlayer.getY(), otherPlayer.getW(), otherPlayer.getH());
+				if (collisionJoueur) {
+					if(this.isTurningRight) {
+						otherPlayer.receiveHit(this.currentAttack.getDamage(),this.currentAttack.getPowerX(),this.currentAttack.getPowerY());
+					} else {
+						otherPlayer.receiveHit(this.currentAttack.getDamage(),-this.currentAttack.getPowerX(),this.currentAttack.getPowerY());
+						
+					}
+					hasHit = true;
+				}
+			}
+		}
+		return hasHit;
+	}
 
 	public void decreaseNumberOfLife(){
 		int newNumber = this.numberOfLife - 1 ;
@@ -325,5 +403,7 @@ public class Player {
 			this.numberOfLife = newNumber ;
 		}
 	}
+
+
 
 }

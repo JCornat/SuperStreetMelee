@@ -37,10 +37,10 @@ public class Levels {
 		//LEVEL 1
 		tabDecor.clear();
 		for(int i=2;i<18;i++) {
-			tabDecor.add(new Ground(i*50,500,100,100));
+			tabDecor.add(new Ground(i*50,500,50,50));
 		}
 		for(int i=2;i<18;i++) {
-			tabDecor.add(new Ground(i*50,547,100,100));
+			tabDecor.add(new Ground(i*50,547,50,50));
 		}
 		tabDecor.add(new PlatForm(100,300,200,15));
 		tabDecor.add(new PlatForm(700,300,200,15));

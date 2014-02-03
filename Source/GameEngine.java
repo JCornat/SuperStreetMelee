@@ -79,7 +79,7 @@ public class GameEngine {
 	public void update() {
 		// Lois du monde
 		if (CURRENT_STATE == State.IN_GAME) {
-			for (Player j : listPlayers) {
+			for (Player player : listPlayers) {
 				if ((j.getX() > Menu.WIDTH) || (j.getX() < -100) || (j.getY() > Menu.HEIGHT) || (j.getY() < -150)) {
 					j.decreaseNumberOfLife() ;
 					j.resetLife() ;
@@ -88,11 +88,11 @@ public class GameEngine {
 					j.speedOnHorizontalAxis = 0 ;
 					j.speedOnVerticalAxis = 0 ;
 				}
-				gravity.gravity(j);
+				gravity.gravity(player);
 				//On verifie si les joueurs ont lance des attaques
-				VerificationAttack.verificationAttack(j);
+				player.verificationAttack();
 				//On met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
-				j.updateTimeAttack();
+				player.updateTimeAttack();
 			}
 			//Future intelligence artificielle
 		}

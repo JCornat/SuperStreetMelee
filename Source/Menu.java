@@ -22,13 +22,12 @@ import javax.swing.JPanel;
 public class Menu extends JFrame {
 
 	public static JPanel cards;
-	public static int WIDTH = 1016;
-	public static int HEIGHT = 738;
-	
+	public int WIDTH = 1016;
+	public int HEIGHT = 738;
 
 	public Menu(String title, GraphicalView vg) {
 		super(title);
-		
+
 		final ImageIcon imgbackground = new ImageIcon(
 				"images/backgrounds/ssmmainmenu.png");
 		final ImageIcon imgplaybutton = new ImageIcon(
@@ -49,7 +48,6 @@ public class Menu extends JFrame {
 				"images/buttons/exitbutton.png");
 		final ImageIcon imgexitbuttonhover = new ImageIcon(
 				"images/buttons/exitbuttonhover.png");
-
 		setLayout(new BorderLayout());
 
 		cards = new JPanel();
