@@ -37,8 +37,8 @@ public class GameEngine {
 		
 		listPlayers = new ArrayList<Player>();
 		listPlayers.clear();
-		listPlayers.add(new Player("Joueur 1", 80, 80, arrayOfAttacksForOneCharacter));
-		listPlayers.add(new Player("Joueur 2", 80, 80, arrayOfAttacksForOneCharacter));
+		listPlayers.add(new Player("Joueur 1", 80, 80, arrayOfAttacksForOneCharacter,1));
+		listPlayers.add(new Player("Joueur 2", 80, 80, arrayOfAttacksForOneCharacter,2));
 		
 		
 		//Appel et ajout du pattern d'affichage	

@@ -2,8 +2,10 @@ import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.awt.CardLayout;
+
 import javax.swing.ImageIcon;
 
 
@@ -23,6 +25,15 @@ public class Player {
 	Image imageArm;
 	Attack castingAttack;
 	int numberOfLife ;
+	boolean booleanJump;
+	int positionXOnJumping;
+	int positionYOnJumping;
+	Animator character;
+	AnimatorFixedObject characterAttack;
+	AnimatorFixedObject characterJumping;
+	ArrayList<BufferedImage> sprites;
+	ArrayList<BufferedImage> spritesOfJump;
+	ArrayList<BufferedImage> spritesOfAttack;
 	
 	/**
 	 * Constructeur pour creer un joueur
@@ -33,7 +44,7 @@ public class Player {
 	 * @param l Hauteur du joueur
 	 * @param attaques liste d'attaques specifiques au joueur
 	 */
-	public Player(String n, int k, int l, ArrayList<Attack> attaques) {
+	public Player(String n, int k, int l, ArrayList<Attack> attaques, int skin) {
 		name = n;
 		x = 0; 
 		y = 0;
@@ -69,6 +80,68 @@ public class Player {
 		Image imgArm = ii.getImage();
 		imageArm = imgArm.getScaledInstance(25, -1, Image.SCALE_FAST);
 		numberOfLife = 5;
+		
+		
+		BufferedImageLoader loader = new BufferedImageLoader();
+		BufferedImage spriteToLoad = null;
+		try {
+			if(skin==1) {
+				spriteToLoad = loader.loadImage("images/character/characterSprite.png");
+			} else if(skin==2) {
+				spriteToLoad = loader.loadImage("images/character/characterSprite2.png");
+			}
+		} catch (IOException e) {
+			System.err.println(e);
+		}
+		SpriteSheet spriteSheet = new SpriteSheet(spriteToLoad);
+		sprites = new ArrayList<BufferedImage>();
+		sprites.add(spriteSheet.substractImage(0, 0, 215, 200));
+		sprites.add(spriteSheet.substractImage(215, 0, 215, 200));
+		sprites.add(spriteSheet.substractImage(430, 0, 215, 200));
+		sprites.add(spriteSheet.substractImage(645, 0, 215, 200));
+		sprites.add(spriteSheet.substractImage(860, 0, 215, 200));
+		sprites.add(spriteSheet.substractImage(1075, 0, 215, 200));
+		sprites.add(spriteSheet.substractImage(1290, 0, 215, 200));
+		sprites.add(spriteSheet.substractImage(1505, 0, 215, 200));
+		sprites.add(spriteSheet.substractImage(1720, 0, 215, 200));
+		
+		
+		try {
+			spriteToLoad = loader.loadImage("images/character/jumpingSprite2.png");
+		} catch (IOException e) {
+			System.err.println(e);
+		}
+		spriteSheet = new SpriteSheet(spriteToLoad);
+		spritesOfJump = new ArrayList<BufferedImage>();
+		spritesOfJump.add(spriteSheet.substractImage(0, 0, 71, 61));
+		spritesOfJump.add(spriteSheet.substractImage(71, 0, 71, 61));
+		spritesOfJump.add(spriteSheet.substractImage(142, 0, 71, 61));
+		spritesOfJump.add(spriteSheet.substractImage(213, 0, 71, 61));
+		spritesOfJump.add(spriteSheet.substractImage(284, 0, 71, 61));
+		spritesOfJump.add(spriteSheet.substractImage(355, 0, 71, 61));
+		spritesOfJump.add(spriteSheet.substractImage(426, 0, 71, 61));
+		
+		
+
+		try {
+			spriteToLoad = loader.loadImage("images/character/character1Attack.png");
+		} catch (IOException e) {
+			System.err.println(e);
+		}
+		spriteSheet = new SpriteSheet(spriteToLoad);
+		spritesOfAttack = new ArrayList<BufferedImage>();
+		spritesOfAttack.add(spriteSheet.substractImage(0, 0, 286, 250));
+		spritesOfAttack.add(spriteSheet.substractImage(286, 0, 286, 250));
+		spritesOfAttack.add(spriteSheet.substractImage(572, 0, 286, 250));
+		spritesOfAttack.add(spriteSheet.substractImage(858, 0, 286, 250));
+		spritesOfAttack.add(spriteSheet.substractImage(1144, 0, 286, 250));
+		spritesOfAttack.add(spriteSheet.substractImage(1430, 0, 286, 250));
+		spritesOfAttack.add(spriteSheet.substractImage(1717, 0, 286, 250));
+		spritesOfAttack.add(spriteSheet.substractImage(2002, 0, 286, 250));
+		
+		
+		
+	
 	}
 	
 	public String getName() {
@@ -102,13 +175,15 @@ public class Player {
 		speedOnHorizontalAxis = i;
 	}
 	public void setJump(boolean b) {
-
 		if (b && jumps>0) {
 			jumps--;
 			speedOnVerticalAxis = -80;
 			isJumping = true;
 		}
 		jump = b;
+		if(!b) {
+			isJumping=false;
+		}
 	}
 	public boolean getJump() {
 		return jump;
