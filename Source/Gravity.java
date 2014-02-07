@@ -56,6 +56,7 @@ public class Gravity {
 				player.setY(player.getY() + GameEngine.arrayDecor.get(collisionOnBottomSide).y - player.getY() - player.getH());
 				player.speedOnVerticalAxis = 0;
 				player.jumps = Constant.JUMP_BASE;
+				player.currentStatus = PlayerStatus.NORMAL ;
 			} else {
 				//Le personnage tombe
 				player.setY(y);

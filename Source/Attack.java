@@ -99,10 +99,10 @@ public class Attack {
 		int y = 0;
 		if (j.getTurned() == true)
 		{
-			x = j.getX() + (j.getW() + getWidth());
+			x = j.getX() + (j.getW() / 2);
 			y = j.getY() + (j.getH() / 2);
 		} else if (j.getTurned() == false) {
-			x = j.getX() - (getWidth() * 2); 
+			x = j.getX() + (j.getW() / 2 - getWidth());
 			y = j.getY() + (j.getH() / 2);
 		}
 		int tab[] = {x, y, getWidth(), getHeight()};

@@ -4,6 +4,7 @@
  */
 public enum PlayerStatus {
 	NORMAL,
-	EJECTED
+	EJECTED,
+	FALLING
 }
 
