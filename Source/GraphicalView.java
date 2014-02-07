@@ -137,7 +137,6 @@ public class GraphicalView extends JPanel {
 			player.characterJumping.update(System.currentTimeMillis());
 			if(player.isJumping) {
 				if(!player.booleanJump) {
-					System.out.println(player.getX() + " "+ player.getY());
 					player.positionXOnJumping = player.getX()-35;
 					player.positionYOnJumping = player.getY()+35;
 					player.characterJumping.start();
