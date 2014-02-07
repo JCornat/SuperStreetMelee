@@ -8,7 +8,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c636cb7c6a29dc96aeddff9015f9666f9daa62ef
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -73,6 +76,8 @@ public class Menu extends JFrame {
 				GameEngine.resetGame();
 				GameEngine.CURRENT_STATE = State.IN_GAME;
 				GameEngine.backgroundsound.loop() ;
+				// Resolution des problemes de focus avec Java sur OSX
+				cards.transferFocus();
 			}
 		});
 
@@ -82,11 +87,11 @@ public class Menu extends JFrame {
 		playbutton.setIcon(imgplaybutton);
 
 		playbutton.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
+			public void mouseEntered(MouseEvent evt) {
 				playbutton.setIcon(imgbuttonplayhover);
 			}
 
-			public void mouseExited(java.awt.event.MouseEvent evt) {
+			public void mouseExited(MouseEvent evt) {
 				playbutton.setIcon(imgplaybutton);
 			}
 		});
@@ -121,6 +126,8 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "play");
 				GameEngine.CURRENT_STATE = State.IN_GAME;
+				// Resolution des problemes de focus avec Java sur OSX
+				cards.transferFocus();
 			}
 		});
 
@@ -130,11 +137,11 @@ public class Menu extends JFrame {
 		resumebutton.setIcon(imgresumebutton);
 
 		resumebutton.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
+			public void mouseEntered(MouseEvent evt) {
 				resumebutton.setIcon(imgresumebuttonhover);
 			}
 
-			public void mouseExited(java.awt.event.MouseEvent evt) {
+			public void mouseExited(MouseEvent evt) {
 				resumebutton.setIcon(imgresumebutton);
 			}
 		});
@@ -155,11 +162,11 @@ public class Menu extends JFrame {
 		mainmenubutton.setIcon(imgmainmenubutton);
 
 		mainmenubutton.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(java.awt.event.MouseEvent evt) {
+			public void mouseEntered(MouseEvent evt) {
 				mainmenubutton.setIcon(imgmainmenubuttonhover);
 			}
 
-			public void mouseExited(java.awt.event.MouseEvent evt) {
+			public void mouseExited(MouseEvent evt) {
 				mainmenubutton.setIcon(imgmainmenubutton);
 			}
 		});

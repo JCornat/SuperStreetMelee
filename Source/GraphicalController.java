@@ -3,8 +3,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
 public class GraphicalController {
 
 	ArrayList<Player> tabJoueurs;
@@ -19,9 +17,10 @@ public class GraphicalController {
 	 * @param joueurs
 	 *            : liste des joueurs actuels
 	 */
-	public GraphicalController(JFrame f, ArrayList<Player> joueurs) {
+
+	public GraphicalController(Menu menu, ArrayList<Player> joueurs) {
 		this.tabJoueurs = joueurs;
-		f.addKeyListener(new ClavierListener());
+		menu.addKeyListener(new ClavierListener());
 		this.zeroCommand = true;
 		this.oneCommand = true;
 
@@ -74,6 +73,15 @@ public class GraphicalController {
 			case KeyEvent.VK_A:
 
 				if (zeroCommand) {
+					tabJoueurs.get(0).initCombo();
+					tabJoueurs.get(0).setAtk(2, true);
+				}
+
+				break;
+			case KeyEvent.VK_F:
+
+				if (zeroCommand) {
+					tabJoueurs.get(0).initCombo();
 					tabJoueurs.get(0).setAtk(1, true);
 				}
 
@@ -176,10 +184,16 @@ public class GraphicalController {
 			case KeyEvent.VK_A:
 
 				if (zeroCommand) {
+					tabJoueurs.get(0).setAtk(2, false);
+				}
+			break;
+
+			case KeyEvent.VK_F:
+
+				if (zeroCommand) {
 					tabJoueurs.get(0).setAtk(1, false);
 				}
-
-				break;
+			break;
 			/* ******************** PLAYER 2 ******************** */
 			case KeyEvent.VK_UP:
 
@@ -223,7 +237,6 @@ public class GraphicalController {
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-
 		}
 	}
 

@@ -17,7 +17,7 @@ public class main {
 		while(running) {
 			
 			while(System.nanoTime() <= lastTime + nsPerTick) {
-				//Libération du CPU
+				// Liberation du CPU
 				try {
 					Thread.sleep(1);
 				} catch (InterruptedException e) {
