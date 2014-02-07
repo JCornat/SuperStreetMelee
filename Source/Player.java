@@ -107,6 +107,9 @@ public class Player {
 			jumps--;
 			speedOnVerticalAxis = -80;
 			isJumping = true;
+			currentStatus = PlayerStatus.FALLING ;
+			Sound jump = new Sound("sounds/jump.wav") ;
+			jump.play_once() ;
 		}
 		jump = b;
 	}
@@ -155,7 +158,6 @@ public class Player {
 		} else {
 			attack.set(n, false);
 		}
-		
 		if (!b) {
 			attackReleased.set(n, false);
 		}
@@ -385,8 +387,16 @@ public class Player {
 						otherPlayer.receiveHit(this.currentAttack.getDamage(),this.currentAttack.getPowerX(),this.currentAttack.getPowerY());
 					} else {
 						otherPlayer.receiveHit(this.currentAttack.getDamage(),-this.currentAttack.getPowerX(),this.currentAttack.getPowerY());
-						
 					}
+					
+					if (this.currentAttack.getName().equals("Small")) {
+						Sound hit = new Sound("Sounds/smallhit.wav") ;
+						hit.play_once() ;
+					} else if (this.currentAttack.getName().equals("Big")) {
+						Sound hit = new Sound("Sounds/bighit.wav") ;
+						hit.play_once() ;
+					}
+					
 					hasHit = true;
 				}
 			}
