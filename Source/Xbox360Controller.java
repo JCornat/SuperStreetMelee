@@ -83,7 +83,7 @@ public class Xbox360Controller {
 			}
 			for (Component c : this.controller.getComponents()) {
 
-				if (c.getName().equals("Button 0")) {
+				if (c.getIdentifier().getName().equals("0")) {
 					if (c.getPollData() == 1.0f) {
 						if (!hasJumped) {
 							tabJoueurs.get(this.indexPlayer).setJump(true);
@@ -95,7 +95,7 @@ public class Xbox360Controller {
 					}
 				}
 
-				if (c.getName().equals("X Axis")) {
+				if (c.getIdentifier().getName().equals("x")) {
 
 					if (c.getPollData() > 0.4) {
 						tabJoueurs.get(this.indexPlayer).setRight(true);
@@ -109,8 +109,8 @@ public class Xbox360Controller {
 					}
 				}
 
-				if (c.getName().equals("Hat Switch")) {
-
+				if (c.getIdentifier().getName().equals("pov")) {
+					
 					if (c.getPollData() == 1) {
 						tabJoueurs.get(this.indexPlayer).setLeft(true);
 						tabJoueurs.get(this.indexPlayer).setTurned(false);
@@ -124,15 +124,15 @@ public class Xbox360Controller {
 					}
 				}
 
-				if (c.getName().equals("Button 1")) {
+				if (c.getIdentifier().getName().equals("1")) {
 					if (c.getPollData() == 1.0f) {
-						tabJoueurs.get(this.indexPlayer).setAtk(1, true);
+						tabJoueurs.get(this.indexPlayer).setAtk(2, true);
 					} else {
-						tabJoueurs.get(this.indexPlayer).setAtk(1, false);
+						tabJoueurs.get(this.indexPlayer).setAtk(2, false);
 					}
 				}
 
-				if (c.getName().equals("Button 2")) {
+				if (c.getIdentifier().getName().equals("2")) {
 					if (c.getPollData() == 1.0f) {
 						tabJoueurs.get(this.indexPlayer).setAtk(0, true);
 					} else {
@@ -140,7 +140,15 @@ public class Xbox360Controller {
 					}
 				}
 				
-				if (c.getName().equals("Button 7")) {
+				if (c.getIdentifier().getName().equals("3")) {
+					if (c.getPollData() == 1.0f) {
+						tabJoueurs.get(this.indexPlayer).setAtk(1, true);
+					} else {
+						tabJoueurs.get(this.indexPlayer).setAtk(1, false);
+					}
+				}
+				
+				if (c.getIdentifier().getName().equals("7")) {
 					if (c.getPollData() == 1.0f) {
 						if (!hasPaused) {
 							if (GameEngine.CURRENT_STATE == State.IN_GAME) {

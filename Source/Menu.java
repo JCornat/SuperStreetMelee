@@ -8,10 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-<<<<<<< HEAD
-
-=======
->>>>>>> c636cb7c6a29dc96aeddff9015f9666f9daa62ef
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
