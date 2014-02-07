@@ -42,23 +42,27 @@ public class GameEngine {
 		arrayOfComboForOneCharacter = new ArrayList<Combo>();
 		arrayOfComboForOneCharacter.clear();
 
-		Attack small = new Attack("Small", 55, 5, 5, 0, 0, 0, 20, 20);
-		Attack medium = new Attack("Medium", 73, 7, 10, 40, 75, 100, 60, 60);
-		Attack big = new Attack("Big", 80, 10, 15, 60, 80, 150, 100, 100);
+		// Creation des attaques
+		Attack small = new Attack("Small", 55, 5, 5, 0, 0, 0, 20, 20, false);
+		Attack medium = new Attack("Medium", 73, 7, 10, 0, 75, 100, 60, 60, false);
+		Attack big = new Attack("Big", 80, 10, 15, 30, 40, 150, 100, 100, false);
+		// A venir
+		// Attack charge = new Attack("Charge", 80, 10, 5, 0, 40, 150, 100, 100, false);
 
 		// Combo 1
-		Attack specialAttack1 = new Attack("Special1", 100, 20, 20, 25, 60, 0, 100, 100);
+		Attack specialAttack1 = new Attack("Special1", 100, 20, 20, 25, 60, 0, 100, 100, true);
 		Combo combo1 = new Combo(big, small, specialAttack1);
 
 		// Combo 2
-		Attack specialAttack2 = new Attack("Special2", 100, 20, 25, 27, 60, 0, 100, 100);
+		Attack specialAttack2 = new Attack("Special2", 100, 20, 25, 27, 60, 0, 100, 100, true);
 		Combo combo2 = new Combo(medium, small, specialAttack2);
 
 		// Combo 3
-		Attack specialAttack3 = new Attack("Special3", 100, 20, 50, 30, 60, 0, 100, 100);
+		Attack specialAttack3 = new Attack("Special3", 100, 20, 35, 30, 60, 0, 100, 100, true);
 		Combo combo3 = new Combo(medium, small, big, specialAttack3);
 
 		// Ajouts dans la liste des attaques
+		// /!\ Penser a update la constante ATTACK_NUMBER
 		arrayOfAttacksForOneCharacter.add(small);
 		arrayOfAttacksForOneCharacter.add(medium);
 		arrayOfAttacksForOneCharacter.add(big);

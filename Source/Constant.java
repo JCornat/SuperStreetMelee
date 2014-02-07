@@ -17,13 +17,19 @@ public class Constant {
 	final static int MIN_HEALTH = 0;
 	final static int JUMP_BASE = 2;
 	final static int LIFE_NUMBER = 5;
+	final static int ATTACK_NUMBER = 6;
+
+	// Manette
+	final static int TIME_MAX_BETWEEN_JUMPS = 55;
+	final static int TIME_MIN_BETWEEN_JUMPS = 25;
+	final static int TIME_BETWEEN_PAUSES = 45;
 	
 	// Combos en centisecondes
-	final static int TIME_WAIT_COMBO = 30;
+	final static int TIME_WAIT_COMBO = 50;
 
 	// En secondes
-	final static int GAME_DURATION = 120;
+	final static int GAME_DURATION = 240;
 
 	// En centisecondes
-	final static long GLOBAL_COOLDOWN = 40;
+	final static long GLOBAL_COOLDOWN = 20;
 }

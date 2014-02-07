@@ -218,7 +218,6 @@ public class Player {
 						setAtk(tabAttacks.indexOf(tabLastAttacksForCombo.get(0)), true);
 					break;
 			}
-			tabLastAttacksForCombo.clear();
 		}
 	}
 
@@ -298,11 +297,19 @@ public class Player {
 			break;
 		case Constant.ATK_STATE_IN_COOLDOWN:
 			if (GCDTimer != -1 && time >= GCDTimer && time >= currentAttack.getEffectiveCooldown())	{
+				// Desactivation de l'attaque (speciale ou normale)
+				if (currentAttack.isSpecialAttack) {
+					for (Attack a : tabLastAttacksForCombo)
+						setAtk(tabAttacks.indexOf(a), false);
+				} else setAtk(tabAttacks.indexOf(currentAttack), false);
+				// On vide le tableau de sauvegarde des attaques
+				tabLastAttacksForCombo.clear();
 				currentAttack = null;
-				atkState = Constant.ATK_STATE_READY;
 				// remise a zero des combos
-				for (int i = 0; i < tabCombos.size(); i++)
-					setAtk(tabAttacks.indexOf(tabCombos.get(i).specialAttack), false);
+				for (int j = 0; j < tabCombos.size(); j++)
+					setAtk(tabAttacks.indexOf(tabCombos.get(j).specialAttack), false);
+				currentStatus = PlayerStatus.NORMAL;
+				atkState = Constant.ATK_STATE_READY;
 				GCDTimer = -1;
 			}
 			break;
@@ -351,7 +358,7 @@ public class Player {
 	}
 
 	/**
-	 * Appliquer une force a un joueur
+	 * Applique une force a un joueur pour l'ejecter
 	 * @param i Force en X appliquee au joueur
 	 * @param j	Force en Y appliquee au joueur
 	 */
@@ -360,7 +367,6 @@ public class Player {
 		speedOnHorizontalAxis = i;
 		speedOnVerticalAxis = -j;
 	}
-	
 	
 	/**
 	 * Methode permettant d'enlever des points de vie au joueur

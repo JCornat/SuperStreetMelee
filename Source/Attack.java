@@ -7,7 +7,9 @@ public class Attack {
 		InfoCooldown n'est qu'une information,
 		et est utilisee notamment pour la mise a jour d'effectiveCooldown. */
 	long effectiveCooldown;
-	
+
+	boolean isSpecialAttack;
+
 	/**
 	 * /**
 	 * Constructeur pour creer une attaque
@@ -21,7 +23,7 @@ public class Attack {
 	 * @param powerX puissance appliquée en X au joueur qui subira l'attaque
 	 * @param powerY puissance appliquée en Y au joueur qui subira l'attaque
 	 */
-	public Attack(String n, int width, int height, int damage, int cast, int time, int infoCooldown, int powerX, int powerY) {
+	public Attack(String n, int width, int height, int damage, int cast, int time, int infoCooldown, int powerX, int powerY, boolean specialAttack) {
 		this.name = n;
 		this.width = width;
 		this.height = height;
@@ -32,6 +34,7 @@ public class Attack {
 		this.effectiveCooldown = 0;
 		this.powerX = powerX;
 		this.powerY = powerY;
+		this.isSpecialAttack = specialAttack;
 	}
 	
 	public String getName() {

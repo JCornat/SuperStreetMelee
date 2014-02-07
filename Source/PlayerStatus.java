@@ -5,6 +5,7 @@
 public enum PlayerStatus {
 	NORMAL,
 	EJECTED,
-	FALLING
+	FALLING,
+	CHARGING
 }
 

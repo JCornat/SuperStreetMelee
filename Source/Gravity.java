@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 
 
 public class Gravity {
@@ -25,7 +24,7 @@ public class Gravity {
 			gravityApply();
 			calculationVerticalCollision();
 			calculationHorizontalCollision();
-		} 
+		}
 	}
 	
 

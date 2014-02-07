@@ -17,7 +17,7 @@ public class Xbox360Controller {
 	private boolean hasPaused ;
 	long lastLoopJump ;
 	long lastLoopPause ;
-	
+	boolean attackReady[];
 	
 	
 	public Xbox360Controller(Controller controller, ArrayList<Player> joueurs, int indexPlayer) {
@@ -29,7 +29,9 @@ public class Xbox360Controller {
 		this.hasPaused = false ;
 		this.lastLoopJump = 0 ;
 		this.lastLoopPause = 0 ;
-        
+		this.attackReady = new boolean[Constant.ATTACK_NUMBER];
+		for (int i = 0; i < Constant.ATTACK_NUMBER; i++)
+			attackReady[i] = false;
 	}
 	
 	public static ArrayList<Xbox360Controller> initControllers(ArrayList<Player> players){
@@ -69,20 +71,20 @@ public class Xbox360Controller {
 		if (this.controller != null) {
 			this.controller.poll();
 			
-			if (main.engineLoop >= lastLoopJump + 55){
+			if (main.engineLoop >= lastLoopJump + Constant.TIME_MAX_BETWEEN_JUMPS){
 				hasJumped = false ;
 			}
 			
-			if ((tabJoueurs.get(0).currentStatus == PlayerStatus.FALLING) && (main.engineLoop >= lastLoopJump + 25)) {
+			if ((tabJoueurs.get(0).currentStatus == PlayerStatus.FALLING) && (main.engineLoop >= lastLoopJump + Constant.TIME_MIN_BETWEEN_JUMPS)) {
 				hasJumped = false ;
 				lastLoopJump = main.engineLoop ;
 			}
 			
-			if (main.engineLoop >= lastLoopPause + 45) {
+			if (main.engineLoop >= lastLoopPause + Constant.TIME_BETWEEN_PAUSES) {
 				hasPaused = false ;
 			}
-			for (Component c : this.controller.getComponents()) {
 
+			for (Component c : this.controller.getComponents()) {
 				if (c.getIdentifier().getName().equals("0")) {
 					if (c.getPollData() == 1.0f) {
 						if (!hasJumped) {
@@ -126,29 +128,46 @@ public class Xbox360Controller {
 
 				if (c.getIdentifier().getName().equals("1")) {
 					if (c.getPollData() == 1.0f) {
-						tabJoueurs.get(this.indexPlayer).setAtk(2, true);
+						if (!attackReady[2]) {
+							tabJoueurs.get(this.indexPlayer).initCombo();
+							tabJoueurs.get(this.indexPlayer).setAtk(2, true);
+							attackReady[2] = true;
+						}
 					} else {
-						tabJoueurs.get(this.indexPlayer).setAtk(2, false);
+						attackReady[2] = false;
 					}
 				}
 
 				if (c.getIdentifier().getName().equals("2")) {
 					if (c.getPollData() == 1.0f) {
-						tabJoueurs.get(this.indexPlayer).setAtk(0, true);
+						if (!attackReady[0]) {
+							tabJoueurs.get(this.indexPlayer).setAtk(0, true);
+							attackReady[0] = true;
+						}
 					} else {
-						tabJoueurs.get(this.indexPlayer).setAtk(0, false);
+						attackReady[0] = false;
 					}
 				}
 				
 				if (c.getIdentifier().getName().equals("3")) {
 					if (c.getPollData() == 1.0f) {
-						tabJoueurs.get(this.indexPlayer).setAtk(1, true);
+						if (!attackReady[1]) {
+							tabJoueurs.get(this.indexPlayer).initCombo();
+							tabJoueurs.get(this.indexPlayer).setAtk(1, true);
+							attackReady[1] = true;
+						}
 					} else {
-						tabJoueurs.get(this.indexPlayer).setAtk(1, false);
+						attackReady[1] = false;
 					}
 				}
 				
-				if (c.getIdentifier().getName().equals("7")) {
+				/*if (c.getIdentifier().getName().equals("rz")) {
+					if (c.getPollData() > 0.3) {
+						// Charge ici
+					}
+				}*/
+
+				if (c.getIdentifier().getName().equals("8")) {
 					if (c.getPollData() == 1.0f) {
 						if (!hasPaused) {
 							if (GameEngine.CURRENT_STATE == State.IN_GAME) {
