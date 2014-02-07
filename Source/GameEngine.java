@@ -1,7 +1,15 @@
 import java.awt.CardLayout;
+import java.awt.Frame;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Scanner;
+
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 public class GameEngine {
 
@@ -14,6 +22,8 @@ public class GameEngine {
 	static int gameDuration;
 	static State CURRENT_STATE = State.IN_MENU ;
 	Gravity gravity;
+	static Sound backgroundsound ;
+	static ArrayList<Xbox360Controller> xbox_controllers ;
 	
 	/**
 	 * Creation de la fenetre de jeu
@@ -44,14 +54,29 @@ public class GameEngine {
 		//Appel et ajout du pattern d'affichage	
 		GraphicalView graphicalView = new GraphicalView(arrayDecor, arrayOfAttacksForOneCharacter, listPlayers);
 		frame = new Menu("SuperStreetMelee", graphicalView) ;
+//		frame.setUndecorated(true);  
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		frame.setVisible(true);
 		frame.setFocusable(true) ;
+//		frame.setExtendedState(Frame.MAXIMIZED_BOTH);  
 		
+//		Toolkit tk = Toolkit.getDefaultToolkit();  
+//		int xSize = ((int) tk.getScreenSize().getWidth());  
+//		int ySize = ((int) tk.getScreenSize().getHeight()); 
+//		frame.setSize(xSize,ySize);  
+
 		//Ajout des controles
+		
+		xbox_controllers = Xbox360Controller.initControllers(listPlayers) ;
 		new GraphicalController(frame, listPlayers);
+		
+		
+		backgroundsound = new Sound("Sounds/background.wav") ;
+		backgroundsound.decrease_volume() ;
+		
 	}
 	
 	
@@ -94,8 +119,23 @@ public class GameEngine {
 				//On met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
 				player.updateTimeAttack();
 			}
+			
+				
 			//Future intelligence artificielle
+			
+			//Si on est dans le jeu on joue la musique
+			backgroundsound.resume() ;
+			
+			
+		}else {
+			//si on est pas dans le jeu on met la musique en pause
+			backgroundsound.pause() ;
 		}
+
+		for(Xbox360Controller controller : this.xbox_controllers){
+			controller.checkButtons() ;
+		}
+		
 	}
 	
 	/**
