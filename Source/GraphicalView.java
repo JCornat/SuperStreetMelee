@@ -1,9 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -44,17 +42,17 @@ public class GraphicalView extends JPanel {
 			//Affichage de l'attaque s'il y a
 			if (currentAttack != null)
 			{	
-				//Si le joueur est tourné à droite
+				//Si le joueur est tourne a droite
 				if(player.isTurningRight) {
 					//En fonction de l'attaque actuelle
 					if(currentAttack.name == "Small") {
-						//Nous affichons un bras qui bouge par rapport à sa position normale
+						//Nous affichons un bras qui bouge par rapport a sa position normale
 						graphics.drawImage(player.imageArm, player.getX()+65, player.getY()+35, this);
 					} else {
 						graphics.drawImage(player.imageArm, player.getX()+90, player.getY()+35, this);
 					}
 				} else {
-					//Sinon s'il est tourné à gauche...
+					//Sinon s'il est tourne a gauche...
 					if(currentAttack.name == "Small") {
 						graphics.drawImage(player.imageArm, player.getX()-10, player.getY()+35, this);
 					} else {
@@ -64,9 +62,9 @@ public class GraphicalView extends JPanel {
 
 				//DEBUGGING
 				//Utilise pour savoir la portee des coups, decommenter si on veut aligner le sprite sur l'attaque
-				/*g.setColor(Color.RED);
-				int tabXYWH[] = att.getAttackPosition(j);
-				g.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);*/
+				/*graphics.setColor(Color.RED);
+				int tabXYWH[] = currentAttack.getAttackPosition(player);
+				graphics.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);*/
 				
 				//S'il n'attaque pas :
 			} else {
@@ -89,13 +87,13 @@ public class GraphicalView extends JPanel {
 			
 			
 			//Affichage de l'etat des coups
-			if (player.atkState == 1) {
+			if (player.atkState == Constant.ATK_STATE_ATTACKING) {
 				graphics.setColor(Color.RED);
 				graphics.drawString("ATTACKING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
-			} else if (player.atkState == 2) {
+			} else if (player.atkState == Constant.ATK_STATE_IN_COOLDOWN) {
 				graphics.setColor(Color.BLUE);
 				graphics.drawString("COOLDOWN", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
-			} else if (player.atkState == 3) {
+			} else if (player.atkState == Constant.ATK_STATE_CASTING) {
 				graphics.setColor(Color.GREEN);
 				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
 			}
@@ -154,7 +152,11 @@ public class GraphicalView extends JPanel {
 			zero2 = "0";
 		graphics.drawString(zero1+GameEngine.gameDuration/60+" : "+zero2+GameEngine.gameDuration%60, getWidth()/2, getHeight()/6);
 		try {
-			graphics.drawString(Integer.toString(main.averageFrames)+" FPS", 10, 10);
+
+			graphics.drawString(Integer.toString(main.averageFrames)+" FPS"+" -- Gameengineloop "+main.engineLoop, 10, 10);
+			if (arrayPlayers.get(0) != null && !arrayPlayers.get(0).tabLastAttacksForCombo.isEmpty()) {
+				graphics.drawString("Last Attack 1st player = "+arrayPlayers.get(0).tabLastAttacksForCombo.get(arrayPlayers.get(0).tabLastAttacksForCombo.size()-1).name, 22, 22);
+			}
 		} catch (IndexOutOfBoundsException e) {}
 		
 	}

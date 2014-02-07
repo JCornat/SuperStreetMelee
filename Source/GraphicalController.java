@@ -3,8 +3,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
-
 public class GraphicalController {
 
 	ArrayList<Player> tabJoueurs;
@@ -14,9 +12,9 @@ public class GraphicalController {
 	 * @param f : frame sur laquelle appliquer le Listener
 	 * @param joueurs : liste des joueurs actuels
 	 */
-	public GraphicalController(JFrame f, ArrayList<Player> joueurs) {
-		this.tabJoueurs = joueurs;
-		f.addKeyListener(new ClavierListener());
+	public GraphicalController(Menu menu, ArrayList<Player> players) {
+		this.tabJoueurs = players;
+		menu.addKeyListener(new ClavierListener());
 	}
 	
 	/**
@@ -34,16 +32,22 @@ public class GraphicalController {
             	tabJoueurs.get(0).setLeft(true);
             	tabJoueurs.get(0).setTurned(false);
             	break;
-            case KeyEvent.VK_D: 
+            case KeyEvent.VK_D:
             	tabJoueurs.get(0).setRight(true); 
             	tabJoueurs.get(0).setTurned(true);
             	break;
             case KeyEvent.VK_E:
             	tabJoueurs.get(0).setAtk(0,true);
             	break;
-            case KeyEvent.VK_A: 
+            case KeyEvent.VK_A:
+                tabJoueurs.get(0).initCombo();
+                tabJoueurs.get(0).setAtk(2,true);
+                break;
+            case KeyEvent.VK_F:
+                tabJoueurs.get(0).initCombo();
             	tabJoueurs.get(0).setAtk(1,true);
                	break;
+
                	
 /* ******************** PLAYER 2 ******************** */
 			case KeyEvent.VK_UP:
@@ -111,7 +115,10 @@ public class GraphicalController {
 				case KeyEvent.VK_E:
 	            	tabJoueurs.get(0).setAtk(0,false);
 	            	break;
-		        case KeyEvent.VK_A: 
+		        case KeyEvent.VK_A:
+		            tabJoueurs.get(0).setAtk(2,false);
+		            break;
+		        case KeyEvent.VK_F:
 	            	tabJoueurs.get(0).setAtk(1,false);
 	               	break;
 		        case KeyEvent.VK_NUMPAD1: 
@@ -127,7 +134,6 @@ public class GraphicalController {
 
 		@Override
 		public void keyTyped(KeyEvent e) {
-	
 		}
 	}
 	

@@ -9,6 +9,7 @@ public class GameEngine {
 	static Player player;
 	static Menu frame;
 	ArrayList<Attack> arrayOfAttacksForOneCharacter;
+	ArrayList<Combo> arrayOfComboForOneCharacter;
 	static int tailleDecor;
 	static ArrayList<Decor> arrayDecor;
 	static int gameDuration;
@@ -28,17 +29,46 @@ public class GameEngine {
 		// Creation des attaques
 		arrayOfAttacksForOneCharacter = new ArrayList<Attack>();
 		arrayOfAttacksForOneCharacter.clear();
-		arrayOfAttacksForOneCharacter.add(new Attack("Small", 5, 5, 5, 0, 10, 10,20,20));
-		arrayOfAttacksForOneCharacter.add(new Attack("Big", 16, 10, 15, 60, 80, 150,100,100));
+		arrayOfComboForOneCharacter = new ArrayList<Combo>();
+		arrayOfComboForOneCharacter.clear();
+
+		Attack small = new Attack("Small", 55, 5, 5, 0, 0, 0, 20, 20);
+		Attack medium = new Attack("Medium", 73, 7, 10, 40, 75, 100, 60, 60);
+		Attack big = new Attack("Big", 80, 10, 15, 60, 80, 150, 100, 100);
+
+		// Combo 1
+		Attack specialAttack1 = new Attack("Special1", 100, 20, 20, 25, 60, 0, 100, 100);
+		Combo combo1 = new Combo(big, small, specialAttack1);
+
+		// Combo 2
+		Attack specialAttack2 = new Attack("Special2", 100, 20, 25, 27, 60, 0, 100, 100);
+		Combo combo2 = new Combo(medium, small, specialAttack2);
+
+		// Combo 3
+		Attack specialAttack3 = new Attack("Special3", 100, 20, 50, 30, 60, 0, 100, 100);
+		Combo combo3 = new Combo(medium, small, big, specialAttack3);
+
+		// Ajouts dans la liste des attaques
+		arrayOfAttacksForOneCharacter.add(small);
+		arrayOfAttacksForOneCharacter.add(medium);
+		arrayOfAttacksForOneCharacter.add(big);
+		arrayOfAttacksForOneCharacter.add(specialAttack1);
+		arrayOfAttacksForOneCharacter.add(specialAttack2);
+		arrayOfAttacksForOneCharacter.add(specialAttack3);
+
+		// Ajouts dans la liste des combos
+		arrayOfComboForOneCharacter.add(combo1);
+		arrayOfComboForOneCharacter.add(combo2);
+		arrayOfComboForOneCharacter.add(combo3);
 		
 		// Initilisation de la duree de la partie en sec
-		gameDuration = 120;
+		gameDuration = Constant.GAME_DURATION;
 		
 		
 		listPlayers = new ArrayList<Player>();
 		listPlayers.clear();
-		listPlayers.add(new Player("Joueur 1", 80, 80, arrayOfAttacksForOneCharacter));
-		listPlayers.add(new Player("Joueur 2", 80, 80, arrayOfAttacksForOneCharacter));
+		listPlayers.add(new Player("Joueur 1", 80, 80, arrayOfAttacksForOneCharacter, arrayOfComboForOneCharacter));
+		listPlayers.add(new Player("Joueur 2", 80, 80, arrayOfAttacksForOneCharacter, arrayOfComboForOneCharacter));
 		
 		
 		//Appel et ajout du pattern d'affichage	
@@ -48,7 +78,7 @@ public class GameEngine {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		frame.setFocusable(true) ;
+		frame.setFocusable(true);
 		
 		//Ajout des controles
 		new GraphicalController(frame, listPlayers);
@@ -70,7 +100,7 @@ public class GameEngine {
 			listPlayers.get(i).jump = false;
 			listPlayers.get(i).isJumping = false;
     	}
-		gameDuration = 120;
+		gameDuration = Constant.GAME_DURATION;
 	}
 	
 	/**
@@ -93,6 +123,7 @@ public class GameEngine {
 				player.verificationAttack();
 				//On met a jour les temps lies aux attaques des joueurs (temps de recharge, temps d'affichage, etc)
 				player.updateTimeAttack();
+				player.checkCombo();
 			}
 			//Future intelligence artificielle
 		}

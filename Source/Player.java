@@ -1,9 +1,7 @@
 import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.awt.CardLayout;
+
 import javax.swing.ImageIcon;
 
 
@@ -14,7 +12,8 @@ public class Player {
 	PlayerStatus currentStatus;
 	boolean jump, left, right, isJumping, isTurningRight, isAlive;
 	Attack currentAttack;
-	ArrayList<Attack> tabAttaques;
+	ArrayList<Attack> tabAttacks, tabLastAttacksForCombo;
+	ArrayList<Combo> tabCombos;
 	long lastTimerAttack, castingTimer;
 	// Global Cooldown Timer
 	long GCDTimer;
@@ -22,7 +21,9 @@ public class Player {
 	Image imageBody;
 	Image imageArm;
 	Attack castingAttack;
-	int numberOfLife ;
+	int numberOfLife;
+	long waitedTimeForCombo;
+	boolean isWaitingForCombo;
 	
 	/**
 	 * Constructeur pour creer un joueur
@@ -33,7 +34,7 @@ public class Player {
 	 * @param l Hauteur du joueur
 	 * @param attaques liste d'attaques specifiques au joueur
 	 */
-	public Player(String n, int k, int l, ArrayList<Attack> attaques) {
+	public Player(String n, int k, int l, ArrayList<Attack> attacks, ArrayList<Combo> combos) {
 		name = n;
 		x = 0; 
 		y = 0;
@@ -50,17 +51,20 @@ public class Player {
 		currentAttack = null;
 		lastTimerAttack = -1;
 		GCDTimer = -1;
-		tabAttaques = attaques;
+		tabAttacks = attacks;
+		tabCombos = combos;
+		tabLastAttacksForCombo = new ArrayList<Attack>();
+		tabLastAttacksForCombo.clear();
 		atkState = Constant.ATK_STATE_READY;
 		jumps = Constant.JUMP_BASE;
 		attack = new ArrayList<Boolean>();
 		attack.clear();
-		attack.add(false);
-		attack.add(false);
 		attackReleased = new ArrayList<Boolean>();
 		attackReleased.clear();
-		attackReleased.add(false);
-		attackReleased.add(false);
+		for (int i = 0; i < attacks.size(); i++) {
+			attack.add(false);
+			attackReleased.add(false);
+		}
 		currentStatus = PlayerStatus.NORMAL;
 		ImageIcon ii = new ImageIcon("images/character/body.png");
 		Image imgBody = ii.getImage();
@@ -68,7 +72,9 @@ public class Player {
 		ii = new ImageIcon("images/character/arm.png");
 		Image imgArm = ii.getImage();
 		imageArm = imgArm.getScaledInstance(25, -1, Image.SCALE_FAST);
-		numberOfLife = 5;
+		numberOfLife = Constant.LIFE_NUMBER;
+		waitedTimeForCombo = -1;
+		isWaitingForCombo = false;
 	}
 	
 	public String getName() {
@@ -151,13 +157,65 @@ public class Player {
 	 */
 	public void setAtk(int n, boolean b) {
 		if (b && atkState == Constant.ATK_STATE_READY) {
-			attack.set(n, true);
+			if (!isWaitingForCombo) {
+				attack.set(n, b);
+			} else tabLastAttacksForCombo.add(tabAttacks.get(n));
 		} else {
 			attack.set(n, false);
 		}
-		
 		if (!b) {
-			attackReleased.set(n, false);
+			attackReleased.set(n, b);
+		}
+	}
+
+	/**
+	 * Methode pour initialiser la sequence de combo ( = combo possible)
+	 */
+	public void initCombo() {
+		if (!isWaitingForCombo && waitedTimeForCombo == -1) {
+			waitedTimeForCombo = main.engineLoop + Constant.TIME_WAIT_COMBO;
+			isWaitingForCombo = true;
+		}
+	}
+
+	/**
+	 * Methode lancee a chaque update pour declencher les combos enregistres
+	 */
+	public void checkCombo() {
+		if (isWaitingForCombo && waitedTimeForCombo <= main.engineLoop) {
+			// Attente terminee
+			waitedTimeForCombo = -1;
+			isWaitingForCombo = false;
+			// Declenchement des combos, lancement des attaques speciales correspondantes
+			switch (tabLastAttacksForCombo.size()) {
+				case 1:
+					setAtk(tabAttacks.indexOf(tabLastAttacksForCombo.get(0)), true);
+					break;
+				case 2:
+				case 3:
+				{
+					for (Combo c : tabCombos) {
+						boolean check = true;
+						for (int i = 0; i < c.nbOfBind; i++) {
+							if (c.nbOfBind == tabLastAttacksForCombo.size()) {
+								if (c.binds[i] != tabLastAttacksForCombo.get(i))
+									check = false;
+							} else check = false;
+						}
+						if (check) {
+							setAtk(tabAttacks.indexOf(c.specialAttack), true);
+							break;
+						}
+					}
+					setAtk(tabAttacks.indexOf(tabLastAttacksForCombo.get(0)), true);
+					break;
+				}
+				default:
+					if (tabLastAttacksForCombo.size() > 3)
+						setAtk(tabAttacks.indexOf(tabLastAttacksForCombo.get(0)), true);
+					break;
+			}
+			tabLastAttacksForCombo.clear();
 		}
 	}
 
@@ -171,15 +229,15 @@ public class Player {
 	 */
 	public void attack(int n) {
 		castingAttack = null;
-		currentAttack = tabAttaques.get(n);
+		currentAttack = tabAttacks.get(n);
 		// Traitement de l'attaque
 		long time = main.engineLoop;
 		// Duee de l'affichage de l'attaque
-		lastTimerAttack = time + tabAttaques.get(n).getTime();
+		lastTimerAttack = time + tabAttacks.get(n).getTime();
 		// Temps de recharge de l'attaque
-		tabAttaques.get(n).setEffectiveCooldown(time + tabAttaques.get(n).getInfoCooldown());
+		tabAttacks.get(n).setEffectiveCooldown(time + tabAttacks.get(n).getInfoCooldown());
 		// Global Cooldown
-		GCDTimer = time + tabAttaques.get(n).infoCooldown;
+		GCDTimer = time + Constant.GLOBAL_COOLDOWN;
 		// L'attaque est en train d'etre produite
 		atkState = Constant.ATK_STATE_ATTACKING;
 	}
@@ -222,23 +280,26 @@ public class Player {
 	public void updateTimeAttack() {
 		long time = main.engineLoop;
 		// Update des temps de recharge des attaques
-		for (int i = 0; i < tabAttaques.size(); i++) {
-			if (tabAttaques.get(i).getEffectiveCooldown() <= time) {
-				tabAttaques.get(i).setEffectiveCooldown(0);
+		for (int i = 0; i < tabAttacks.size(); i++) {
+			if (tabAttacks.get(i).getEffectiveCooldown() <= time) {
+				tabAttacks.get(i).setEffectiveCooldown(0);
 			}
 		}
 		
 		switch (atkState) {
 		case Constant.ATK_STATE_ATTACKING:
 			if (this.collisionAttack() || lastTimerAttack <= time) {
-				currentAttack = null;
 				atkState = Constant.ATK_STATE_IN_COOLDOWN;
 				lastTimerAttack = -1;
 			}
 			break;
 		case Constant.ATK_STATE_IN_COOLDOWN:
-			if (GCDTimer != -1 && time >= GCDTimer)	{
+			if (GCDTimer != -1 && time >= GCDTimer && time >= currentAttack.getEffectiveCooldown())	{
+				currentAttack = null;
 				atkState = Constant.ATK_STATE_READY;
+				// remise a zero des combos
+				for (int i = 0; i < tabCombos.size(); i++)
+					setAtk(tabAttacks.indexOf(tabCombos.get(i).specialAttack), false);
 				GCDTimer = -1;
 			}
 			break;
@@ -253,8 +314,8 @@ public class Player {
 	
 	/**
 	 * Methode permettant de connaitre l'etat du joueur dans son combat
-	 * @return STATE_ATTACKING : le joueur est en train de lancer une attaque<br>
-	 * STATE_IN_COOLDOWN : le joueur a son temps de recharge global actif<br>
+	 * @return STATE_ATTACKING : le joueur est en train de lancer une attaque
+	 * STATE_IN_COOLDOWN : le joueur a son temps de recharge global actif
 	 * STATE_READY : le joueur est pret a lancer des attaques
 	 */
 	public int getState() {
@@ -343,24 +404,19 @@ public class Player {
 	public void verificationAttack() {
 		long time = main.engineLoop;
 		if (this.getState() == Constant.ATK_STATE_CASTING) {
-			if (time >= this.castingTimer) {
-				this.attack(this.tabAttaques.indexOf(this.castingAttack));
-			}
+			if (time >= this.castingTimer)
+				// Lancement de l'attaque
+				this.attack(this.tabAttacks.indexOf(this.castingAttack));
 		}
 		
 		if (this.getState() == Constant.ATK_STATE_READY) {
-			if (this.attack.get(0) && !this.attackReleased.get(0)) {
-				this.attackReleased.set(0, true);
-				this.castingAttack = this.tabAttaques.get(0);
-				this.atkState = Constant.ATK_STATE_CASTING;
-				this.castingTimer = time+this.tabAttaques.get(0).cast;
-			}
-			if (this.attack.get(1) && !this.attackReleased.get(1)) {
-				this.attackReleased.set(1, true);
-				//System.out.println(atkReleased.get(1));
-				this.castingAttack = this.tabAttaques.get(1);
-				this.atkState = Constant.ATK_STATE_CASTING;
-				this.castingTimer = time+this.tabAttaques.get(1).cast;
+			for (int i = 0; i < attack.size(); i++) {
+				if (this.attack.get(i) && !this.attackReleased.get(i)) {
+					this.attackReleased.set(i, true);
+					this.castingAttack = this.tabAttacks.get(i);
+					this.atkState = Constant.ATK_STATE_CASTING;
+					this.castingTimer = time+this.tabAttacks.get(i).cast;
+				}
 			}
 		}
 	}
