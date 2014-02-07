@@ -121,6 +121,7 @@ public class GameEngine {
 			listPlayers.get(i).right = false;
 			listPlayers.get(i).jump = false;
 			listPlayers.get(i).isJumping = false;
+			listPlayers.get(i).numberOfLife = Constant.LIFE_NUMBER ;
     	}
 		gameDuration = Constant.GAME_DURATION;
 	}

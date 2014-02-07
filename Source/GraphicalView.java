@@ -1,11 +1,8 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-<<<<<<< HEAD
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-=======
->>>>>>> d753f4e36d8f93b36b880d7502677f30a8959688
 import java.util.ArrayList;
 import javax.swing.JPanel;
 

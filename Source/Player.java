@@ -1,11 +1,8 @@
 import java.awt.Image;
-<<<<<<< HEAD
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-=======
->>>>>>> d753f4e36d8f93b36b880d7502677f30a8959688
 import java.util.ArrayList;
 import java.awt.CardLayout;
 
@@ -28,7 +25,6 @@ public class Player {
 	Image imageBody;
 	Image imageArm;
 	Attack castingAttack;
-	int numberOfLife ;
 	boolean booleanJump;
 	int positionXOnJumping;
 	int positionYOnJumping;
