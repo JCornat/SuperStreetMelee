@@ -81,9 +81,8 @@ public class GameEngine {
 		
 		listPlayers = new ArrayList<Player>();
 		listPlayers.clear();
-		listPlayers.add(new Player("Joueur 1", 80, 80, arrayOfAttacksForOneCharacter, arrayOfComboForOneCharacter));
-		listPlayers.add(new Player("Joueur 2", 80, 80, arrayOfAttacksForOneCharacter, arrayOfComboForOneCharacter));
-		
+		listPlayers.add(new Player("Joueur 1", 80, 80, arrayOfAttacksForOneCharacter,arrayOfComboForOneCharacter,1));
+		listPlayers.add(new Player("Joueur 2", 80, 80, arrayOfAttacksForOneCharacter,arrayOfComboForOneCharacter,2));
 		
 		//Appel et ajout du pattern d'affichage	
 		GraphicalView graphicalView = new GraphicalView(arrayDecor, arrayOfAttacksForOneCharacter, listPlayers);
@@ -126,6 +125,7 @@ public class GameEngine {
 			listPlayers.get(i).right = false;
 			listPlayers.get(i).jump = false;
 			listPlayers.get(i).isJumping = false;
+			listPlayers.get(i).numberOfLife = Constant.LIFE_NUMBER ;
     	}
 		gameDuration = Constant.GAME_DURATION;
 	}

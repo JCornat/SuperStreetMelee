@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -10,13 +12,28 @@ public class GraphicalView extends JPanel {
 	ArrayList<Player> arrayPlayers;
 	ArrayList<Decor> arrayOfDecorsForTheLevel;
 	ArrayList<Attack> arrayOfAttacksAvailableForTheCharacter;
-	int spriteAnim = 0;
+	int positionXOnJumping = 0;
+	int positionYOnJumping = 0;
 	
 	public GraphicalView(ArrayList<Decor> de, ArrayList<Attack> at, ArrayList<Player> jo) {
 		this.setPreferredSize(new Dimension(1000,700));
 		arrayOfDecorsForTheLevel = de;
 		arrayOfAttacksAvailableForTheCharacter = at;
 		arrayPlayers = jo;
+		
+		for (int i = 0; i < arrayPlayers.size(); i++) {
+			arrayPlayers.get(i).character = new Animator(arrayPlayers.get(i).sprites);
+			arrayPlayers.get(i).character.setSpeed(150);
+			arrayPlayers.get(i).character.start();
+			
+			
+			arrayPlayers.get(i).characterJumping = new AnimatorFixedObject(arrayPlayers.get(i).spritesOfJump);
+			arrayPlayers.get(i).characterJumping.setSpeed(30);
+			
+			arrayPlayers.get(i).characterAttack = new AnimatorFixedObject(arrayPlayers.get(i).spritesOfAttack);
+			arrayPlayers.get(i).characterAttack.setSpeed(30);
+			//arrayPlayers.get(i).characterJumping.start();
+		}
 	}
 	
 	/**
@@ -42,12 +59,14 @@ public class GraphicalView extends JPanel {
 			//Affichage de l'attaque s'il y a
 			if (currentAttack != null)
 			{	
-				//Si le joueur est tourne a droite
+				//player.character.pause();
+				//Si le joueur est tourné à droite
 				if(player.isTurningRight) {
 					//En fonction de l'attaque actuelle
 					if(currentAttack.name == "Small") {
-						//Nous affichons un bras qui bouge par rapport a sa position normale
-						graphics.drawImage(player.imageArm, player.getX()+65, player.getY()+35, this);
+						//Nous affichons un bras qui bouge par rapport à sa position normale
+
+						player.characterAttack.start();
 					} else {
 						graphics.drawImage(player.imageArm, player.getX()+90, player.getY()+35, this);
 					}
@@ -60,6 +79,9 @@ public class GraphicalView extends JPanel {
 					}
 				}
 
+			
+						
+				
 				//DEBUGGING
 				//Utilise pour savoir la portee des coups, decommenter si on veut aligner le sprite sur l'attaque
 				/*graphics.setColor(Color.RED);
@@ -68,26 +90,63 @@ public class GraphicalView extends JPanel {
 				
 				//S'il n'attaque pas :
 			} else {
-				//On affiche le bras dans sa position de base
-				if(player.isTurningRight) {
-					graphics.drawImage(player.imageArm, player.getX()+60, player.getY()+35, this);
-				} else {
-					graphics.drawImage(player.imageArm, player.getX()-5, player.getY()+35, this);
+				if(!player.character.running) {
+					player.character.resume();
 				}
+				//On affiche le bras dans sa position de base
+//				if(player.isTurningRight) {
+//					graphics.drawImage(player.imageArm, player.getX()+60, player.getY()+35, this);
+//				} else {
+//					graphics.drawImage(player.imageArm, player.getX()-5, player.getY()+35, this);
+//				}
 			}
 			
-			//On affiche le corps et l'autre bras, en fonction de son orientation toujours.
-			if(player.isTurningRight) {
-				graphics.drawImage(player.imageBody, player.getX(), player.getY(), this);
-				graphics.drawImage(player.imageArm, player.getX()+23, player.getY()+35, this);
+			if(player.characterAttack.running) {
+				player.character.stop();
+				player.characterAttack.update(System.currentTimeMillis());
+				graphics.drawImage(player.characterAttack.sprite, player.getX(), player.getY(), 113,100, this);
+				
 			} else {
-				graphics.drawImage(player.imageBody, player.getX()+80, player.getY(), -80, 80, null);
-				graphics.drawImage(player.imageArm, player.getX()+35, player.getY()+35, this);
+				//player.character.start();
 			}
 			
+			
+			player.character.update(System.currentTimeMillis());
+			if(player.isTurningRight) {
+				graphics.drawImage(player.character.sprite, player.getX(), player.getY(), 85,80, this);
+			} else {
+				graphics.drawImage(player.character.sprite, player.getX()+80, player.getY(), -85, 80, null);
+			}
+
+
 			
 			//Affichage de l'etat des coups
-			if (player.atkState == Constant.ATK_STATE_ATTACKING) {
+
+//			if (player.atkState == 1) {
+//				graphics.setColor(Color.RED);
+//				graphics.drawString("ATTACKING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+//			} else if (player.atkState == 2) {
+//				graphics.setColor(Color.BLUE);
+//				graphics.drawString("COOLDOWN", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+//			} else if (player.atkState == 3) {
+//				graphics.setColor(Color.GREEN);
+//				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+//			}
+//			
+
+			player.characterJumping.update(System.currentTimeMillis());
+			if(player.isJumping) {
+				if(!player.booleanJump) {
+					System.out.println(player.getX() + " "+ player.getY());
+					player.positionXOnJumping = player.getX()-35;
+					player.positionYOnJumping = player.getY()+35;
+					player.characterJumping.start();
+					player.booleanJump = true;
+				}
+			} else if(!player.isJumping) {
+				player.booleanJump = false;
+
+		/*	if (player.atkState == Constant.ATK_STATE_ATTACKING) {
 				graphics.setColor(Color.RED);
 				graphics.drawString("ATTACKING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
 			} else if (player.atkState == Constant.ATK_STATE_IN_COOLDOWN) {
@@ -95,8 +154,22 @@ public class GraphicalView extends JPanel {
 				graphics.drawString("COOLDOWN", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
 			} else if (player.atkState == Constant.ATK_STATE_CASTING) {
 				graphics.setColor(Color.GREEN);
-				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));*/
+
 			}
+			
+			
+			if(player.isTurningRight) {
+				graphics.drawImage(player.characterJumping.sprite, player.positionXOnJumping, player.positionYOnJumping, 150,50, this);
+			} else {
+				graphics.drawImage(player.characterJumping.sprite, player.positionXOnJumping+150, player.positionYOnJumping, -150,50, this);
+			}
+//			if(player.getJump() == true) {
+//				player.characterJumping.resume();
+//				graphics.drawImage(player.characterJumping.sprite, player.getX()-20, player.getY()+50, 120,50, this);
+//			} else if(!player.isJumping) {
+//				player.characterJumping.stop();
+//			}
 			
 
 			//DEBUGGING
@@ -117,12 +190,12 @@ public class GraphicalView extends JPanel {
 			
 			//DEBUGGING
 			//Trace des traits autour du joueur
-			graphics.setColor(Color.RED);
-			graphics.drawLine(0, player.getY(), 1000, player.getY());
-			graphics.drawLine(0, (player.getY()+player.getH()-1), 1000, (player.getY()+player.getH()-1));
-			graphics.drawLine(player.getX(), 0, player.getX(), 700);
-			graphics.drawLine((player.getX()+player.getW()-1), 0, (player.getX()+player.getW()-1), 700);
-			graphics.drawRect(player.getX(), player.getY(), 10, 10);
+//			graphics.setColor(Color.RED);
+//			graphics.drawLine(0, player.getY(), 1000, player.getY());
+//			graphics.drawLine(0, (player.getY()+player.getH()-1), 1000, (player.getY()+player.getH()-1));
+//			graphics.drawLine(player.getX(), 0, player.getX(), 700);
+//			graphics.drawLine((player.getX()+player.getW()-1), 0, (player.getX()+player.getW()-1), 700);
+//			graphics.drawRect(player.getX(), player.getY(), 10, 10);
 		}
 		
 
@@ -132,7 +205,8 @@ public class GraphicalView extends JPanel {
 				graphics.drawImage(PlatForm.image, arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), this);
 			} else {
 				graphics.drawImage(Ground.image, arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), this);	
-				graphics.drawLine(arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), arrayOfDecorsForTheLevel.get(i).getX()+50, arrayOfDecorsForTheLevel.get(i).getY()+50);
+				//DEBUGGING
+				//graphics.drawLine(arrayOfDecorsForTheLevel.get(i).getX(), arrayOfDecorsForTheLevel.get(i).getY(), arrayOfDecorsForTheLevel.get(i).getX()+50, arrayOfDecorsForTheLevel.get(i).getY()+50);
 			}
 		}
 
@@ -141,6 +215,9 @@ public class GraphicalView extends JPanel {
 		/*for (int i = 0; i < arrayPlayers.size(); i++) {
 			graphics.drawString("Joueur "+(i+1)+" : "+String.valueOf(arrayPlayers.get(i).x)+" "+String.valueOf(arrayPlayers.get(i).y)+" "+String.valueOf(arrayPlayers.get(i).vitesseX), 10, (i+1)*15+20);
 		}*/
+		for (int i = 0; i < arrayPlayers.size(); i++) {
+			graphics.drawString(arrayPlayers.get(i).isJumping+" ", 10, (i+1)*15+20);
+		}
 		
 		
 		// Affichage du timer
