@@ -38,7 +38,7 @@ public class Xbox360Controller {
 		
 		ArrayList<Xbox360Controller> controllers = new ArrayList<Xbox360Controller>() ;
 		
-		int indexPlayer = 0 ;
+		int indexPlayer = players.size() ;
 		
 		Controller[] allTheControllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
 		
@@ -49,9 +49,9 @@ public class Xbox360Controller {
             if (controller.getType() == Controller.Type.GAMEPAD){
                 if (indexPlayer <= players.size()) {
                 	
-					controllers.add(new Xbox360Controller(controller, players,indexPlayer));
-					System.out.println(controller.getName() + " has been added for player " + (indexPlayer+1));
-					indexPlayer++ ;
+					controllers.add(new Xbox360Controller(controller, players,indexPlayer - 1));
+					System.out.println(controller.getName() + " has been added for player " + indexPlayer);
+					indexPlayer-- ;
 				}
             }
 		}

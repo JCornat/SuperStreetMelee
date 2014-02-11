@@ -122,22 +122,21 @@ public class GraphicalView extends JPanel {
 			
 			//Affichage de l'etat des coups
 
-//			if (player.atkState == 1) {
-//				graphics.setColor(Color.RED);
-//				graphics.drawString("ATTACKING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
-//			} else if (player.atkState == 2) {
-//				graphics.setColor(Color.BLUE);
-//				graphics.drawString("COOLDOWN", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
-//			} else if (player.atkState == 3) {
-//				graphics.setColor(Color.GREEN);
-//				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
-//			}
-//			
+			if (player.atkState == Constant.ATK_STATE_ATTACKING) {
+				graphics.setColor(Color.RED);
+				graphics.drawString("ATTACKING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+			} else if (player.atkState == Constant.ATK_STATE_IN_COOLDOWN) {
+				graphics.setColor(Color.BLUE);
+				graphics.drawString("COOLDOWN", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+			} else if (player.atkState == Constant.ATK_STATE_CASTING) {
+				graphics.setColor(Color.GREEN);
+				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+			}
 
 			player.characterJumping.update(System.currentTimeMillis());
 			if(player.isJumping) {
 				if(!player.booleanJump) {
-					System.out.println(player.getX() + " "+ player.getY());
+					//System.out.println(player.getX() + " "+ player.getY());
 					player.positionXOnJumping = player.getX()-35;
 					player.positionYOnJumping = player.getY()+35;
 					player.characterJumping.start();
@@ -230,7 +229,7 @@ public class GraphicalView extends JPanel {
 		graphics.drawString(zero1+GameEngine.gameDuration/60+" : "+zero2+GameEngine.gameDuration%60, getWidth()/2, getHeight()/6);
 		try {
 
-			graphics.drawString(Integer.toString(main.averageFrames)+" FPS"+" -- Gameengineloop "+main.engineLoop, 10, 10);
+			graphics.drawString(Integer.toString(main.averageFrames)+" FPS"+" -- GameEngineLoop "+main.engineLoop, 10, 10);
 			if (arrayPlayers.get(0) != null && !arrayPlayers.get(0).tabLastAttacksForCombo.isEmpty()) {
 				graphics.drawString("Last Attack 1st player = "+arrayPlayers.get(0).tabLastAttacksForCombo.get(arrayPlayers.get(0).tabLastAttacksForCombo.size()-1).name, 22, 22);
 			}

@@ -1,15 +1,6 @@
 import java.awt.CardLayout;
-import java.awt.Frame;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
-
-
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 public class GameEngine {
 
@@ -66,6 +57,7 @@ public class GameEngine {
 		arrayOfAttacksForOneCharacter.add(small);
 		arrayOfAttacksForOneCharacter.add(medium);
 		arrayOfAttacksForOneCharacter.add(big);
+		// arrayOfAttacksForOneCharacter.add(charge);
 		arrayOfAttacksForOneCharacter.add(specialAttack1);
 		arrayOfAttacksForOneCharacter.add(specialAttack2);
 		arrayOfAttacksForOneCharacter.add(specialAttack3);
@@ -77,7 +69,6 @@ public class GameEngine {
 		
 		// Initilisation de la duree de la partie en sec
 		gameDuration = Constant.GAME_DURATION;
-		
 		
 		listPlayers = new ArrayList<Player>();
 		listPlayers.clear();
@@ -99,15 +90,13 @@ public class GameEngine {
 //		int ySize = ((int) tk.getScreenSize().getHeight()); 
 //		frame.setSize(xSize,ySize);  
 
-		//Ajout des controles
-		
-		xbox_controllers = Xbox360Controller.initControllers(listPlayers) ;
-		new GraphicalController(frame, listPlayers);
-		
-		
+		// Ajout du son
 		backgroundsound = new Sound("Sounds/background.wav") ;
 		backgroundsound.decrease_volume() ;
 		
+		// Ajout des controles
+		xbox_controllers = Xbox360Controller.initControllers(listPlayers) ;
+		new GraphicalController(frame, listPlayers);
 	}
 	
 	
