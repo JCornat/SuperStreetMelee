@@ -46,7 +46,7 @@ public class Xbox360Controller {
 			
             Controller controller = allTheControllers[i];
       
-            if (controller.getType() == Controller.Type.GAMEPAD){
+            if ((controller.getType() == Controller.Type.GAMEPAD) || (controller.getName().matches("(?i).*stick.*"))){
                 if (indexPlayer <= players.size()) {
                 	
 					controllers.add(new Xbox360Controller(controller, players,indexPlayer - 1));
@@ -85,81 +85,7 @@ public class Xbox360Controller {
 			}
 
 			for (Component c : this.controller.getComponents()) {
-				if (c.getIdentifier().getName().equals("0")) {
-					if (c.getPollData() == 1.0f) {
-						if (!hasJumped) {
-							tabJoueurs.get(this.indexPlayer).setJump(true);
-							hasJumped = true ;
-							lastLoopJump = main.engineLoop ;
-						}
-					} else {
-						tabJoueurs.get(this.indexPlayer).setJump(false);
-					}
-				}
-
-				if (c.getIdentifier().getName().equals("x")) {
-
-					if (c.getPollData() > 0.4) {
-						tabJoueurs.get(this.indexPlayer).setRight(true);
-						tabJoueurs.get(this.indexPlayer).setTurned(true);
-					} else if (c.getPollData() < -0.4) {
-						tabJoueurs.get(this.indexPlayer).setLeft(true);
-						tabJoueurs.get(this.indexPlayer).setTurned(false);
-					} else {
-						tabJoueurs.get(this.indexPlayer).setRight(false);
-						tabJoueurs.get(this.indexPlayer).setLeft(false);
-					}
-				}
-
-				if (c.getIdentifier().getName().equals("pov")) {
-					
-					if (c.getPollData() == 1) {
-						tabJoueurs.get(this.indexPlayer).setLeft(true);
-						tabJoueurs.get(this.indexPlayer).setTurned(false);
-					} else if (c.getPollData() == 0.75) {
-
-					} else if (c.getPollData() == 0.5) {
-						tabJoueurs.get(this.indexPlayer).setRight(true);
-						tabJoueurs.get(this.indexPlayer).setTurned(true);
-					} else if (c.getPollData() == 0.25) {
-
-					}
-				}
-
-				if (c.getIdentifier().getName().equals("1")) {
-					if (c.getPollData() == 1.0f) {
-						if (!attackReady[2]) {
-							tabJoueurs.get(this.indexPlayer).initCombo();
-							tabJoueurs.get(this.indexPlayer).setAtk(2, true);
-							attackReady[2] = true;
-						}
-					} else {
-						attackReady[2] = false;
-					}
-				}
-
-				if (c.getIdentifier().getName().equals("2")) {
-					if (c.getPollData() == 1.0f) {
-						if (!attackReady[0]) {
-							tabJoueurs.get(this.indexPlayer).setAtk(0, true);
-							attackReady[0] = true;
-						}
-					} else {
-						attackReady[0] = false;
-					}
-				}
 				
-				if (c.getIdentifier().getName().equals("3")) {
-					if (c.getPollData() == 1.0f) {
-						if (!attackReady[1]) {
-							tabJoueurs.get(this.indexPlayer).initCombo();
-							tabJoueurs.get(this.indexPlayer).setAtk(1, true);
-							attackReady[1] = true;
-						}
-					} else {
-						attackReady[1] = false;
-					}
-				}
 				
 				/*if (c.getIdentifier().getName().equals("rz")) {
 					if (c.getPollData() > 0.3) {
@@ -167,25 +93,187 @@ public class Xbox360Controller {
 					}
 				}*/
 
-				if (c.getIdentifier().getName().equals("8")) {
-					if (c.getPollData() == 1.0f) {
-						if (!hasPaused) {
-							if (GameEngine.CURRENT_STATE == State.IN_GAME) {
-								GameEngine.CURRENT_STATE = State.PAUSED;
-								((CardLayout) Menu.cards.getLayout()).show(
-										Menu.cards, "gamepaused");
-							} else {
-								GameEngine.CURRENT_STATE = State.IN_GAME;
-								((CardLayout) Menu.cards.getLayout()).show(
-										Menu.cards, "play");
+				if (this.controller.getType() == Controller.Type.GAMEPAD) {
+					if (c.getIdentifier().getName().equals("0")) {
+						if (c.getPollData() == 1.0f) {
+							if (!hasJumped) {
+								tabJoueurs.get(this.indexPlayer).setJump(true);
+								hasJumped = true;
+								lastLoopJump = main.engineLoop;
 							}
-							hasPaused = true ;
-							lastLoopPause = main.engineLoop ;
+						} else {
+							tabJoueurs.get(this.indexPlayer).setJump(false);
 						}
-					} else {
-						
 					}
-				
+					if (c.getIdentifier().getName().equals("x")) {
+
+						if (c.getPollData() > 0.4) {
+							tabJoueurs.get(this.indexPlayer).setRight(true);
+							tabJoueurs.get(this.indexPlayer).setTurned(true);
+						} else if (c.getPollData() < -0.4) {
+							tabJoueurs.get(this.indexPlayer).setLeft(true);
+							tabJoueurs.get(this.indexPlayer).setTurned(false);
+						} else {
+							tabJoueurs.get(this.indexPlayer).setRight(false);
+							tabJoueurs.get(this.indexPlayer).setLeft(false);
+						}
+					}
+					if (c.getIdentifier().getName().equals("pov")) {
+
+						if (c.getPollData() == 1) {
+							tabJoueurs.get(this.indexPlayer).setLeft(true);
+							tabJoueurs.get(this.indexPlayer).setTurned(false);
+						} else if (c.getPollData() == 0.75) {
+
+						} else if (c.getPollData() == 0.5) {
+							tabJoueurs.get(this.indexPlayer).setRight(true);
+							tabJoueurs.get(this.indexPlayer).setTurned(true);
+						} else if (c.getPollData() == 0.25) {
+
+						}
+					}
+					if (c.getIdentifier().getName().equals("1")) {
+						if (c.getPollData() == 1.0f) {
+							if (!attackReady[2]) {
+								tabJoueurs.get(this.indexPlayer).initCombo();
+								tabJoueurs.get(this.indexPlayer)
+										.setAtk(2, true);
+								attackReady[2] = true;
+							}
+						} else {
+							attackReady[2] = false;
+						}
+					}
+					if (c.getIdentifier().getName().equals("2")) {
+						if (c.getPollData() == 1.0f) {
+							if (!attackReady[0]) {
+								tabJoueurs.get(this.indexPlayer)
+										.setAtk(0, true);
+								attackReady[0] = true;
+							}
+						} else {
+							attackReady[0] = false;
+						}
+					}
+					if (c.getIdentifier().getName().equals("3")) {
+						if (c.getPollData() == 1.0f) {
+							if (!attackReady[1]) {
+								tabJoueurs.get(this.indexPlayer).initCombo();
+								tabJoueurs.get(this.indexPlayer)
+										.setAtk(1, true);
+								attackReady[1] = true;
+							}
+						} else {
+							attackReady[1] = false;
+						}
+					}
+					if (c.getIdentifier().getName().equals("7")) {
+						if (c.getPollData() == 1.0f) {
+							if (!hasPaused) {
+								if (GameEngine.CURRENT_STATE == State.IN_GAME) {
+									GameEngine.CURRENT_STATE = State.PAUSED;
+									((CardLayout) Menu.cards.getLayout()).show(
+											Menu.cards, "gamepaused");
+								} else {
+									GameEngine.CURRENT_STATE = State.IN_GAME;
+									((CardLayout) Menu.cards.getLayout()).show(
+											Menu.cards, "play");
+								}
+								hasPaused = true;
+								lastLoopPause = main.engineLoop;
+							}
+						} else {
+
+						}
+
+					}
+				}else if (this.controller.getName().matches("(?i).*stick.*")) {
+					if (c.getIdentifier().getName().equals("pov")) {
+						
+						if (c.getPollData() == 1) {
+							tabJoueurs.get(this.indexPlayer).setLeft(true);
+							tabJoueurs.get(this.indexPlayer).setTurned(false);
+						} else if (c.getPollData() == 0.75) {
+
+						} else if (c.getPollData() == 0.5) {
+							tabJoueurs.get(this.indexPlayer).setRight(true);
+							tabJoueurs.get(this.indexPlayer).setTurned(true);
+						} else if (c.getPollData() == 0.25) {
+
+						}else {
+							tabJoueurs.get(this.indexPlayer).setRight(false);
+							tabJoueurs.get(this.indexPlayer).setLeft(false);
+						}
+					}
+					
+					if (c.getIdentifier().getName().equals("0")) {
+						if (c.getPollData() == 1.0f) {
+							if (!hasJumped) {
+								tabJoueurs.get(this.indexPlayer).setJump(true);
+								hasJumped = true;
+								lastLoopJump = main.engineLoop;
+							}
+						} else {
+							tabJoueurs.get(this.indexPlayer).setJump(false);
+						}
+					}
+					
+					if (c.getIdentifier().getName().equals("1")) {
+						if (c.getPollData() == 1.0f) {
+							if (!attackReady[2]) {
+								tabJoueurs.get(this.indexPlayer).initCombo();
+								tabJoueurs.get(this.indexPlayer)
+										.setAtk(2, true);
+								attackReady[2] = true;
+							}
+						} else {
+							attackReady[2] = false;
+						}
+					}
+					if (c.getIdentifier().getName().equals("2")) {
+						if (c.getPollData() == 1.0f) {
+							if (!attackReady[0]) {
+								tabJoueurs.get(this.indexPlayer)
+										.setAtk(0, true);
+								attackReady[0] = true;
+							}
+						} else {
+							attackReady[0] = false;
+						}
+					}
+					if (c.getIdentifier().getName().equals("3")) {
+						if (c.getPollData() == 1.0f) {
+							if (!attackReady[1]) {
+								tabJoueurs.get(this.indexPlayer).initCombo();
+								tabJoueurs.get(this.indexPlayer)
+										.setAtk(1, true);
+								attackReady[1] = true;
+							}
+						} else {
+							attackReady[1] = false;
+						}
+					}
+					
+					if (c.getIdentifier().getName().equals("7")) {
+						if (c.getPollData() == 1.0f) {
+							if (!hasPaused) {
+								if (GameEngine.CURRENT_STATE == State.IN_GAME) {
+									GameEngine.CURRENT_STATE = State.PAUSED;
+									((CardLayout) Menu.cards.getLayout()).show(
+											Menu.cards, "gamepaused");
+								} else {
+									GameEngine.CURRENT_STATE = State.IN_GAME;
+									((CardLayout) Menu.cards.getLayout()).show(
+											Menu.cards, "play");
+								}
+								hasPaused = true;
+								lastLoopPause = main.engineLoop;
+							}
+						} else {
+
+						}
+
+					}
 				}
 				
 				
