@@ -1,7 +1,9 @@
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-
+/**
+ * Classe d'animation qui permet de lire en boucle les frames du sprite correspondant au corps du personnage
+ */
 public class Animator {
 	
 	boolean running = false;
@@ -10,15 +12,27 @@ public class Animator {
 	public long previousTime, speed;
 	public int frameAtPause, currentFrame;
 	
+	/**
+	 * La liste des frames composant le sprite
+	 * @param frames : BufferedImage
+	 */
 	public Animator(ArrayList<BufferedImage> frames) {
 		this.frames = frames;
 	}
 	
+	/**
+	 * Temps entre chaque frame
+	 * @param speed : en nombre de boucle de moteur de jeu
+	 */
 	public void setSpeed(long speed) {
 		this.speed = speed;
 	}
 	
-	public void update(long time) {
+	/**
+	 * Mise à jour de la frame
+	 */
+	public void update() {
+		long time = System.currentTimeMillis();
 		if (running) {
 			if (time - previousTime >= speed) {
 				currentFrame++;
@@ -31,6 +45,9 @@ public class Animator {
 		}
 	}
 	
+	/**
+	 * Permet de commencer la lecture d'un sprite
+	 */
 	public void start() {
 		running = true;
 		previousTime = 0;
@@ -38,6 +55,9 @@ public class Animator {
 		currentFrame = 0;
 	}
 	
+	/**
+	 * Permet d'arrêter la lecture d'un sprite
+	 */
 	public void stop() {
 		running = false;
 		previousTime = 0;
@@ -46,14 +66,20 @@ public class Animator {
 		sprite = frames.get(8);
 	}
 	
+	/**
+	 * Permet de mettre en pause la lecture d'un sprite
+	 */
 	public void pause() {
 		frameAtPause = currentFrame;
 		running = false;
 	}
 	
+	/**
+	 * Permet de reprendre la lecture d'un sprite à là où elle était arrétée
+	 */
 	public void resume() {
-		currentFrame = frameAtPause;
 		running = true;
+		//currentFrame = 0;
 	}
 
 }

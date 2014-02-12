@@ -29,8 +29,8 @@ public class Player {
 	int positionXOnJumping;
 	int positionYOnJumping;
 	Animator characterAnimationBody;
-	AnimatorFixedObject characterAnimationAttack;
-	AnimatorFixedObject characterAnimationJump;
+	AnimatorOneLoop characterAnimationBigAttack;
+	AnimatorOneLoop characterAnimationJump;
 	ArrayList<BufferedImage> arrayOfSpritesOfTheBody;
 	ArrayList<BufferedImage> arrayOfSpritesOfPThePlayerJump;
 	ArrayList<BufferedImage> arrayOfSpritesOfTheBigPlayerAttack;
@@ -373,7 +373,9 @@ public class Player {
 		
 		switch (atkState) {
 		case Constant.ATK_STATE_ATTACKING:
-			if (this.collisionAttack() || lastTimerAttack <= time) {
+			if (this.collisionAttack()) {
+				atkState = Constant.ATK_HAS_HIT;
+			} else if (lastTimerAttack <= time) {
 				atkState = Constant.ATK_STATE_IN_COOLDOWN;
 				lastTimerAttack = -1;
 			}
@@ -400,6 +402,12 @@ public class Player {
 				currentStatus = PlayerStatus.NORMAL;
 				atkState = Constant.ATK_STATE_READY;
 				GCDTimer = -1;
+			}
+			break;
+		case Constant.ATK_HAS_HIT:
+			if (lastTimerAttack <= time) {
+				atkState = Constant.ATK_STATE_IN_COOLDOWN;
+				lastTimerAttack = -1;
 			}
 			break;
 		default: 

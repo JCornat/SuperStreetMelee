@@ -34,7 +34,7 @@ public class GameEngine {
 		arrayOfComboForOneCharacter.clear();
 
 		// Creation des attaques
-		Attack small = new Attack("Small", 55, 5, 5, 0, 0, 0, 20, 20, false);
+		Attack small = new Attack("Small", 55, 5, 5, 0, 10, 0, 20, 20, false);
 		Attack medium = new Attack("Medium", 73, 7, 10, 0, 75, 100, 60, 60, false);
 		Attack big = new Attack("Big", 80, 10, 15, 30, 40, 150, 100, 100, false);
 		// A venir
@@ -126,13 +126,15 @@ public class GameEngine {
 		// Lois du monde
 		if (CURRENT_STATE == State.IN_GAME) {
 			for (Player player : listPlayers) {
-				if ((player.getX() > Menu.WIDTH) || (player.getX() < -100) || (player.getY() > Menu.HEIGHT) || (player.getY() < -150)) {
+				//Limites du terrain
+				//Pour la suite, essayer de prendre des paramètres venant de Levels, pour rende la chose plus dynamique et simple a gérer
+				if ((player.getX() > Menu.WIDTH+500) || (player.getX() < -500) || (player.getY() > Menu.HEIGHT+500) || (player.getY() < -500)) {
 					player.decreaseNumberOfLife() ;
 					player.resetLife() ;
 					player.setX(Menu.WIDTH / 2 - player.w);
 					player.setY(110);
-					player.speedOnHorizontalAxis = 0 ;
-					player.speedOnVerticalAxis = 0 ;
+					player.speedOnHorizontalAxis = 0;
+					player.speedOnVerticalAxis = 0;
 				}
 				gravity.gravity(player);
 				//On verifie si les joueurs ont lance des attaques
@@ -141,10 +143,7 @@ public class GameEngine {
 				player.updateTimeAttack();
 				player.checkCombo();
 			}
-			
-				
-			//Future intelligence artificielle
-			
+		
 			//Si on est dans le jeu on joue la musique
 			backgroundsound.resume() ;
 			

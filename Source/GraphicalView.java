@@ -24,11 +24,11 @@ public class GraphicalView extends JPanel {
 			arrayPlayers.get(i).characterAnimationBody.setSpeed(150);
 			arrayPlayers.get(i).characterAnimationBody.start();
 			
-			arrayPlayers.get(i).characterAnimationJump = new AnimatorFixedObject(arrayPlayers.get(i).arrayOfSpritesOfPThePlayerJump);
+			arrayPlayers.get(i).characterAnimationJump = new AnimatorOneLoop(arrayPlayers.get(i).arrayOfSpritesOfPThePlayerJump);
 			arrayPlayers.get(i).characterAnimationJump.setSpeed(30);
 			
-			arrayPlayers.get(i).characterAnimationAttack = new AnimatorFixedObject(arrayPlayers.get(i).arrayOfSpritesOfTheBigPlayerAttack);
-			arrayPlayers.get(i).characterAnimationAttack.setSpeed(30);
+			arrayPlayers.get(i).characterAnimationBigAttack = new AnimatorOneLoop(arrayPlayers.get(i).arrayOfSpritesOfTheBigPlayerAttack);
+			arrayPlayers.get(i).characterAnimationBigAttack.setSpeed(30);
 			//arrayPlayers.get(i).characterJumping.start();
 		}
 	}
@@ -53,67 +53,61 @@ public class GraphicalView extends JPanel {
 			//Recuperation de l'attaque en cours
 			Attack currentAttack = player.getAttaque();
 			
-			//Affichage de l'attaque s'il y a
+			//Lancement de l'animation si une attaque est en cours
 			if (currentAttack != null)
 			{	
-				//player.character.pause();
-				//Si le joueur est tourné à droite
-				if(player.isTurningRight) {
-					//En fonction de l'attaque actuelle
-					if(currentAttack.name == "Small") {
-						//Nous affichons un bras qui bouge par rapport à sa position normale
-						player.characterAnimationAttack.start();
-					} else {
-						graphics.drawImage(player.imageArm, player.getX()+90, player.getY()+35, this);
+				//Si petite attaque, alors charger l'animation petite attaque
+				if(currentAttack.name == "Small") {
+					if(!player.characterAnimationBigAttack.running) {
+						player.characterAnimationBigAttack.running = true;
 					}
+				//Sinon lancer la grosse
 				} else {
-					//Sinon s'il est tourne a gauche...
-					if(currentAttack.name == "Small") {
-						graphics.drawImage(player.imageArm, player.getX()-10, player.getY()+35, this);
-					} else {
-						graphics.drawImage(player.imageArm, player.getX()-35, player.getY()+35, this);
+					if(!player.characterAnimationBigAttack.running) {
+						player.characterAnimationBigAttack.running = true;
 					}
 				}
 
-			
-						
 				
-				//DEBUGGING
-				//Utilise pour savoir la portee des coups, decommenter si on veut aligner le sprite sur l'attaque
-				/*graphics.setColor(Color.RED);
-				int tabXYWH[] = currentAttack.getAttackPosition(player);
-				graphics.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);*/
-				
-				//S'il n'attaque pas :
+
+			//S'il n'attaque pas et que l'annimation du corps est arrêtée, on la relance
 			} else {
 				if(!player.characterAnimationBody.running) {
 					player.characterAnimationBody.resume();
 				}
-				//On affiche le bras dans sa position de base
-//				if(player.isTurningRight) {
-//					graphics.drawImage(player.imageArm, player.getX()+60, player.getY()+35, this);
-//				} else {
-//					graphics.drawImage(player.imageArm, player.getX()-5, player.getY()+35, this);
-//				}
 			}
 			
-			if(player.characterAnimationAttack.running) {
-				player.characterAnimationBody.stop();
-				player.characterAnimationAttack.update(System.currentTimeMillis());
-				graphics.drawImage(player.characterAnimationAttack.sprite, player.getX(), player.getY(), 113,100, this);
+			//Si la grosse attaque est en train d'être animée, on arrête l'animation du corps du personnage
+			//Et on update celle de l'attaque, puis on l'affiche
+			if(player.characterAnimationBigAttack.running) {
+				if(player.atkState != Constant.ATK_STATE_IN_COOLDOWN) {
+					player.characterAnimationBody.stop();
+					player.characterAnimationBigAttack.update();
+					if(player.isTurningRight) {
+						graphics.drawImage(player.characterAnimationBigAttack.sprite, player.getX(), player.getY(), 113,100, this);
+					} else {
+						graphics.drawImage(player.characterAnimationBigAttack.sprite, player.getX()+80, player.getY(), -113,100, this);
+					}
+				} else {
+					player.characterAnimationBody.resume();
+					if(currentAttack.name == "Small") {
+						player.characterAnimationBigAttack.stop();
+					//Sinon lancer la grosse
+					} else {
+						player.characterAnimationBigAttack.stop();
+					}
+				}
 				
-			} else {
-				//player.character.start();
 			}
 			
 			
-			player.characterAnimationBody.update(System.currentTimeMillis());
+			//On anime le corps du joueur 
+			player.characterAnimationBody.update();
 			if(player.isTurningRight) {
 				graphics.drawImage(player.characterAnimationBody.sprite, player.getX(), player.getY(), 85,80, this);
 			} else {
 				graphics.drawImage(player.characterAnimationBody.sprite, player.getX()+80, player.getY(), -85, 80, null);
 			}
-
 
 			
 			//Affichage de l'etat des coups
@@ -129,7 +123,7 @@ public class GraphicalView extends JPanel {
 				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
 			}
 
-			player.characterAnimationJump.update(System.currentTimeMillis());
+			player.characterAnimationJump.update();
 			if(player.isJumping) {
 				if(!player.booleanJump) {
 					//System.out.println(player.getX() + " "+ player.getY());
@@ -165,6 +159,16 @@ public class GraphicalView extends JPanel {
 //			} else if(!player.isJumping) {
 //				player.characterJumping.stop();
 //			}
+			
+
+			//#######################
+			//#######DEBUGGING#######
+			//Utilise pour savoir la portee des coups, decommenter si on veut aligner le sprite sur l'attaque
+			//graphics.setColor(Color.RED);
+			//int tabXYWH[] = currentAttack.getAttackPosition(player);
+			//graphics.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);
+			//#######################
+			
 			
 
 			//DEBUGGING

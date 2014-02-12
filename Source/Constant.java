@@ -6,6 +6,7 @@ public class Constant {
 	final static int ATK_STATE_ATTACKING = 1;
 	final static int ATK_STATE_IN_COOLDOWN = 2;
 	final static int ATK_STATE_CASTING = 3;
+	final static int ATK_HAS_HIT = 4;
 
 	// Moteur
 	final static int GRAVITY_MAX = 2;
