@@ -28,12 +28,12 @@ public class Player {
 	boolean booleanJump;
 	int positionXOnJumping;
 	int positionYOnJumping;
-	Animator character;
-	AnimatorFixedObject characterAttack;
-	AnimatorFixedObject characterJumping;
-	ArrayList<BufferedImage> sprites;
-	ArrayList<BufferedImage> spritesOfJump;
-	ArrayList<BufferedImage> spritesOfAttack;
+	Animator characterAnimationBody;
+	AnimatorFixedObject characterAnimationAttack;
+	AnimatorFixedObject characterAnimationJump;
+	ArrayList<BufferedImage> arrayOfSpritesOfTheBody;
+	ArrayList<BufferedImage> arrayOfSpritesOfPThePlayerJump;
+	ArrayList<BufferedImage> arrayOfSpritesOfTheBigPlayerAttack;
 	int numberOfLife;
 	long waitedTimeForCombo;
 	boolean isWaitingForCombo;
@@ -91,66 +91,63 @@ public class Player {
 		numberOfLife = 5;
 		
 		
-		BufferedImageLoader loader = new BufferedImageLoader();
-		BufferedImage spriteToLoad = null;
+		BufferedImageLoader bufferedImageToLoad = new BufferedImageLoader();
+		BufferedImage bufferedImageContainingSprites = null;
 		try {
 			if(skin==1) {
-				spriteToLoad = loader.loadImage("images/character/characterSprite.png");
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/characterSprite.png");
 			} else if(skin==2) {
-				spriteToLoad = loader.loadImage("images/character/characterSprite2.png");
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/characterSprite2.png");
 			}
 		} catch (IOException e) {
 			System.err.println(e);
 		}
-		SpriteSheet spriteSheet = new SpriteSheet(spriteToLoad);
-		sprites = new ArrayList<BufferedImage>();
-		sprites.add(spriteSheet.substractImage(0, 0, 215, 200));
-		sprites.add(spriteSheet.substractImage(215, 0, 215, 200));
-		sprites.add(spriteSheet.substractImage(430, 0, 215, 200));
-		sprites.add(spriteSheet.substractImage(645, 0, 215, 200));
-		sprites.add(spriteSheet.substractImage(860, 0, 215, 200));
-		sprites.add(spriteSheet.substractImage(1075, 0, 215, 200));
-		sprites.add(spriteSheet.substractImage(1290, 0, 215, 200));
-		sprites.add(spriteSheet.substractImage(1505, 0, 215, 200));
-		sprites.add(spriteSheet.substractImage(1720, 0, 215, 200));
+		SpriteSheet spriteSheet = new SpriteSheet(bufferedImageContainingSprites);
+		arrayOfSpritesOfTheBody = new ArrayList<BufferedImage>();
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(0, 0, 215, 200));
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(215, 0, 215, 200));
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(430, 0, 215, 200));
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(645, 0, 215, 200));
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(860, 0, 215, 200));
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(1075, 0, 215, 200));
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(1290, 0, 215, 200));
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(1505, 0, 215, 200));
+		arrayOfSpritesOfTheBody.add(spriteSheet.substractImage(1720, 0, 215, 200));
 		
 		
 		try {
-			spriteToLoad = loader.loadImage("images/character/jumpingSprite2.png");
+			bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/jumpingSprite2.png");
 		} catch (IOException e) {
 			System.err.println(e);
 		}
-		spriteSheet = new SpriteSheet(spriteToLoad);
-		spritesOfJump = new ArrayList<BufferedImage>();
-		spritesOfJump.add(spriteSheet.substractImage(0, 0, 71, 61));
-		spritesOfJump.add(spriteSheet.substractImage(71, 0, 71, 61));
-		spritesOfJump.add(spriteSheet.substractImage(142, 0, 71, 61));
-		spritesOfJump.add(spriteSheet.substractImage(213, 0, 71, 61));
-		spritesOfJump.add(spriteSheet.substractImage(284, 0, 71, 61));
-		spritesOfJump.add(spriteSheet.substractImage(355, 0, 71, 61));
-		spritesOfJump.add(spriteSheet.substractImage(426, 0, 71, 61));
-		
-		
+		spriteSheet = new SpriteSheet(bufferedImageContainingSprites);
+		arrayOfSpritesOfPThePlayerJump = new ArrayList<BufferedImage>();
+		arrayOfSpritesOfPThePlayerJump.add(spriteSheet.substractImage(0, 0, 71, 61));
+		arrayOfSpritesOfPThePlayerJump.add(spriteSheet.substractImage(71, 0, 71, 61));
+		arrayOfSpritesOfPThePlayerJump.add(spriteSheet.substractImage(142, 0, 71, 61));
+		arrayOfSpritesOfPThePlayerJump.add(spriteSheet.substractImage(213, 0, 71, 61));
+		arrayOfSpritesOfPThePlayerJump.add(spriteSheet.substractImage(284, 0, 71, 61));
+		arrayOfSpritesOfPThePlayerJump.add(spriteSheet.substractImage(355, 0, 71, 61));
+		arrayOfSpritesOfPThePlayerJump.add(spriteSheet.substractImage(426, 0, 71, 61));
 
+		
 		try {
-			spriteToLoad = loader.loadImage("images/character/character1Attack.png");
+			bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/character1Attack.png");
 		} catch (IOException e) {
 			System.err.println(e);
 		}
-		spriteSheet = new SpriteSheet(spriteToLoad);
-		spritesOfAttack = new ArrayList<BufferedImage>();
-		spritesOfAttack.add(spriteSheet.substractImage(0, 0, 286, 250));
-		spritesOfAttack.add(spriteSheet.substractImage(286, 0, 286, 250));
-		spritesOfAttack.add(spriteSheet.substractImage(572, 0, 286, 250));
-		spritesOfAttack.add(spriteSheet.substractImage(858, 0, 286, 250));
-		spritesOfAttack.add(spriteSheet.substractImage(1144, 0, 286, 250));
-		spritesOfAttack.add(spriteSheet.substractImage(1430, 0, 286, 250));
-		spritesOfAttack.add(spriteSheet.substractImage(1717, 0, 286, 250));
-		spritesOfAttack.add(spriteSheet.substractImage(2002, 0, 286, 250));
+		spriteSheet = new SpriteSheet(bufferedImageContainingSprites);
+		arrayOfSpritesOfTheBigPlayerAttack = new ArrayList<BufferedImage>();
+		arrayOfSpritesOfTheBigPlayerAttack.add(spriteSheet.substractImage(0, 0, 286, 250));
+		arrayOfSpritesOfTheBigPlayerAttack.add(spriteSheet.substractImage(286, 0, 286, 250));
+		arrayOfSpritesOfTheBigPlayerAttack.add(spriteSheet.substractImage(572, 0, 286, 250));
+		arrayOfSpritesOfTheBigPlayerAttack.add(spriteSheet.substractImage(858, 0, 286, 250));
+		arrayOfSpritesOfTheBigPlayerAttack.add(spriteSheet.substractImage(1144, 0, 286, 250));
+		arrayOfSpritesOfTheBigPlayerAttack.add(spriteSheet.substractImage(1430, 0, 286, 250));
+		arrayOfSpritesOfTheBigPlayerAttack.add(spriteSheet.substractImage(1717, 0, 286, 250));
+		arrayOfSpritesOfTheBigPlayerAttack.add(spriteSheet.substractImage(2002, 0, 286, 250));
 		
 		
-		
-	
 		numberOfLife = Constant.LIFE_NUMBER;
 		waitedTimeForCombo = -1;
 		isWaitingForCombo = false;

@@ -31,7 +31,6 @@ public class Animator {
 		}
 	}
 	
-	
 	public void start() {
 		running = true;
 		previousTime = 0;
