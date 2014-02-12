@@ -20,16 +20,15 @@ public class GraphicalView extends JPanel {
 		arrayPlayers = jo;
 		
 		for (int i = 0; i < arrayPlayers.size(); i++) {
-			arrayPlayers.get(i).character = new Animator(arrayPlayers.get(i).sprites);
-			arrayPlayers.get(i).character.setSpeed(150);
-			arrayPlayers.get(i).character.start();
+			arrayPlayers.get(i).characterAnimationBody = new Animator(arrayPlayers.get(i).arrayOfSpritesOfTheBody);
+			arrayPlayers.get(i).characterAnimationBody.setSpeed(150);
+			arrayPlayers.get(i).characterAnimationBody.start();
 			
+			arrayPlayers.get(i).characterAnimationJump = new AnimatorFixedObject(arrayPlayers.get(i).arrayOfSpritesOfPThePlayerJump);
+			arrayPlayers.get(i).characterAnimationJump.setSpeed(30);
 			
-			arrayPlayers.get(i).characterJumping = new AnimatorFixedObject(arrayPlayers.get(i).spritesOfJump);
-			arrayPlayers.get(i).characterJumping.setSpeed(30);
-			
-			arrayPlayers.get(i).characterAttack = new AnimatorFixedObject(arrayPlayers.get(i).spritesOfAttack);
-			arrayPlayers.get(i).characterAttack.setSpeed(30);
+			arrayPlayers.get(i).characterAnimationAttack = new AnimatorFixedObject(arrayPlayers.get(i).arrayOfSpritesOfTheBigPlayerAttack);
+			arrayPlayers.get(i).characterAnimationAttack.setSpeed(30);
 			//arrayPlayers.get(i).characterJumping.start();
 		}
 	}
@@ -63,8 +62,7 @@ public class GraphicalView extends JPanel {
 					//En fonction de l'attaque actuelle
 					if(currentAttack.name == "Small") {
 						//Nous affichons un bras qui bouge par rapport à sa position normale
-
-						player.characterAttack.start();
+						player.characterAnimationAttack.start();
 					} else {
 						graphics.drawImage(player.imageArm, player.getX()+90, player.getY()+35, this);
 					}
@@ -88,8 +86,8 @@ public class GraphicalView extends JPanel {
 				
 				//S'il n'attaque pas :
 			} else {
-				if(!player.character.running) {
-					player.character.resume();
+				if(!player.characterAnimationBody.running) {
+					player.characterAnimationBody.resume();
 				}
 				//On affiche le bras dans sa position de base
 //				if(player.isTurningRight) {
@@ -99,21 +97,21 @@ public class GraphicalView extends JPanel {
 //				}
 			}
 			
-			if(player.characterAttack.running) {
-				player.character.stop();
-				player.characterAttack.update(System.currentTimeMillis());
-				graphics.drawImage(player.characterAttack.sprite, player.getX(), player.getY(), 113,100, this);
+			if(player.characterAnimationAttack.running) {
+				player.characterAnimationBody.stop();
+				player.characterAnimationAttack.update(System.currentTimeMillis());
+				graphics.drawImage(player.characterAnimationAttack.sprite, player.getX(), player.getY(), 113,100, this);
 				
 			} else {
 				//player.character.start();
 			}
 			
 			
-			player.character.update(System.currentTimeMillis());
+			player.characterAnimationBody.update(System.currentTimeMillis());
 			if(player.isTurningRight) {
-				graphics.drawImage(player.character.sprite, player.getX(), player.getY(), 85,80, this);
+				graphics.drawImage(player.characterAnimationBody.sprite, player.getX(), player.getY(), 85,80, this);
 			} else {
-				graphics.drawImage(player.character.sprite, player.getX()+80, player.getY(), -85, 80, null);
+				graphics.drawImage(player.characterAnimationBody.sprite, player.getX()+80, player.getY(), -85, 80, null);
 			}
 
 
@@ -131,13 +129,13 @@ public class GraphicalView extends JPanel {
 				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
 			}
 
-			player.characterJumping.update(System.currentTimeMillis());
+			player.characterAnimationJump.update(System.currentTimeMillis());
 			if(player.isJumping) {
 				if(!player.booleanJump) {
 					//System.out.println(player.getX() + " "+ player.getY());
 					player.positionXOnJumping = player.getX()-35;
 					player.positionYOnJumping = player.getY()+35;
-					player.characterJumping.start();
+					player.characterAnimationJump.start();
 					player.booleanJump = true;
 				}
 			} else if(!player.isJumping) {
@@ -157,9 +155,9 @@ public class GraphicalView extends JPanel {
 			
 			
 			if(player.isTurningRight) {
-				graphics.drawImage(player.characterJumping.sprite, player.positionXOnJumping, player.positionYOnJumping, 150,50, this);
+				graphics.drawImage(player.characterAnimationJump.sprite, player.positionXOnJumping, player.positionYOnJumping, 150,50, this);
 			} else {
-				graphics.drawImage(player.characterJumping.sprite, player.positionXOnJumping+150, player.positionYOnJumping, -150,50, this);
+				graphics.drawImage(player.characterAnimationJump.sprite, player.positionXOnJumping+150, player.positionYOnJumping, -150,50, this);
 			}
 //			if(player.getJump() == true) {
 //				player.characterJumping.resume();

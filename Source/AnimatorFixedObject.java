@@ -50,13 +50,4 @@ public class AnimatorFixedObject {
 		currentFrame = 0;
 	}
 	
-	public void pause() {
-		frameAtPause = currentFrame;
-		running = false;
-	}
-	
-	public void resume() {
-		currentFrame = frameAtPause;
-		running = true;
-	}
 }

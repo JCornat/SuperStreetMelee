@@ -12,10 +12,8 @@ public class GraphicalController {
 	/**
 	 * Constructeur pour la detection de touches
 	 * 
-	 * @param f
-	 *            : frame sur laquelle appliquer le Listener
-	 * @param joueurs
-	 *            : liste des joueurs actuels
+	 * @param f : frame sur laquelle appliquer le Listener
+	 * @param joueurs : liste des joueurs actuels
 	 */
 
 	public GraphicalController(Menu menu, ArrayList<Player> joueurs) {
