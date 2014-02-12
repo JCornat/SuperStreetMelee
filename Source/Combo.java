@@ -19,6 +19,10 @@ public class Combo {
 		binds[0] = attack1;
 		binds[1] = attack2;
 		binds[2] = attack3;
+		// Les attaques passees en parametres deviennent alors des attaques declencheurs de combo
+		attack1.isBind = true;
+		attack2.isBind = true;
+		attack3.isBind = true;
 		specialAttack = specAttack;
 	}
 }

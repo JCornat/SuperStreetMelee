@@ -75,7 +75,7 @@ public class Xbox360Controller {
 				hasJumped = false ;
 			}
 			
-			if ((tabJoueurs.get(0).currentStatus == PlayerStatus.FALLING) && (main.engineLoop >= lastLoopJump + Constant.TIME_MIN_BETWEEN_JUMPS)) {
+			if ((tabJoueurs.get(indexPlayer).currentStatus == PlayerStatus.FALLING) && (main.engineLoop >= lastLoopJump + Constant.TIME_MIN_BETWEEN_JUMPS)) {
 				hasJumped = false ;
 				lastLoopJump = main.engineLoop ;
 			}
@@ -90,6 +90,8 @@ public class Xbox360Controller {
 				/*if (c.getIdentifier().getName().equals("rz")) {
 					if (c.getPollData() > 0.3) {
 						// Charge ici
+						tabJoueurs.get(this.indexPlayer).eject(100, 0);
+						tabJoueurs.get(this.indexPlayer).currentStatus = PlayerStatus.CHARGING;
 					}
 				}*/
 
@@ -134,37 +136,34 @@ public class Xbox360Controller {
 					}
 					if (c.getIdentifier().getName().equals("1")) {
 						if (c.getPollData() == 1.0f) {
-							if (!attackReady[2]) {
+							if (attackReady[2]) {
 								tabJoueurs.get(this.indexPlayer).initCombo();
-								tabJoueurs.get(this.indexPlayer)
-										.setAtk(2, true);
-								attackReady[2] = true;
+								tabJoueurs.get(this.indexPlayer).setAtk(2, true);
+								attackReady[2] = false;
 							}
 						} else {
-							attackReady[2] = false;
+							attackReady[2] = true;
 						}
 					}
 					if (c.getIdentifier().getName().equals("2")) {
 						if (c.getPollData() == 1.0f) {
-							if (!attackReady[0]) {
-								tabJoueurs.get(this.indexPlayer)
-										.setAtk(0, true);
-								attackReady[0] = true;
+							if (attackReady[0]) {
+								tabJoueurs.get(this.indexPlayer).setAtk(0, true);
+								attackReady[0] = false;
 							}
 						} else {
-							attackReady[0] = false;
+							attackReady[0] = true;
 						}
 					}
 					if (c.getIdentifier().getName().equals("3")) {
 						if (c.getPollData() == 1.0f) {
-							if (!attackReady[1]) {
+							if (attackReady[1]) {
 								tabJoueurs.get(this.indexPlayer).initCombo();
-								tabJoueurs.get(this.indexPlayer)
-										.setAtk(1, true);
-								attackReady[1] = true;
+								tabJoueurs.get(this.indexPlayer).setAtk(1, true);
+								attackReady[1] = false;
 							}
 						} else {
-							attackReady[1] = false;
+							attackReady[1] = true;
 						}
 					}
 					if (c.getIdentifier().getName().equals("7")) {

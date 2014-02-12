@@ -240,10 +240,12 @@ public class Player {
 	 * @param b
 	 */
 	public void setAtk(int n, boolean b) {
-		if (b && atkState == Constant.ATK_STATE_READY) {
+		if (b && atkState == Constant.ATK_STATE_READY && tabAttacks.get(n).getEffectiveCooldown() <= main.engineLoop) {
 			if (!isWaitingForCombo) {
 				attack.set(n, b);
-			} else tabLastAttacksForCombo.add(tabAttacks.get(n));
+			} else if (isWaitingForCombo && tabAttacks.get(n).isBind) {
+				tabLastAttacksForCombo.add(tabAttacks.get(n));
+			}
 		} else {
 			attack.set(n, false);
 		}
@@ -275,6 +277,7 @@ public class Player {
 				case 1:
 					setAtk(tabAttacks.indexOf(tabLastAttacksForCombo.get(0)), true);
 					break;
+				// Combos ˆ 2 touches et plus
 				case 2:
 				case 3:
 				{
@@ -366,6 +369,8 @@ public class Player {
 		for (int i = 0; i < tabAttacks.size(); i++) {
 			if (tabAttacks.get(i).getEffectiveCooldown() <= time) {
 				tabAttacks.get(i).setEffectiveCooldown(0);
+				// L'attaque peut de nouveau tre lancŽe
+				setAtk(i, false);
 			}
 		}
 		
@@ -377,16 +382,22 @@ public class Player {
 			}
 			break;
 		case Constant.ATK_STATE_IN_COOLDOWN:
-			if (GCDTimer != -1 && time >= GCDTimer && time >= currentAttack.getEffectiveCooldown())	{
-				// Desactivation de l'attaque (speciale ou normale)
+			// Si le player n'est plus en cooldown global
+			/* Le cooldown des attaques, propre au lancement de chaque attaque,
+			 et gere dans la methode setAtack() */
+			if (GCDTimer != -1 && time >= GCDTimer)	{
+				// Desactivation de l'attaque speciale et des attaques necessaire a son lancement
 				if (currentAttack.isSpecialAttack) {
 					for (Attack a : tabLastAttacksForCombo)
 						setAtk(tabAttacks.indexOf(a), false);
-				} else setAtk(tabAttacks.indexOf(currentAttack), false);
+				}
+				// Desactivation des attaques basiques
+				for (int i = 0; i < tabAttacks.size(); i++)
+					setAtk(i, false);
 				// On vide le tableau de sauvegarde des attaques
 				tabLastAttacksForCombo.clear();
 				currentAttack = null;
-				// remise a zero des combos
+				// Remise a zero des combos
 				for (int j = 0; j < tabCombos.size(); j++)
 					setAtk(tabAttacks.indexOf(tabCombos.get(j).specialAttack), false);
 				currentStatus = PlayerStatus.NORMAL;
