@@ -119,7 +119,8 @@ public class GraphicalController {
 				GameEngine.resetGame();
 				break;
 			case KeyEvent.VK_T:
-				tabJoueurs.get(0).eject(100, 50);
+				tabJoueurs.get(0).eject(150, 0);
+				//tabJoueurs.get(0).currentStatus = PlayerStatus.CHARGING;
 				break;
 			case KeyEvent.VK_ESCAPE:
 				if (GameEngine.CURRENT_STATE == State.IN_GAME) {
