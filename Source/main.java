@@ -37,7 +37,6 @@ public class main {
 				averageFrames = frames;
 				frames = 0;
 				game.updateTimer();
-				//System.out.println(engineLoop);
 			}
 		}
 	}
