@@ -31,7 +31,6 @@ public class main {
 			game.update();
 			
 			lastTime = System.nanoTime();
-			
 			if (System.currentTimeMillis()-timerFPS >= 1000) {
 				timerFPS = System.currentTimeMillis();
 				averageFrames = frames;
