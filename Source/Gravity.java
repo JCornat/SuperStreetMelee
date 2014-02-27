@@ -5,6 +5,9 @@ public class Gravity {
 
 	public int collisionOnLeftSide, collisionOnRightSide, collisionOnTopSide, collisionOnBottomSide;
 	public static Player player;
+	public static PlayerSpeed playerSpeed;
+	public static PlayerPosition playerPosition;
+	
 	
 	public Gravity() {
 		collisionOnLeftSide = -1;
@@ -20,7 +23,9 @@ public class Gravity {
 	 */
 	public void gravity(Player p) {
 		player = p;
-		if (GameEngine.CURRENT_STATE == State.IN_GAME) {
+		playerSpeed = p.playerSpeed;
+		playerPosition = p.playerPosition;
+		if (Game.CURRENT_STATE == State.IN_GAME) {
 			gravityApply();
 			calculationVerticalCollision();
 			calculationHorizontalCollision();
@@ -33,11 +38,11 @@ public class Gravity {
 	 */
 	private void gravityApply() {
 		//Application de la gravite à la vitesseY du joueur
-		player.speedOnVerticalAxis = player.speedOnVerticalAxis + Constant.GRAVITY_MAX;
+		playerSpeed.speedOnVerticalAxis = playerSpeed.speedOnVerticalAxis + Constant.GRAVITY_MAX;
 		
 		//Vitesse cap de chute
-		if (player.speedOnVerticalAxis > Constant.GRAVITY_SPEED_CAP) {
-			player.speedOnVerticalAxis = Constant.GRAVITY_SPEED_CAP;
+		if (playerSpeed.speedOnVerticalAxis > Constant.GRAVITY_SPEED_CAP) {
+			playerSpeed.speedOnVerticalAxis = Constant.GRAVITY_SPEED_CAP;
 		}
 	}
 	
@@ -46,31 +51,31 @@ public class Gravity {
 	 * Verification de collision verticale
 	 */
 	public void calculationVerticalCollision() {
-		int y = player.getY() + player.speedOnVerticalAxis / 10;
-		if (player.speedOnVerticalAxis > 0) {
+		int y = playerPosition.getY() + playerSpeed.speedOnVerticalAxis / 10;
+		if (playerSpeed.speedOnVerticalAxis > 0) {
 			//Le personnage est en train d'aller vers le bas
-			collisionOnBottomSide = Collision.collisionCalculation(player.getX(), y, player.getW(),player.getH(), GameEngine.arrayDecor, player);
+			collisionOnBottomSide = Collision.collisionCalculation(playerPosition.getX(), y, playerPosition.getW(),playerPosition.getH(), Game.arrayDecor, player);
 			if (collisionOnBottomSide > -1) {
 				//Contact avec le sol
-				player.setY(player.getY() + GameEngine.arrayDecor.get(collisionOnBottomSide).y - player.getY() - player.getH());
-				player.speedOnVerticalAxis = 0;
+				playerPosition.setY(playerPosition.getY() + Game.arrayDecor.get(collisionOnBottomSide).y - playerPosition.getY() - playerPosition.getH());
+				playerSpeed.speedOnVerticalAxis = 0;
 				player.jumps = Constant.JUMP_BASE;
 				player.currentStatus = PlayerStatus.NORMAL ;
 			} else {
 				//Le personnage tombe
-				player.setY(y);
+				playerPosition.setY(y);
 				collisionOnBottomSide = -1;
 			}
-		} else if (player.speedOnVerticalAxis < 0) {
+		} else if (playerSpeed.speedOnVerticalAxis < 0) {
 			//Le personnage est en train d'aller vers le haut
-			collisionOnTopSide = Collision.collisionCalculation(player.getX(), y, player.getW(),player.getH(), GameEngine.arrayDecor, player);
+			collisionOnTopSide = Collision.collisionCalculation(playerPosition.getX(), y, playerPosition.getW(),playerPosition.getH(), Game.arrayDecor, player);
 			if (collisionOnTopSide > -1) {
 				//Contact avec un decor situe au-dessus
-				player.setY(player.getY() + GameEngine.arrayDecor.get(collisionOnTopSide).y + GameEngine.arrayDecor.get(collisionOnTopSide).h - player.getY());
-				player.speedOnVerticalAxis = 0;
+				playerPosition.setY(playerPosition.getY() + Game.arrayDecor.get(collisionOnTopSide).y + Game.arrayDecor.get(collisionOnTopSide).h - playerPosition.getY());
+				playerSpeed.speedOnVerticalAxis = 0;
 			} else {
 				//Le personnage monte
-				player.setY(y);
+				playerPosition.setY(y);
 			}
 		}
 	}
@@ -80,78 +85,78 @@ public class Gravity {
 	 * Verification de collision horizontale
 	 */
 	public void calculationHorizontalCollision() {
-		int x = player.getX() + player.speedOnHorizontalAxis / 10;
+		int x = playerPosition.getX() + playerSpeed.speedOnHorizontalAxis / 10;
 		//Application d'une inertie si le joueur ne bouge pas
-		if (player.speedOnHorizontalAxis == 0) {
+		if (playerSpeed.speedOnHorizontalAxis == 0) {
 			if (player.right && player.isJumping) {
-				player.speedOnHorizontalAxis += Constant.INERTIE/2;
+				playerSpeed.speedOnHorizontalAxis += Constant.INERTIE/2;
 			} else if (player.left && player.isJumping) {
-				player.speedOnHorizontalAxis -= Constant.INERTIE/2;
+				playerSpeed.speedOnHorizontalAxis -= Constant.INERTIE/2;
 			} else if (player.right) {
-				player.speedOnHorizontalAxis += Constant.INERTIE;
+				playerSpeed.speedOnHorizontalAxis += Constant.INERTIE;
 			} else if (player.left) {
-				player.speedOnHorizontalAxis -= Constant.INERTIE;
+				playerSpeed.speedOnHorizontalAxis -= Constant.INERTIE;
 			}
-		} else if (player.speedOnHorizontalAxis > 0) {
+		} else if (playerSpeed.speedOnHorizontalAxis > 0) {
 			//Le personnage est en train d'aller vers la droite
 
 			//Si touche droite non enfoncee, inertie mise en place pour freiner
 			if (!player.right) {
-				player.speedOnHorizontalAxis -= Constant.INERTIE/2;
+				playerSpeed.speedOnHorizontalAxis -= Constant.INERTIE/2;
 			} else {
 				if (player.currentStatus == PlayerStatus.EJECTED) {
-					player.speedOnHorizontalAxis -= Constant.INERTIE/2;
-					if (player.speedOnHorizontalAxis <= Constant.MAX_RUN_SPEED) {
+					playerSpeed.speedOnHorizontalAxis -= Constant.INERTIE/2;
+					if (playerSpeed.speedOnHorizontalAxis <= Constant.MAX_RUN_SPEED) {
 						player.currentStatus = PlayerStatus.NORMAL;
 					}
 				} else {
-					player.speedOnHorizontalAxis += Constant.INERTIE;
-					if (player.speedOnHorizontalAxis >= Constant.MAX_RUN_SPEED) {
-						player.speedOnHorizontalAxis = Constant.MAX_RUN_SPEED;
+					playerSpeed.speedOnHorizontalAxis += Constant.INERTIE;
+					if (playerSpeed.speedOnHorizontalAxis >= Constant.MAX_RUN_SPEED) {
+						playerSpeed.speedOnHorizontalAxis = Constant.MAX_RUN_SPEED;
 					}
 				}
 			}
 
-			x = player.getX() + player.speedOnHorizontalAxis / 10;
-			collisionOnRightSide = Collision.collisionCalculation(x, player.getY(), player.getW(),player.getH(), GameEngine.arrayDecor, player);
+			x = playerPosition.getX() + playerSpeed.speedOnHorizontalAxis / 10;
+			collisionOnRightSide = Collision.collisionCalculation(x, playerPosition.getY(), playerPosition.getW(),playerPosition.getH(), Game.arrayDecor, player);
 			if (collisionOnRightSide > -1) {
 				//Contact avec le decor sur la droite
-				player.speedOnHorizontalAxis = 0;
-				player.setX(player.getX() + GameEngine.arrayDecor.get(collisionOnRightSide).x - player.getX() - player.getW());
+				playerSpeed.speedOnHorizontalAxis = 0;
+				playerPosition.setX(playerPosition.getX() + Game.arrayDecor.get(collisionOnRightSide).x - playerPosition.getX() - playerPosition.getW());
 			} else {
 				//Le personnage se deplace sur la droite
-				player.setX(x);
+				playerPosition.setX(x);
 			}
 
-		} else if (player.speedOnHorizontalAxis < 0) {
+		} else if (playerSpeed.speedOnHorizontalAxis < 0) {
 			//Le personnage est en train d'aller vers la gauche
 
 			//Si touche gauche non enfoncee, inertie mise en place pour freiner
 			if (!player.left) {
-				player.speedOnHorizontalAxis += Constant.INERTIE / 2;
+				playerSpeed.speedOnHorizontalAxis += Constant.INERTIE / 2;
 			} else {
 				if (player.currentStatus == PlayerStatus.EJECTED) {
-					player.speedOnHorizontalAxis += Constant.INERTIE / 2;
-					if (player.speedOnHorizontalAxis >= -Constant.MAX_RUN_SPEED) {
+					playerSpeed.speedOnHorizontalAxis += Constant.INERTIE / 2;
+					if (playerSpeed.speedOnHorizontalAxis >= -Constant.MAX_RUN_SPEED) {
 						player.currentStatus = PlayerStatus.NORMAL;
 					}
 				} else {
-					player.speedOnHorizontalAxis -= Constant.INERTIE;
-					if (player.speedOnHorizontalAxis <= -Constant.MAX_RUN_SPEED) {
-						player.speedOnHorizontalAxis = -Constant.MAX_RUN_SPEED;
+					playerSpeed.speedOnHorizontalAxis -= Constant.INERTIE;
+					if (playerSpeed.speedOnHorizontalAxis <= -Constant.MAX_RUN_SPEED) {
+						playerSpeed.speedOnHorizontalAxis = -Constant.MAX_RUN_SPEED;
 					}
 				}
 			}
 
-			x = player.getX() + player.speedOnHorizontalAxis / 10;
-			collisionOnLeftSide = Collision.collisionCalculation(x, player.getY(), player.getW(),player.getH(), GameEngine.arrayDecor, player);
+			x = playerPosition.getX() + playerSpeed.speedOnHorizontalAxis / 10;
+			collisionOnLeftSide = Collision.collisionCalculation(x, playerPosition.getY(), playerPosition.getW(),playerPosition.getH(), Game.arrayDecor, player);
 			if (collisionOnLeftSide > -1) {
 				//Contact avec le décor sur la gauche
-				player.speedOnHorizontalAxis = 0;
-				player.setX(player.getX() + GameEngine.arrayDecor.get(collisionOnLeftSide).x + GameEngine.arrayDecor.get(collisionOnLeftSide).w - player.getX());
+				playerSpeed.speedOnHorizontalAxis = 0;
+				playerPosition.setX(playerPosition.getX() + Game.arrayDecor.get(collisionOnLeftSide).x + Game.arrayDecor.get(collisionOnLeftSide).w - playerPosition.getX());
 			} else {
 				//Le personnage se déplace sur la gauche
-				player.setX(x);
+				playerPosition.setX(x);
 			}
 		}
 	}

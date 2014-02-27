@@ -46,8 +46,8 @@ public class GraphicalView extends JPanel {
 		for (Player player : arrayPlayers) {
 			//Affichage du nom et des points de degats du joueur
 			graphics.setColor(Color.DARK_GRAY);
-			graphics.drawString(player.getName(), (player.getX() + (player.getW()/2) - 25), (player.getY() - 25));
-			graphics.drawString(String.valueOf(player.health), (player.getX() + (player.getW()/2) - 10), (player.getY() - 10));
+			graphics.drawString(player.getName(), (player.playerPosition.getX() + (player.playerPosition.getW()/2) - 25), (player.playerPosition.getY() - 25));
+			graphics.drawString(String.valueOf(player.health), (player.playerPosition.getX() + (player.playerPosition.getW()/2) - 10), (player.playerPosition.getY() - 10));
 			graphics.drawString(player.getName() + " : " + player.numberOfLife, 250 + (this.arrayPlayers.indexOf(player))*350 , 50) ;
 			
 			//Recuperation de l'attaque en cours
@@ -84,9 +84,9 @@ public class GraphicalView extends JPanel {
 					player.characterAnimationBody.stop();
 					player.characterAnimationBigAttack.update();
 					if(player.isTurningRight) {
-						graphics.drawImage(player.characterAnimationBigAttack.sprite, player.getX(), player.getY(), 113,100, this);
+						graphics.drawImage(player.characterAnimationBigAttack.sprite, player.playerPosition.getX(), player.playerPosition.getY(), 113,100, this);
 					} else {
-						graphics.drawImage(player.characterAnimationBigAttack.sprite, player.getX()+80, player.getY(), -113,100, this);
+						graphics.drawImage(player.characterAnimationBigAttack.sprite, player.playerPosition.getX()+80, player.playerPosition.getY(), -113,100, this);
 					}
 				} else {
 					player.characterAnimationBody.resume();
@@ -104,9 +104,9 @@ public class GraphicalView extends JPanel {
 			//On anime le corps du joueur 
 			player.characterAnimationBody.update();
 			if(player.isTurningRight) {
-				graphics.drawImage(player.characterAnimationBody.sprite, player.getX(), player.getY(), 85,80, this);
+				graphics.drawImage(player.characterAnimationBody.sprite, player.playerPosition.getX(), player.playerPosition.getY(), 85,80, this);
 			} else {
-				graphics.drawImage(player.characterAnimationBody.sprite, player.getX()+80, player.getY(), -85, 80, null);
+				graphics.drawImage(player.characterAnimationBody.sprite, player.playerPosition.getX()+80, player.playerPosition.getY(), -85, 80, null);
 			}
 
 			
@@ -114,21 +114,21 @@ public class GraphicalView extends JPanel {
 
 			if (player.atkState == Constant.ATK_STATE_ATTACKING) {
 				graphics.setColor(Color.RED);
-				graphics.drawString("ATTACKING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+				graphics.drawString("ATTACKING", (player.playerPosition.getX() + (player.playerPosition.getW()/2) - 25), (player.playerPosition.getY() - 38));
 			} else if (player.atkState == Constant.ATK_STATE_IN_COOLDOWN) {
 				graphics.setColor(Color.BLUE);
-				graphics.drawString("COOLDOWN", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+				graphics.drawString("COOLDOWN", (player.playerPosition.getX() + (player.playerPosition.getW()/2) - 25), (player.playerPosition.getY() - 38));
 			} else if (player.atkState == Constant.ATK_STATE_CASTING) {
 				graphics.setColor(Color.GREEN);
-				graphics.drawString("CASTING", (player.getX() + (player.getW()/2) - 25), (player.getY() - 38));
+				graphics.drawString("CASTING", (player.playerPosition.getX() + (player.playerPosition.getW()/2) - 25), (player.playerPosition.getY() - 38));
 			}
 
 			player.characterAnimationJump.update();
 			if(player.isJumping) {
 				if(!player.booleanJump) {
 					//System.out.println(player.getX() + " "+ player.getY());
-					player.positionXOnJumping = player.getX()-35;
-					player.positionYOnJumping = player.getY()+35;
+					player.positionXOnJumping = player.playerPosition.getX()-35;
+					player.positionYOnJumping = player.playerPosition.getY()+35;
 					player.characterAnimationJump.start();
 					player.booleanJump = true;
 				}
@@ -164,9 +164,9 @@ public class GraphicalView extends JPanel {
 			//#######################
 			//#######DEBUGGING#######
 			//Utilise pour savoir la portee des coups, decommenter si on veut aligner le sprite sur l'attaque
-			//graphics.setColor(Color.RED);
-			//int tabXYWH[] = currentAttack.getAttackPosition(player);
-			//graphics.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);
+//			graphics.setColor(Color.RED);
+//			int tabXYWH[] = currentAttack.getAttackPosition(player);
+//			graphics.fillRect(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3]);
 			//#######################
 			
 			
@@ -222,14 +222,14 @@ public class GraphicalView extends JPanel {
 		// Affichage du timer
 		String zero1 = "";
 		String zero2 = "";
-		if (GameEngine.gameDuration/60 < 10)
+		if (Game.gameDuration/60 < 10)
 			zero1 = "0";
-		if (GameEngine.gameDuration%60 < 10)
+		if (Game.gameDuration%60 < 10)
 			zero2 = "0";
-		graphics.drawString(zero1+GameEngine.gameDuration/60+" : "+zero2+GameEngine.gameDuration%60, getWidth()/2, getHeight()/6);
+		graphics.drawString(zero1+Game.gameDuration/60+" : "+zero2+Game.gameDuration%60, getWidth()/2, getHeight()/6);
 		try {
 
-			graphics.drawString(Integer.toString(main.averageFrames)+" FPS"+" -- GameEngineLoop "+main.engineLoop, 10, 10);
+			graphics.drawString(Integer.toString(GameEngine.averageFrames)+" FPS"+" -- GameEngineLoop "+GameEngine.engineLoop, 10, 10);
 			if (arrayPlayers.get(0) != null && !arrayPlayers.get(0).tabLastAttacksForCombo.isEmpty()) {
 				graphics.drawString("Last Attack 1st player = "+arrayPlayers.get(0).tabLastAttacksForCombo.get(arrayPlayers.get(0).tabLastAttacksForCombo.size()-1).name, 22, 22);
 			}

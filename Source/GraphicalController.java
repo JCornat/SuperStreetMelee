@@ -22,7 +22,7 @@ public class GraphicalController {
 		this.zeroCommand = true;
 		this.oneCommand = true;
 
-		for (Xbox360Controller x : GameEngine.xbox_controllers) {
+		for (Xbox360Controller x : Game.xbox_controllers) {
 			if (x.getIndexPlayer() == 0) {
 				zeroCommand = false;
 			} else if (x.getIndexPlayer() == 1) {
@@ -114,20 +114,20 @@ public class GraphicalController {
 
 			switch (e.getKeyCode()) {
 			case KeyEvent.VK_R:
-				GameEngine.resetGame();
+				Game.resetGame();
 				break;
 			case KeyEvent.VK_T:
 				tabJoueurs.get(0).eject(150, 0);
 				//tabJoueurs.get(0).currentStatus = PlayerStatus.CHARGING;
 				break;
 			case KeyEvent.VK_ESCAPE:
-				if (GameEngine.CURRENT_STATE == State.IN_GAME) {
-					GameEngine.CURRENT_STATE = State.PAUSED;
+				if (Game.CURRENT_STATE == State.IN_GAME) {
+					Game.CURRENT_STATE = State.PAUSED;
 					((CardLayout) Menu.cards.getLayout()).show(Menu.cards,
 							"gamepaused");
 
 				} else {
-					GameEngine.CURRENT_STATE = State.IN_GAME;
+					Game.CURRENT_STATE = State.IN_GAME;
 					((CardLayout) Menu.cards.getLayout()).show(Menu.cards,
 							"play");
 				}

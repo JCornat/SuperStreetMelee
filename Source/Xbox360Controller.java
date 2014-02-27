@@ -71,16 +71,16 @@ public class Xbox360Controller {
 		if (this.controller != null) {
 			this.controller.poll();
 			
-			if (main.engineLoop >= lastLoopJump + Constant.TIME_MAX_BETWEEN_JUMPS){
+			if (GameEngine.engineLoop >= lastLoopJump + Constant.TIME_MAX_BETWEEN_JUMPS){
 				hasJumped = false ;
 			}
 			
-			if ((tabJoueurs.get(indexPlayer).currentStatus == PlayerStatus.FALLING) && (main.engineLoop >= lastLoopJump + Constant.TIME_MIN_BETWEEN_JUMPS)) {
+			if ((tabJoueurs.get(indexPlayer).currentStatus == PlayerStatus.FALLING) && (GameEngine.engineLoop >= lastLoopJump + Constant.TIME_MIN_BETWEEN_JUMPS)) {
 				hasJumped = false ;
-				lastLoopJump = main.engineLoop ;
+				lastLoopJump = GameEngine.engineLoop ;
 			}
 			
-			if (main.engineLoop >= lastLoopPause + Constant.TIME_BETWEEN_PAUSES) {
+			if (GameEngine.engineLoop >= lastLoopPause + Constant.TIME_BETWEEN_PAUSES) {
 				hasPaused = false ;
 			}
 
@@ -101,7 +101,7 @@ public class Xbox360Controller {
 							if (!hasJumped) {
 								tabJoueurs.get(this.indexPlayer).setJump(true);
 								hasJumped = true;
-								lastLoopJump = main.engineLoop;
+								lastLoopJump = GameEngine.engineLoop;
 							}
 						} else {
 							tabJoueurs.get(this.indexPlayer).setJump(false);
@@ -169,17 +169,17 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("7")) {
 						if (c.getPollData() == 1.0f) {
 							if (!hasPaused) {
-								if (GameEngine.CURRENT_STATE == State.IN_GAME) {
-									GameEngine.CURRENT_STATE = State.PAUSED;
+								if (Game.CURRENT_STATE == State.IN_GAME) {
+									Game.CURRENT_STATE = State.PAUSED;
 									((CardLayout) Menu.cards.getLayout()).show(
 											Menu.cards, "gamepaused");
 								} else {
-									GameEngine.CURRENT_STATE = State.IN_GAME;
+									Game.CURRENT_STATE = State.IN_GAME;
 									((CardLayout) Menu.cards.getLayout()).show(
 											Menu.cards, "play");
 								}
 								hasPaused = true;
-								lastLoopPause = main.engineLoop;
+								lastLoopPause = GameEngine.engineLoop;
 							}
 						} else {
 
@@ -210,7 +210,7 @@ public class Xbox360Controller {
 							if (!hasJumped) {
 								tabJoueurs.get(this.indexPlayer).setJump(true);
 								hasJumped = true;
-								lastLoopJump = main.engineLoop;
+								lastLoopJump = GameEngine.engineLoop;
 							}
 						} else {
 							tabJoueurs.get(this.indexPlayer).setJump(false);
@@ -256,17 +256,17 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("7")) {
 						if (c.getPollData() == 1.0f) {
 							if (!hasPaused) {
-								if (GameEngine.CURRENT_STATE == State.IN_GAME) {
-									GameEngine.CURRENT_STATE = State.PAUSED;
+								if (Game.CURRENT_STATE == State.IN_GAME) {
+									Game.CURRENT_STATE = State.PAUSED;
 									((CardLayout) Menu.cards.getLayout()).show(
 											Menu.cards, "gamepaused");
 								} else {
-									GameEngine.CURRENT_STATE = State.IN_GAME;
+									Game.CURRENT_STATE = State.IN_GAME;
 									((CardLayout) Menu.cards.getLayout()).show(
 											Menu.cards, "play");
 								}
 								hasPaused = true;
-								lastLoopPause = main.engineLoop;
+								lastLoopPause = GameEngine.engineLoop;
 							}
 						} else {
 

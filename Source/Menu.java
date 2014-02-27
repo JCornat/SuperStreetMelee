@@ -69,9 +69,9 @@ public class Menu extends JFrame {
 		playbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "play");
-				GameEngine.resetGame();
-				GameEngine.CURRENT_STATE = State.IN_GAME;
-				GameEngine.backgroundsound.loop() ;
+				Game.resetGame();
+				Game.CURRENT_STATE = State.IN_GAME;
+				Game.backgroundsound.loop() ;
 				// Resolution des problemes de focus avec Java sur OSX
 				cards.transferFocus();
 			}
@@ -121,7 +121,7 @@ public class Menu extends JFrame {
 		resumebutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "play");
-				GameEngine.CURRENT_STATE = State.IN_GAME;
+				Game.CURRENT_STATE = State.IN_GAME;
 				// Resolution des problemes de focus avec Java sur OSX
 				cards.transferFocus();
 			}
@@ -147,7 +147,7 @@ public class Menu extends JFrame {
 		mainmenubutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "mainmenu");
-				GameEngine.CURRENT_STATE = State.IN_MENU;
+				Game.CURRENT_STATE = State.IN_MENU;
 			}
 		});
 
