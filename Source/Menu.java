@@ -71,7 +71,8 @@ public class Menu extends JFrame {
 				((CardLayout) cards.getLayout()).show(cards, "play");
 				Game.resetGame();
 				Game.CURRENT_STATE = State.IN_GAME;
-				Game.backgroundsound.loop() ;
+				SoundManager.sounds.get("background").loop() ;
+				SoundManager.sounds.get("intro").pause() ;
 				// Resolution des problemes de focus avec Java sur OSX
 				cards.transferFocus();
 			}

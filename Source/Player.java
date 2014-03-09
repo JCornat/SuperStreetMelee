@@ -166,8 +166,7 @@ public class Player {
 			playerSpeed.speedOnVerticalAxis = -80;
 			isJumping = true;
 			currentStatus = PlayerStatus.FALLING ;
-			Sound jump = new Sound("sounds/jump.wav") ;
-			jump.play_once() ;
+			SoundManager.sounds.get("jump").play_once() ;
 		}
 		jump = b;
 		if(!b) {
@@ -532,11 +531,15 @@ public class Player {
 					}
 					
 					if (this.currentAttack.getName().equals("Small")) {
-						Sound hit = new Sound("Sounds/smallhit.wav") ;
-						hit.play_once() ;
+						SoundManager.sounds.get("smallhit").play_once() ;
 					} else if (this.currentAttack.getName().equals("Big")) {
-						Sound hit = new Sound("Sounds/bighit.wav") ;
-						hit.play_once() ;
+						SoundManager.sounds.get("bighit").play_once() ;
+					}else if (this.currentAttack.getName().equals("Special1")) {
+						SoundManager.sounds.get("special1").play_once() ;
+					}else if (this.currentAttack.getName().equals("Special2")) {
+						SoundManager.sounds.get("special2").play_once() ;
+					}else if (this.currentAttack.getName().equals("Special3")) {
+						
 					}
 					
 					hasHit = true;
