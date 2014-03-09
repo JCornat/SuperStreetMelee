@@ -215,5 +215,5 @@ pip-log.txt
 .mr.developer.cfg
 
 #Sons
-sounds/background.wav
 sounds/intro.wav
+sounds/background.wav

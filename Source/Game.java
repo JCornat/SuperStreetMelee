@@ -14,7 +14,6 @@ public class Game {
 	static int gameDuration;
 	static State CURRENT_STATE = State.IN_MENU ;
 	Gravity gravity;
-	static Sound backgroundsound ;
 	static ArrayList<Xbox360Controller> xbox_controllers ;
 	
 	/**
@@ -91,8 +90,10 @@ public class Game {
 //		frame.setSize(xSize,ySize);  
 
 		// Ajout du son
-		backgroundsound = new Sound("Sounds/background.wav") ;
-		backgroundsound.decrease_volume() ;
+		new SoundManager() ;
+		
+		SoundManager.sounds.get("background").decrease_volume() ;
+		SoundManager.sounds.get("intro").loop() ;
 		
 		// Ajout des controles
 		xbox_controllers = Xbox360Controller.initControllers(listPlayers) ;
@@ -145,12 +146,11 @@ public class Game {
 			}
 		
 			//Si on est dans le jeu on joue la musique
-			backgroundsound.resume() ;
-			
+			SoundManager.sounds.get("background").resume() ;
 			
 		}else {
 			//si on est pas dans le jeu on met la musique en pause
-			backgroundsound.pause() ;
+			SoundManager.sounds.get("background").pause() ;
 		}
 
 		for(Xbox360Controller controller : this.xbox_controllers){

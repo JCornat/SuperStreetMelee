@@ -10,11 +10,13 @@ public class Sound {
 	Clip clip ;
 	AudioInputStream inputStream ;
 	boolean isPlaying ;
+	File file ;
 	
 	public Sound(final String file_name){
 		try {
+			file = new File(file_name) ;
 			clip = AudioSystem.getClip();
-			inputStream = AudioSystem.getAudioInputStream(new File(file_name));
+			inputStream = AudioSystem.getAudioInputStream(file);
 			clip.open(inputStream);
 			isPlaying = false ;
 		} catch (Exception e) {
@@ -26,6 +28,7 @@ public class Sound {
     public void play_once(){          
         
         try {
+        	clip.setFramePosition(0) ;
 			clip.start();
 		} catch (Exception e) {
 			e.getMessage();
@@ -36,6 +39,7 @@ public class Sound {
     public void loop(){          
        
     	try {
+    		clip.setFramePosition(0) ;
             clip.loop(Clip.LOOP_CONTINUOUSLY) ;
             isPlaying = true ;
  		} catch (Exception e) {
