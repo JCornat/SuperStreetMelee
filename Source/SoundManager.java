@@ -11,6 +11,7 @@ public class SoundManager {
 		
 		sounds = new HashMap<String, Sound>() ;
 		sounds.put("background", 	new Sound("sounds/background.wav")) ;
+		sounds.put("buttonclick", 	new Sound("sounds/buttonSound.wav")) ;
 		sounds.put("intro", 		new Sound("sounds/intro.wav")) ;
 		sounds.put("bighit", 		new Sound("sounds/bighit.wav")) ;
 		sounds.put("smallhit", 		new Sound("sounds/smallhit.wav")) ;
