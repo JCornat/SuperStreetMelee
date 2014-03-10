@@ -91,23 +91,25 @@ public class Attack {
 	
 	/**
 	 * Methode utilisee pour calculer la position de l'attaque (son affichage) par rapport a un joueur
-	 * @param j le joueur qui lance l'attaque
+	 * @param player le joueur qui lance l'attaque
 	 * @return un tableau de int de taille 4.
 	 * En 0 on a : l'abscisse de l'attaque,
 	 * en 1 on a : l'ordonnee de l'attaque,
 	 * en 2 on a : la largeur de l'attaque,
 	 * en 3 on a : la hauteur de l'attaque.
 	 */
-	public int[] getAttackPosition(Player j) {
+	public int[] getAttackPosition(Player player) {
+		PlayerPosition playerPosition = player.playerPosition;
+		
 		int x = 0;
 		int y = 0;
-		if (j.getTurned() == true)
+		if (player.getTurned() == true)
 		{
-			x = j.getX() + (j.getW() / 2);
-			y = j.getY() + (j.getH() / 2);
-		} else if (j.getTurned() == false) {
-			x = j.getX() + (j.getW() / 2 - getWidth());
-			y = j.getY() + (j.getH() / 2);
+			x = playerPosition.getX() + (playerPosition.getW() / 2);
+			y = playerPosition.getY() + (playerPosition.getH() / 2);
+		} else if (player.getTurned() == false) {
+			x = playerPosition.getX() + (playerPosition.getW() / 2 - getWidth());
+			y = playerPosition.getY() + (playerPosition.getH() / 2);
 		}
 		int tab[] = {x, y, getWidth(), getHeight()};
 		return tab;

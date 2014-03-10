@@ -69,9 +69,11 @@ public class Menu extends JFrame {
 		playbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "play");
-				GameEngine.resetGame();
-				GameEngine.CURRENT_STATE = State.IN_GAME;
-				GameEngine.backgroundsound.loop() ;
+				Game.resetGame();
+				Game.CURRENT_STATE = State.IN_GAME;
+				SoundManager.sounds.get("background").loop() ;
+				SoundManager.sounds.get("intro").pause() ;
+				SoundManager.sounds.get("buttonclick").play_once();
 				// Resolution des problemes de focus avec Java sur OSX
 				cards.transferFocus();
 			}
@@ -121,8 +123,9 @@ public class Menu extends JFrame {
 		resumebutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "play");
-				GameEngine.CURRENT_STATE = State.IN_GAME;
+				Game.CURRENT_STATE = State.IN_GAME;
 				// Resolution des problemes de focus avec Java sur OSX
+				SoundManager.sounds.get("buttonclick").play_once();
 				cards.transferFocus();
 			}
 		});
@@ -147,7 +150,8 @@ public class Menu extends JFrame {
 		mainmenubutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "mainmenu");
-				GameEngine.CURRENT_STATE = State.IN_MENU;
+				Game.CURRENT_STATE = State.IN_MENU;
+				SoundManager.sounds.get("buttonclick").play_once();
 			}
 		});
 
@@ -171,6 +175,7 @@ public class Menu extends JFrame {
 		final JButton exitbutton = new JButton("");
 		exitbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				SoundManager.sounds.get("buttonclick").play_once();
 				System.exit(0);
 			}
 		});

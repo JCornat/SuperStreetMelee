@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 public class Player {
 
 	String name;
-	int x,y,w,h,speedOnHorizontalAxis, speedOnVerticalAxis, atkState, health, jumps;
+	int atkState, health, jumps;
 	PlayerStatus currentStatus;
 	boolean jump, left, right, isJumping, isTurningRight, isAlive;
 	Attack currentAttack;
@@ -37,6 +37,8 @@ public class Player {
 	int numberOfLife;
 	long waitedTimeForCombo;
 	boolean isWaitingForCombo;
+	PlayerPosition playerPosition;
+	PlayerSpeed playerSpeed;
 	
 	/**
 	 * Constructeur pour creer un joueur
@@ -51,15 +53,12 @@ public class Player {
 	public Player(String n, int k, int l, ArrayList<Attack> attacks, ArrayList<Combo> combos, int skin) {
 
 		name = n;
-		x = 0; 
-		y = 0;
-		w = k;
-		h = l;
+		playerPosition = new PlayerPosition(k,l);
+		playerSpeed = new PlayerSpeed();
+		
 		jump = false;
 		left = false; 
 		right = false;
-		speedOnHorizontalAxis = 0;
-		speedOnVerticalAxis = 0;
 		health = Constant.MIN_HEALTH;
 		isAlive = true;
 		isTurningRight = true;
@@ -156,41 +155,18 @@ public class Player {
 	public String getName() {
 		return name;
 	}
-	public int getX() {
-		return x;
-	}
-	public void setX(int i) {
-		x = i;
-	}
-	public int getY() {
-		return y;
-	}
-	public void setY(int i) {
-		y = i;
-	}
-	public int getW() {
-		return w;
-	}
-	public void setW(int i) {
-		w = i;
-	}
-	public int getH() {
-		return h;
-	}
-	public void setH(int i) {
-		h = i;
-	}
+	
 	public void setVitesseH(int i) {
-		speedOnHorizontalAxis = i;
+		playerSpeed.speedOnHorizontalAxis = i;
 	}
+	
 	public void setJump(boolean b) {
 		if (b && jumps>0) {
 			jumps--;
-			speedOnVerticalAxis = -80;
+			playerSpeed.speedOnVerticalAxis = -80;
 			isJumping = true;
 			currentStatus = PlayerStatus.FALLING ;
-			Sound jump = new Sound("sounds/jump.wav") ;
-			jump.play_once() ;
+			SoundManager.sounds.get("jump").play_once() ;
 		}
 		jump = b;
 		if(!b) {
@@ -237,7 +213,7 @@ public class Player {
 	 * @param b
 	 */
 	public void setAtk(int n, boolean b) {
-		if (b && atkState == Constant.ATK_STATE_READY && tabAttacks.get(n).getEffectiveCooldown() <= main.engineLoop) {
+		if (b && atkState == Constant.ATK_STATE_READY && tabAttacks.get(n).getEffectiveCooldown() <= GameEngine.engineLoop) {
 			if (!isWaitingForCombo) {
 				attack.set(n, b);
 			} else if (isWaitingForCombo && tabAttacks.get(n).isBind) {
@@ -256,7 +232,7 @@ public class Player {
 	 */
 	public void initCombo() {
 		if (!isWaitingForCombo && waitedTimeForCombo == -1) {
-			waitedTimeForCombo = main.engineLoop + Constant.TIME_WAIT_COMBO;
+			waitedTimeForCombo = GameEngine.engineLoop + Constant.TIME_WAIT_COMBO;
 			isWaitingForCombo = true;
 		}
 	}
@@ -265,23 +241,24 @@ public class Player {
 	 * Methode lancee a chaque update pour declencher les combos enregistres
 	 */
 	public void checkCombo() {
-		if (isWaitingForCombo && waitedTimeForCombo <= main.engineLoop) {
+		if (enAttenteCombo()) {
 			// Attente terminee
 			waitedTimeForCombo = -1;
 			isWaitingForCombo = false;
 			// Declenchement des combos, lancement des attaques speciales correspondantes
-			switch (tabLastAttacksForCombo.size()) {
+			int nbBoutonsDejaAppuyes = tabLastAttacksForCombo.size();
+			switch (nbBoutonsDejaAppuyes) {
 				case 1:
 					setAtk(tabAttacks.indexOf(tabLastAttacksForCombo.get(0)), true);
 					break;
-				// Combos ˆ 2 touches et plus
+				// Combos Ë† 2 touches et plus
 				case 2:
 				case 3:
 				{
 					for (Combo c : tabCombos) {
 						boolean check = true;
 						for (int i = 0; i < c.nbOfBind; i++) {
-							if (c.nbOfBind == tabLastAttacksForCombo.size()) {
+							if (c.nbOfBind == nbBoutonsDejaAppuyes) {
 								if (c.binds[i] != tabLastAttacksForCombo.get(i))
 									check = false;
 							} else check = false;
@@ -295,11 +272,15 @@ public class Player {
 					break;
 				}
 				default:
-					if (tabLastAttacksForCombo.size() > 3)
+					if (nbBoutonsDejaAppuyes > 3)
 						setAtk(tabAttacks.indexOf(tabLastAttacksForCombo.get(0)), true);
 					break;
 			}
 		}
+	}
+
+	private boolean enAttenteCombo() {
+		return isWaitingForCombo && waitedTimeForCombo <= GameEngine.engineLoop;
 	}
 
 	
@@ -314,7 +295,7 @@ public class Player {
 		castingAttack = null;
 		currentAttack = tabAttacks.get(n);
 		// Traitement de l'attaque
-		long time = main.engineLoop;
+		long time = GameEngine.engineLoop;
 		// Duee de l'affichage de l'attaque
 		lastTimerAttack = time + tabAttacks.get(n).getTime();
 		// Temps de recharge de l'attaque
@@ -348,7 +329,7 @@ public class Player {
 	
 	/**
 	 * Methode utilisee pour connaitre le moment de la derniere attaque du joueur
-	 * @return le temps system en millisecondes oÃ¹ le joueur a lance sa derniere attaque
+	 * @return le temps system en millisecondes oÃƒÂ¹ le joueur a lance sa derniere attaque
 	 */
 	public long getLastTimerAttack() {
 		return lastTimerAttack;
@@ -361,12 +342,12 @@ public class Player {
 	 * et l'affichage de sa derniere attaque
 	 */
 	public void updateTimeAttack() {
-		long time = main.engineLoop;
+		long time = GameEngine.engineLoop;
 		// Update des temps de recharge des attaques
 		for (int i = 0; i < tabAttacks.size(); i++) {
 			if (tabAttacks.get(i).getEffectiveCooldown() <= time) {
 				tabAttacks.get(i).setEffectiveCooldown(0);
-				// L'attaque peut de nouveau tre lancŽe
+				// L'attaque peut de nouveau ï¿½tre lancÅ½e
 				setAtk(i, false);
 			}
 		}
@@ -461,8 +442,8 @@ public class Player {
 	 */
 	public void eject(int i, int j) {
 		currentStatus = PlayerStatus.EJECTED;
-		speedOnHorizontalAxis = i;
-		speedOnVerticalAxis = -j;
+		playerSpeed.speedOnHorizontalAxis = i;
+		playerSpeed.speedOnVerticalAxis = -j;
 	}
 	
 	/**
@@ -508,7 +489,7 @@ public class Player {
 	 * Verification et lancement des attaques des joueurs
 	 */
 	public void verificationAttack() {
-		long time = main.engineLoop;
+		long time = GameEngine.engineLoop;
 		if (this.getState() == Constant.ATK_STATE_CASTING) {
 			if (time >= this.castingTimer)
 				// Lancement de l'attaque
@@ -531,7 +512,7 @@ public class Player {
 	/**
 	 * Methode pour determiner si une attaque touche un adversaire
 	 * @param player : Joueur actuel
-	 * @return vrai si touché, faux, si non touché
+	 * @return vrai si touchÃ©, faux, si non touchÃ©
 	 */
 	public boolean collisionAttack() {
 		// Calcul de la position de l'attaque
@@ -539,9 +520,9 @@ public class Player {
 		boolean collisionJoueur = false;
 		boolean hasHit = false;
 		// Collision avec des joueurs ?
-		for (Player otherPlayer : GameEngine.listPlayers) {
+		for (Player otherPlayer : Game.listPlayers) {
 			if (otherPlayer != this) {
-				collisionJoueur = Collision.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], otherPlayer.getX(), otherPlayer.getY(), otherPlayer.getW(), otherPlayer.getH());
+				collisionJoueur = Collision.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], otherPlayer.playerPosition.getX(), otherPlayer.playerPosition.getY(), otherPlayer.playerPosition.getW(), otherPlayer.playerPosition.getH());
 				if (collisionJoueur) {
 					if(this.isTurningRight) {
 						otherPlayer.receiveHit(this.currentAttack.getDamage(),this.currentAttack.getPowerX(),this.currentAttack.getPowerY());
@@ -550,11 +531,15 @@ public class Player {
 					}
 					
 					if (this.currentAttack.getName().equals("Small")) {
-						Sound hit = new Sound("Sounds/smallhit.wav") ;
-						hit.play_once() ;
+						SoundManager.sounds.get("smallhit").play_once() ;
 					} else if (this.currentAttack.getName().equals("Big")) {
-						Sound hit = new Sound("Sounds/bighit.wav") ;
-						hit.play_once() ;
+						SoundManager.sounds.get("bighit").play_once() ;
+					}else if (this.currentAttack.getName().equals("Special1")) {
+						SoundManager.sounds.get("special1").play_once() ;
+					}else if (this.currentAttack.getName().equals("Special2")) {
+						SoundManager.sounds.get("special2").play_once() ;
+					}else if (this.currentAttack.getName().equals("Special3")) {
+						
 					}
 					
 					hasHit = true;
@@ -567,7 +552,7 @@ public class Player {
 	public void decreaseNumberOfLife(){
 		int newNumber = this.numberOfLife - 1 ;
 		if (newNumber < 1) {
-			GameEngine.CURRENT_STATE = State.IN_MENU ;
+			Game.CURRENT_STATE = State.IN_MENU ;
 			((CardLayout) Menu.cards.getLayout()).show(Menu.cards, "mainmenu");
 		} else {
 			this.numberOfLife = newNumber ;

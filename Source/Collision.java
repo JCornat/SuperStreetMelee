@@ -39,11 +39,11 @@ public class Collision {
 	 * @param arrayDecor : ArrayList des differents elements du decor
 	 * @return : l'id du decor concerne par la collision, sinon -1
 	 */
-	public static int collisionCalculation(int x, int y, int w, int h, ArrayList<Decor> arrayDecor, Player p) {
+	public static int collisionCalculation(int x, int y, int w, int h, ArrayList<Decor> arrayDecor, Player player) {
 		for (int i = 0; i<arrayDecor.size(); i++) {
 			
 			//Calcul de collision avec le joueur s'il est au-dessus de la platfeforme
-			if(arrayDecor.get(i).getClass()==PlatForm.class && y+h<=arrayDecor.get(i).y+arrayDecor.get(i).h && p.speedOnVerticalAxis>0 ) {
+			if(arrayDecor.get(i).getClass()==PlatForm.class && y+h<=arrayDecor.get(i).y+arrayDecor.get(i).h && player.playerSpeed.speedOnVerticalAxis>0 ) {
 				if(collision(x, y, w, h, arrayDecor.get(i).x, arrayDecor.get(i).y, arrayDecor.get(i).w, arrayDecor.get(i).h)) {
 					return i;
 				}
