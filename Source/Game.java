@@ -74,6 +74,7 @@ public class Game {
 		listPlayers.add(new Player("Joueur 1", 80, 80, arrayOfAttacksForOneCharacter,arrayOfComboForOneCharacter,1));
 		listPlayers.add(new Player("Joueur 2", 80, 80, arrayOfAttacksForOneCharacter,arrayOfComboForOneCharacter,2));
 		
+		
 		//Appel et ajout du pattern d'affichage	
 		GraphicalView graphicalView = new GraphicalView(arrayDecor, arrayOfAttacksForOneCharacter, listPlayers);
 		frame = new Menu("SuperStreetMelee", graphicalView) ;

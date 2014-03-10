@@ -1,7 +1,9 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
@@ -12,8 +14,11 @@ public class GraphicalView extends JPanel {
 	ArrayList<Attack> arrayOfAttacksAvailableForTheCharacter;
 	int positionXOnJumping = 0;
 	int positionYOnJumping = 0;
-	
+	int i;
 	public GraphicalView(ArrayList<Decor> de, ArrayList<Attack> at, ArrayList<Player> jo) {
+		
+		
+		
 		this.setPreferredSize(new Dimension(1000,700));
 		arrayOfDecorsForTheLevel = de;
 		arrayOfAttacksAvailableForTheCharacter = at;
@@ -40,15 +45,18 @@ public class GraphicalView extends JPanel {
 		super.paint(graphics);
 		
 		//Affichage du sprite du niveau
+		
 		graphics.drawImage(Levels.image, 0, 0, this);
-		
-		
+		Font f = new Font("Arial", Font.PLAIN, 30); // par exemple 
+		this.setFont(f); 
+		i = 1;
 		for (Player player : arrayPlayers) {
+			
 			//Affichage du nom et des points de degats du joueur
-			graphics.setColor(Color.DARK_GRAY);
-			graphics.drawString(player.getName(), (player.playerPosition.getX() + (player.playerPosition.getW()/2) - 25), (player.playerPosition.getY() - 25));
-			graphics.drawString(String.valueOf(player.health), (player.playerPosition.getX() + (player.playerPosition.getW()/2) - 10), (player.playerPosition.getY() - 10));
-			graphics.drawString(player.getName() + " : " + player.numberOfLife, 250 + (this.arrayPlayers.indexOf(player))*350 , 50) ;
+			graphics.setColor(Color.WHITE);
+			graphics.drawString(player.getName(), this.getWidth()/5*i+10, this.getHeight()-70);
+			graphics.drawString(String.valueOf(player.health)+'%',  this.getWidth()/5*i, this.getHeight()-30);
+			graphics.drawString(String.valueOf(player.numberOfLife)+"<3",  this.getWidth()/5*i+80, this.getHeight()-30);
 			
 			//Recuperation de l'attaque en cours
 			Attack currentAttack = player.getAttaque();
@@ -195,6 +203,7 @@ public class GraphicalView extends JPanel {
 //			graphics.drawLine(player.getX(), 0, player.getX(), 700);
 //			graphics.drawLine((player.getX()+player.getW()-1), 0, (player.getX()+player.getW()-1), 700);
 //			graphics.drawRect(player.getX(), player.getY(), 10, 10);
+			i++;
 		}
 		
 
@@ -226,6 +235,7 @@ public class GraphicalView extends JPanel {
 			zero1 = "0";
 		if (Game.gameDuration%60 < 10)
 			zero2 = "0";
+		
 		graphics.drawString(zero1+Game.gameDuration/60+" : "+zero2+Game.gameDuration%60, getWidth()/2, getHeight()/6);
 		try {
 
