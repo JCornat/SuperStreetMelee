@@ -166,6 +166,7 @@ public class Xbox360Controller {
 							attackReady[1] = true;
 						}
 					}
+					// ATTENTION : 8 avec les manettes filaires !
 					if (c.getIdentifier().getName().equals("7")) {
 						if (c.getPollData() == 1.0f) {
 							if (!hasPaused) {
