@@ -1,0 +1,40 @@
+package Levels;
+import java.util.Observable;
+
+
+public class Decor extends Observable {
+	
+	public int x,y,w,h;
+	
+	/**
+	 * Constructeur pour créer un décor
+	 * @param a : origine en X du décor
+	 * @param b : origine en Y du décor
+	 * @param c : largeur du décor
+	 * @param d : hauteur du décor
+	 */
+	public Decor(int a,int b,int c,int d) {
+		x = a;
+		y = b;
+		w = c;
+		h = d;
+	}
+	
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public int getW() {
+		return w;
+	}
+	
+	public int getH() {
+		return h;
+	}
+
+}
