@@ -2,7 +2,7 @@ package Model;
 
 public class PlayerInfoBoolean {
 
-	public boolean jump, left, right, isJumping, isTurningRight, isAlive;
+	public boolean jump, left, right, isJumping, isTurningRight, isAlive, isWaitingForCombo;
 	
 	public PlayerInfoBoolean() {
 		jump = false;
@@ -10,6 +10,7 @@ public class PlayerInfoBoolean {
 		right = false;
 		isAlive = true;
 		isTurningRight = true;
+		isWaitingForCombo = false;
 	}
 	
 	

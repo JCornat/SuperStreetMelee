@@ -100,7 +100,7 @@ public class GraphicalController {
 				controllerAdministrator.resetGame();
 				break;
 			case KeyEvent.VK_T:
-				controllerAdministrator.tabJoueurs.get(0).eject(150, 0);
+				controllerAdministrator.tabJoueurs.get(0).eject(100, 0);
 				break;
 			case KeyEvent.VK_ESCAPE:
 				if (Game.CURRENT_STATE == State.IN_GAME) {

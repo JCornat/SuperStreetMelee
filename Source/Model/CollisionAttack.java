@@ -19,21 +19,22 @@ public class CollisionAttack {
 			if (otherPlayer != player) {
 				collisionJoueur = Collision.collision(tabXYWH[0], tabXYWH[1], tabXYWH[2], tabXYWH[3], otherPlayer.playerPosition.x, otherPlayer.playerPosition.y, otherPlayer.playerPosition.w, otherPlayer.playerPosition.h);
 				if (collisionJoueur) {
+					CombatMgr playerCombatMgr = player.playerCombatMgr;
 					if(player.playerInfoBoolean.isTurningRight) {
-						receiveHit.Calculation(otherPlayer, player.currentAttack.getDamage(),player.currentAttack.getPowerX(),player.currentAttack.getPowerY());
+						receiveHit.Calculation(otherPlayer, playerCombatMgr.currentAttack.getDamage(),playerCombatMgr.currentAttack.getPowerX(),playerCombatMgr.currentAttack.getPowerY());
 					} else {
-						receiveHit.Calculation(otherPlayer,player.currentAttack.getDamage(),-player.currentAttack.getPowerX(),player.currentAttack.getPowerY());
+						receiveHit.Calculation(otherPlayer,playerCombatMgr.currentAttack.getDamage(),-playerCombatMgr.currentAttack.getPowerX(),playerCombatMgr.currentAttack.getPowerY());
 					}
 					
-					if (player.currentAttack.getName().equals("Small")) {
+					if (playerCombatMgr.currentAttack.getName().equals("Small")) {
 						SoundManager.sounds.get("smallhit").play_once() ;
-					} else if (player.currentAttack.getName().equals("Big")) {
+					} else if (playerCombatMgr.currentAttack.getName().equals("Big")) {
 						SoundManager.sounds.get("bighit").play_once() ;
-					}else if (player.currentAttack.getName().equals("Special1")) {
+					}else if (playerCombatMgr.currentAttack.getName().equals("Special1")) {
 						SoundManager.sounds.get("special1").play_once() ;
-					}else if (player.currentAttack.getName().equals("Special2")) {
+					}else if (playerCombatMgr.currentAttack.getName().equals("Special2")) {
 						SoundManager.sounds.get("special2").play_once() ;
-					}else if (player.currentAttack.getName().equals("Special3")) {
+					}else if (playerCombatMgr.currentAttack.getName().equals("Special3")) {
 						
 					}
 					

@@ -17,7 +17,7 @@ public class ControllerAdministrator {
 		tabJoueurs = tabJ;
 	}
 	
-	public void resetGame() {
+	public static void resetGame() {
 		Game.resetGame();
 	}
 }

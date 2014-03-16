@@ -9,9 +9,9 @@ public class ReceiveHit {
 		 */
 
 		if (player.playerInfo.atkState == 3) {
-			player.currentAttack = null;
+			player.playerCombatMgr.currentAttack = null;
 			player.playerInfo.atkState = Constant.ATK_STATE_READY;
-			player.lastTimerAttack = -1;
+			player.playerCombatMgr.lastTimerAttack = -1;
 		}
 		player.playerInfo.health += hit;
 		double coef = 1 + player.playerInfo.health/5;

@@ -100,6 +100,7 @@ public class Game {
 		// Ajout des controles
 		controllerAdministrator = new ControllerAdministrator(frame, listPlayers);
 		controllerAdministrator.xbox_controllers = Xbox360Controller.initControllers() ;
+		
 		new GraphicalController();
 	}
 	
@@ -132,7 +133,7 @@ public class Game {
 		if (CURRENT_STATE == State.IN_GAME) {
 			for (Player player : listPlayers) {
 				//Limites du terrain
-				//Pour la suite, essayer de prendre des paramètres venant de Levels, pour rende la chose plus dynamique et simple a gérer
+				//Pour la suite, essayer de prendre des parametres venant de Levels, pour rende la chose plus dynamique et simple a gerer
 				if ((player.playerPosition.x > Menu.WIDTH+500) || (player.playerPosition.x < -500) || (player.playerPosition.y > Menu.HEIGHT+500) || (player.playerPosition.y < -500)) {
 					decreaseNumberOfLife.calculation(player.playerInfo) ;
 					player.resetLife() ;

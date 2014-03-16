@@ -12,6 +12,7 @@ import Levels.Ground;
 import Levels.Levels;
 import Levels.PlatForm;
 import Model.Attack;
+import Model.CombatMgr;
 import Model.Constant;
 import Model.Game;
 import Model.GameEngine;
@@ -69,7 +70,7 @@ public class GraphicalView extends JPanel {
 			graphics.drawString(String.valueOf(player.playerInfo.numberOfLife)+"<3",  this.getWidth()/5*i+80, this.getHeight()-30);
 			
 			//Recuperation de l'attaque en cours
-			Attack currentAttack = player.getAttaque();
+			Attack currentAttack = player.playerCombatMgr.currentAttack;
 			
 			//Lancement de l'animation si une attaque est en cours
 			if (currentAttack != null)
@@ -135,14 +136,14 @@ public class GraphicalView extends JPanel {
 
 			player.graphicalPlayer.characterAnimationJump.update();
 			if(player.playerInfoBoolean.isJumping) {
-				if(!player.booleanJump) {
+				if(!player.playerInfoBoolean.jump) {
 					player.playerInfo.positionXOnJumping = player.playerPosition.x-35;
 					player.playerInfo.positionYOnJumping = player.playerPosition.y+35;
 					player.graphicalPlayer.characterAnimationJump.start();
-					player.booleanJump = true;
+					player.playerInfoBoolean.jump = true;
 				}
 			} else if(!player.playerInfoBoolean.isJumping) {
-				player.booleanJump = false;
+				player.playerInfoBoolean.jump = false;
 			}
 			
 			if(player.playerInfoBoolean.isTurningRight) {
@@ -224,8 +225,13 @@ public class GraphicalView extends JPanel {
 			try {
 	
 				graphics.drawString(Integer.toString(GameEngine.averageFrames)+" FPS"+" -- GameEngineLoop "+GameEngine.engineLoop, 10, 40);
-				if (arrayPlayers.get(0) != null && !arrayPlayers.get(0).tabLastAttacksForCombo.isEmpty()) {
-					graphics.drawString("Last Attack 1st player = "+arrayPlayers.get(0).tabLastAttacksForCombo.get(arrayPlayers.get(0).tabLastAttacksForCombo.size()-1).name, 22, 80);
+				Player player = arrayPlayers.get(0);
+				if (player != null) {
+					CombatMgr playerCombatMgr = player.playerCombatMgr;
+					if (playerCombatMgr != null && !playerCombatMgr.tabLastAttacksForCombo.isEmpty()) {
+						ArrayList<Attack> tabLastAttacksForCombo = playerCombatMgr.tabLastAttacksForCombo;
+						graphics.drawString("Last Attack 1st player = "+tabLastAttacksForCombo.get(tabLastAttacksForCombo.size()-1).name, 22, 80);
+					}
 				}
 			} catch (IndexOutOfBoundsException e) {}			
 		}
