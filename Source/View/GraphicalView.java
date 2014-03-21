@@ -23,7 +23,6 @@ public class GraphicalView extends JPanel {
 
 	ArrayList<Player> arrayPlayers;
 	ArrayList<Decor> arrayOfDecorsForTheLevel;
-	ArrayList<Attack> arrayOfAttacksAvailableForTheCharacter;
 	int positionXOnJumping = 0;
 	int positionYOnJumping = 0;
 	int i;
@@ -35,10 +34,9 @@ public class GraphicalView extends JPanel {
 	}
 	
 	
-	public void initGView(ArrayList<Decor> de, ArrayList<Attack> at, ArrayList<Player> jo){
+	public void initGView(ArrayList<Decor> de, ArrayList<Player> jo){
 		this.init = true ;
 		arrayOfDecorsForTheLevel = de;
-		arrayOfAttacksAvailableForTheCharacter = at;
 		arrayPlayers = jo;
 	}
 	
@@ -89,14 +87,14 @@ public class GraphicalView extends JPanel {
 						}
 					}
 
-					//S'il n'attaque pas et que l'annimation du corps est arrêtée, on la relance
+					//S'il n'attaque pas et que l'annimation du corps est arrï¿½tï¿½e, on la relance
 				} else {
 					if (!player.graphicalPlayer.characterAnimationBody.running) {
 						player.graphicalPlayer.characterAnimationBody.resume();
 					}
 				}
 
-				//Si la grosse attaque est en train d'être animée, on arrête l'animation du corps du personnage
+				//Si la grosse attaque est en train d'ï¿½tre animï¿½e, on arrï¿½te l'animation du corps du personnage
 				//Et on update celle de l'attaque, puis on l'affiche
 				if (player.graphicalPlayer.characterAnimationBigAttack.running) {
 					if (player.playerInfo.atkState != Constant.ATK_STATE_IN_COOLDOWN) {
@@ -296,13 +294,13 @@ public class GraphicalView extends JPanel {
 					if (player != null) {
 						CombatMgr playerCombatMgr = player.playerCombatMgr;
 						if (playerCombatMgr != null
-								&& !playerCombatMgr.tabLastAttacksForCombo
+								&& !playerCombatMgr.listLastAttacksForCombo
 										.isEmpty()) {
-							ArrayList<Attack> tabLastAttacksForCombo = playerCombatMgr.tabLastAttacksForCombo;
+							ArrayList<Attack> listLastAttacksForCombo = playerCombatMgr.listLastAttacksForCombo;
 							graphics.drawString(
 									"Last Attack 1st player = "
-											+ tabLastAttacksForCombo
-													.get(tabLastAttacksForCombo
+											+ listLastAttacksForCombo
+													.get(listLastAttacksForCombo
 															.size() - 1).name,
 									22, 80);
 						}
