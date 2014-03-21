@@ -23,17 +23,12 @@ public class GraphicalView extends JPanel {
 
 	ArrayList<Player> arrayPlayers;
 	ArrayList<Decor> arrayOfDecorsForTheLevel;
-	ArrayList<Attack> arrayOfAttacksAvailableForTheCharacter;
 	int positionXOnJumping = 0;
 	int positionYOnJumping = 0;
 	int i;
-	public GraphicalView(ArrayList<Decor> de, ArrayList<Attack> at, ArrayList<Player> jo) {
-		
-		
-		
+	public GraphicalView(ArrayList<Decor> de, ArrayList<Player> jo) {
 		this.setPreferredSize(new Dimension(1000,700));
 		arrayOfDecorsForTheLevel = de;
-		arrayOfAttacksAvailableForTheCharacter = at;
 		arrayPlayers = jo;
 		
 		for (int i = 0; i < arrayPlayers.size(); i++) {
@@ -228,8 +223,8 @@ public class GraphicalView extends JPanel {
 				Player player = arrayPlayers.get(0);
 				if (player != null) {
 					CombatMgr playerCombatMgr = player.playerCombatMgr;
-					if (playerCombatMgr != null && !playerCombatMgr.tabLastAttacksForCombo.isEmpty()) {
-						ArrayList<Attack> tabLastAttacksForCombo = playerCombatMgr.tabLastAttacksForCombo;
+					if (playerCombatMgr != null && !playerCombatMgr.listLastAttacksForCombo.isEmpty()) {
+						ArrayList<Attack> tabLastAttacksForCombo = playerCombatMgr.listLastAttacksForCombo;
 						graphics.drawString("Last Attack 1st player = "+tabLastAttacksForCombo.get(tabLastAttacksForCombo.size()-1).name, 22, 80);
 					}
 				}

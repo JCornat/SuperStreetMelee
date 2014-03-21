@@ -24,12 +24,12 @@ public class Player {
 	 * @param attaques liste d'attaques specifiques au joueur
 	 */
 
-	public Player(String n, int k, int l, ArrayList<Attack> attacks, ArrayList<Combo> combos, int skin) {
+	public Player(String n, int k, int l, int skin) {
 		playerInfo = new PlayerInfo(n);
 		playerInfoBoolean = new PlayerInfoBoolean();
 		playerPosition = new PlayerPosition(k,l);
 		playerSpeed = new PlayerSpeed();
-		playerCombatMgr = new CombatMgr(attacks, combos);
+		playerCombatMgr = new CombatMgr();
 		currentStatus = PlayerStatus.NORMAL;
 		graphicalPlayer = new GraphicalPlayer(skin);
 	}

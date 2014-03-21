@@ -44,7 +44,7 @@ public class Xbox360Controller {
 		
 		ArrayList<Xbox360Controller> controllers = new ArrayList<Xbox360Controller>() ;
 		
-		int indexPlayer = controllerAdministrator.tabJoueurs.size() ;
+		int indexPlayer = controllerAdministrator.listPlayers.size() ;
 		
 		Controller[] allTheControllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
 		
@@ -53,9 +53,9 @@ public class Xbox360Controller {
             Controller controller = allTheControllers[i];
       
             if ((controller.getType() == Controller.Type.GAMEPAD) || (controller.getName().matches("(?i).*stick.*"))){
-                if (indexPlayer <= controllerAdministrator.tabJoueurs.size()) {
+                if (indexPlayer <= controllerAdministrator.listPlayers.size()) {
                 	
-					controllers.add(new Xbox360Controller(controller, controllerAdministrator.tabJoueurs,indexPlayer - 1));
+					controllers.add(new Xbox360Controller(controller, controllerAdministrator.listPlayers,indexPlayer - 1));
 					System.out.println(controller.getName() + " has been added for player " + indexPlayer);
 					indexPlayer-- ;
 				}
@@ -81,7 +81,7 @@ public class Xbox360Controller {
 				hasJumped = false ;
 			}
 			
-			if ((controllerAdministrator.tabJoueurs.get(indexPlayer).currentStatus == PlayerStatus.FALLING) && (GameEngine.engineLoop >= lastLoopJump + Constant.TIME_MIN_BETWEEN_JUMPS)) {
+			if ((controllerAdministrator.listPlayers.get(indexPlayer).currentStatus == PlayerStatus.FALLING) && (GameEngine.engineLoop >= lastLoopJump + Constant.TIME_MIN_BETWEEN_JUMPS)) {
 				hasJumped = false ;
 				lastLoopJump = GameEngine.engineLoop ;
 			}
@@ -105,37 +105,37 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("0")) {
 						if (c.getPollData() == 1.0f) {
 							if (!hasJumped) {
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).setJump(true);
+								controllerAdministrator.listPlayers.get(this.indexPlayer).setJump(true);
 								hasJumped = true;
 								lastLoopJump = GameEngine.engineLoop;
 							}
 						} else {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).setJump(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).setJump(false);
 						}
 					}
 					if (c.getIdentifier().getName().equals("x")) {
 
 						if (c.getPollData() > 0.4) {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setRight(true);
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setTurned(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setRight(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setTurned(true);
 						} else if (c.getPollData() < -0.4) {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setLeft(true);
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setTurned(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setLeft(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setTurned(false);
 						} else {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setRight(false);
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setLeft(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setRight(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setLeft(false);
 						}
 					}
 					if (c.getIdentifier().getName().equals("pov")) {
 
 						if (c.getPollData() == 1) {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setLeft(true);
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setTurned(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setLeft(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setTurned(false);
 						} else if (c.getPollData() == 0.75) {
 
 						} else if (c.getPollData() == 0.5) {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setRight(true);
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setTurned(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setRight(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setTurned(true);
 						} else if (c.getPollData() == 0.25) {
 
 						}
@@ -143,8 +143,8 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("1")) {
 						if (c.getPollData() == 1.0f) {
 							if (attackReady[2]) {
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).initCombo();
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).setAtk(2, true);
+								controllerAdministrator.listPlayers.get(this.indexPlayer).initCombo();
+								controllerAdministrator.listPlayers.get(this.indexPlayer).setAtk(2, true);
 								attackReady[2] = false;
 							}
 						} else {
@@ -154,7 +154,7 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("2")) {
 						if (c.getPollData() == 1.0f) {
 							if (attackReady[0]) {
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).setAtk(0, true);
+								controllerAdministrator.listPlayers.get(this.indexPlayer).setAtk(0, true);
 								attackReady[0] = false;
 							}
 						} else {
@@ -164,8 +164,8 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("3")) {
 						if (c.getPollData() == 1.0f) {
 							if (attackReady[1]) {
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).initCombo();
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).setAtk(1, true);
+								controllerAdministrator.listPlayers.get(this.indexPlayer).initCombo();
+								controllerAdministrator.listPlayers.get(this.indexPlayer).setAtk(1, true);
 								attackReady[1] = false;
 							}
 						} else {
@@ -197,38 +197,38 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("pov")) {
 						
 						if (c.getPollData() == 1) {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setLeft(true);
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setTurned(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setLeft(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setTurned(false);
 						} else if (c.getPollData() == 0.75) {
 
 						} else if (c.getPollData() == 0.5) {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setRight(true);
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setTurned(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setRight(true);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setTurned(true);
 						} else if (c.getPollData() == 0.25) {
 
 						}else {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setRight(false);
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).playerInfoBoolean.setLeft(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setRight(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).playerInfoBoolean.setLeft(false);
 						}
 					}
 					
 					if (c.getIdentifier().getName().equals("0")) {
 						if (c.getPollData() == 1.0f) {
 							if (!hasJumped) {
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).setJump(true);
+								controllerAdministrator.listPlayers.get(this.indexPlayer).setJump(true);
 								hasJumped = true;
 								lastLoopJump = GameEngine.engineLoop;
 							}
 						} else {
-							controllerAdministrator.tabJoueurs.get(this.indexPlayer).setJump(false);
+							controllerAdministrator.listPlayers.get(this.indexPlayer).setJump(false);
 						}
 					}
 					
 					if (c.getIdentifier().getName().equals("1")) {
 						if (c.getPollData() == 1.0f) {
 							if (!attackReady[2]) {
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).initCombo();
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer)
+								controllerAdministrator.listPlayers.get(this.indexPlayer).initCombo();
+								controllerAdministrator.listPlayers.get(this.indexPlayer)
 										.setAtk(2, true);
 								attackReady[2] = true;
 							}
@@ -239,7 +239,7 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("2")) {
 						if (c.getPollData() == 1.0f) {
 							if (!attackReady[0]) {
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer)
+								controllerAdministrator.listPlayers.get(this.indexPlayer)
 										.setAtk(0, true);
 								attackReady[0] = true;
 							}
@@ -250,8 +250,8 @@ public class Xbox360Controller {
 					if (c.getIdentifier().getName().equals("3")) {
 						if (c.getPollData() == 1.0f) {
 							if (!attackReady[1]) {
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer).initCombo();
-								controllerAdministrator.tabJoueurs.get(this.indexPlayer)
+								controllerAdministrator.listPlayers.get(this.indexPlayer).initCombo();
+								controllerAdministrator.listPlayers.get(this.indexPlayer)
 										.setAtk(1, true);
 								attackReady[1] = true;
 							}
