@@ -46,26 +46,26 @@ public class GraphicalController {
 				switch (e.getKeyCode()) {
 				/* ******************** PLAYER 1 ******************** */
 				case KeyEvent.VK_Z:
-					controllerAdministrator.listPlayers.get(0).setJump(true);
+					controllerAdministrator.tabJoueurs.get(0).setJump(true);
 					break;
 				case KeyEvent.VK_Q:
-					controllerAdministrator.listPlayers.get(0).playerInfoBoolean.setLeft(true);
-					controllerAdministrator.listPlayers.get(0).playerInfoBoolean.setTurned(false);
+					controllerAdministrator.tabJoueurs.get(0).playerInfoBoolean.setLeft(true);
+					controllerAdministrator.tabJoueurs.get(0).playerInfoBoolean.setTurned(false);
 					break;
 				case KeyEvent.VK_D:
-					controllerAdministrator.listPlayers.get(0).playerInfoBoolean.setRight(true);
-					controllerAdministrator.listPlayers.get(0).playerInfoBoolean.setTurned(true);
+					controllerAdministrator.tabJoueurs.get(0).playerInfoBoolean.setRight(true);
+					controllerAdministrator.tabJoueurs.get(0).playerInfoBoolean.setTurned(true);
 					break;
 				case KeyEvent.VK_E:
-					controllerAdministrator.listPlayers.get(0).setAtk(0, true);
+					controllerAdministrator.tabJoueurs.get(0).setAtk(0, true);
 					break;
 				case KeyEvent.VK_A:
-					controllerAdministrator.listPlayers.get(0).initCombo();
-					controllerAdministrator.listPlayers.get(0).setAtk(2, true);
+					controllerAdministrator.tabJoueurs.get(0).initCombo();
+					controllerAdministrator.tabJoueurs.get(0).setAtk(2, true);
 					break;
 				case KeyEvent.VK_F:
-					controllerAdministrator.listPlayers.get(0).initCombo();
-					controllerAdministrator.listPlayers.get(0).setAtk(1, true);
+					controllerAdministrator.tabJoueurs.get(0).initCombo();
+					controllerAdministrator.tabJoueurs.get(0).setAtk(1, true);
 					break;
 				}
 			}
@@ -74,21 +74,21 @@ public class GraphicalController {
 			if (oneCommand) {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_UP:
-					controllerAdministrator.listPlayers.get(1).setJump(true);
+					controllerAdministrator.tabJoueurs.get(1).setJump(true);
 					break;
 				case KeyEvent.VK_LEFT:
-					controllerAdministrator.listPlayers.get(1).playerInfoBoolean.setLeft(true);
-					controllerAdministrator.listPlayers.get(1).playerInfoBoolean.setTurned(false);
+					controllerAdministrator.tabJoueurs.get(1).playerInfoBoolean.setLeft(true);
+					controllerAdministrator.tabJoueurs.get(1).playerInfoBoolean.setTurned(false);
 					break;
 				case KeyEvent.VK_RIGHT:
-					controllerAdministrator.listPlayers.get(1).playerInfoBoolean.setRight(true);
-					controllerAdministrator.listPlayers.get(1).playerInfoBoolean.setTurned(true);
+					controllerAdministrator.tabJoueurs.get(1).playerInfoBoolean.setRight(true);
+					controllerAdministrator.tabJoueurs.get(1).playerInfoBoolean.setTurned(true);
 					break;
 				case KeyEvent.VK_NUMPAD1:
-					controllerAdministrator.listPlayers.get(1).setAtk(0, true);
+					controllerAdministrator.tabJoueurs.get(1).setAtk(0, true);
 					break;
 				case KeyEvent.VK_NUMPAD2:
-					controllerAdministrator.listPlayers.get(1).setAtk(1, true);
+					controllerAdministrator.tabJoueurs.get(1).setAtk(1, true);
 					break;
 				}
 			}
@@ -100,7 +100,7 @@ public class GraphicalController {
 				controllerAdministrator.resetGame();
 				break;
 			case KeyEvent.VK_T:
-				controllerAdministrator.listPlayers.get(0).eject(100, 0);
+				controllerAdministrator.tabJoueurs.get(0).eject(100, 0);
 				break;
 			case KeyEvent.VK_ESCAPE:
 				if (Game.CURRENT_STATE == State.IN_GAME) {
@@ -122,22 +122,22 @@ public class GraphicalController {
 			if (zeroCommand) {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_Z:
-					controllerAdministrator.listPlayers.get(0).setJump(false);
+					controllerAdministrator.tabJoueurs.get(0).setJump(false);
 					break;
 				case KeyEvent.VK_Q:
-					controllerAdministrator.listPlayers.get(0).playerInfoBoolean.setLeft(false);
+					controllerAdministrator.tabJoueurs.get(0).playerInfoBoolean.setLeft(false);
 					break;
 				case KeyEvent.VK_D:
-					controllerAdministrator.listPlayers.get(0).playerInfoBoolean.setRight(false);
+					controllerAdministrator.tabJoueurs.get(0).playerInfoBoolean.setRight(false);
 					break;
 				case KeyEvent.VK_E:
-					controllerAdministrator.listPlayers.get(0).setAtk(0, false);
+					controllerAdministrator.tabJoueurs.get(0).setAtk(0, false);
 					break;
 				case KeyEvent.VK_A:
-					controllerAdministrator.listPlayers.get(0).setAtk(2, false);
+					controllerAdministrator.tabJoueurs.get(0).setAtk(2, false);
 					break;
 				case KeyEvent.VK_F:
-					controllerAdministrator.listPlayers.get(0).setAtk(1, false);
+					controllerAdministrator.tabJoueurs.get(0).setAtk(1, false);
 					break;
 				}
 			}
@@ -146,19 +146,19 @@ public class GraphicalController {
 			if (oneCommand) {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_UP:
-					controllerAdministrator.listPlayers.get(1).setJump(false);
+					controllerAdministrator.tabJoueurs.get(1).setJump(false);
 					break;
 				case KeyEvent.VK_LEFT:
-					controllerAdministrator.listPlayers.get(1).playerInfoBoolean.setLeft(false);
+					controllerAdministrator.tabJoueurs.get(1).playerInfoBoolean.setLeft(false);
 					break;
 				case KeyEvent.VK_RIGHT:
-					controllerAdministrator.listPlayers.get(1).playerInfoBoolean.setRight(false);
+					controllerAdministrator.tabJoueurs.get(1).playerInfoBoolean.setRight(false);
 					break;
 				case KeyEvent.VK_NUMPAD1:
-					controllerAdministrator.listPlayers.get(1).setAtk(0, false);
+					controllerAdministrator.tabJoueurs.get(1).setAtk(0, false);
 					break;
 				case KeyEvent.VK_NUMPAD2:
-					controllerAdministrator.listPlayers.get(1).setAtk(1, false);
+					controllerAdministrator.tabJoueurs.get(1).setAtk(1, false);
 					break;
 				default:
 					break;
