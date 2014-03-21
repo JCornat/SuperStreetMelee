@@ -34,7 +34,7 @@ public class GraphicalView extends JPanel {
 		arrayPlayers = new ArrayList<Player>();
 		arrayPlayers.clear();
 		arrayOfDecorsForTheLevel = new ArrayList<Decor>();
-		arrayPlayers.clear();
+		arrayOfDecorsForTheLevel.clear();
 	}
 	
 	

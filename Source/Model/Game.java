@@ -150,8 +150,9 @@ public class Game {
 		controllerAdministrator.xbox_controllers = Xbox360Controller
 				.initControllers();
 		new GraphicalController();
-
+		System.out.println(listPlayers);
 		graphicalView.initGView(arrayDecor, listPlayers);
+		
 	}
 
 	/**
