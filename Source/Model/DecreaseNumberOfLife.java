@@ -6,11 +6,7 @@ public class DecreaseNumberOfLife {
 	
 	
 	public void calculation(PlayerInfo playerInfo) {
-		/**
-		 * Methode pour determiner si une attaque touche un adversaire
-		 * @param player : Joueur actuel
-		 * @return vrai si touché, faux, si non touché
-		 */
+		
 		
 		int newNumber = playerInfo.numberOfLife - 1 ;
 		if (newNumber < 1) {
