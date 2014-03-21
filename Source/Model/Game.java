@@ -2,9 +2,7 @@ package Model;
 
 import java.awt.CardLayout;
 import java.util.ArrayList;
-
 import javax.swing.JFrame;
-
 import Levels.Decor;
 import Levels.Levels;
 import Sound.SoundManager;
@@ -16,7 +14,6 @@ import Controller.Xbox360Controller;
 public class Game {
 
 	public static ArrayList<Player> listPlayers;
-	public static Player player;
 	public static Menu frame;
 	public static ArrayList<Decor> arrayDecor;
 	public static int gameDuration;
