@@ -187,7 +187,7 @@ public class Menu extends JFrame {
 				Game.CURRENT_STATE = State.IN_MENU;
 				SoundManager.sounds.get("buttonclick").play_once();
 				// Resolution des problemes de focus avec Java sur OSX
-//				cards.transferFocus();
+				cards.transferFocus();
 			}
 		});
 
