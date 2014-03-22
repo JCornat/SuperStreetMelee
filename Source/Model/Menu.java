@@ -212,8 +212,8 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) cards.getLayout()).show(cards, "play");
 				Game.CURRENT_STATE = State.IN_GAME;
-				// Resolution des problemes de focus avec Java sur OSX
 				SoundManager.sounds.get("buttonclick").play_once();
+				// Resolution des problemes de focus avec Java sur OSX
 				cards.transferFocus();
 			}
 		});
@@ -239,8 +239,8 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) players.getLayout()).previous(players);
 				Game.CURRENT_STATE = State.IN_MENU;
-				// Resolution des problemes de focus avec Java sur OSX
 				SoundManager.sounds.get("buttonclick").play_once();
+				// Resolution des problemes de focus avec Java sur OSX
 				players.transferFocus();
 			}
 		});
@@ -280,9 +280,8 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) maps.getLayout()).previous(maps);
 				Game.CURRENT_STATE = State.IN_MENU;
-				
-				// Resolution des problemes de focus avec Java sur OSX
 				SoundManager.sounds.get("buttonclick").play_once();
+				// Resolution des problemes de focus avec Java sur OSX
 				maps.transferFocus();
 			}
 		});
@@ -308,8 +307,8 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) players.getLayout()).next(players);
 				Game.CURRENT_STATE = State.IN_MENU;
-				// Resolution des problemes de focus avec Java sur OSX
 				SoundManager.sounds.get("buttonclick").play_once();
+				// Resolution des problemes de focus avec Java sur OSX
 				players.transferFocus();
 			}
 		});
@@ -335,8 +334,8 @@ public class Menu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) maps.getLayout()).next(maps);
 				Game.CURRENT_STATE = State.IN_MENU;
-				// Resolution des problemes de focus avec Java sur OSX
 				SoundManager.sounds.get("buttonclick").play_once();
+				// Resolution des problemes de focus avec Java sur OSX
 				maps.transferFocus();
 			}
 		});
@@ -365,6 +364,7 @@ public class Menu extends JFrame {
 					SoundManager.sounds.get("buttonclick").play_once();
 					((CardLayout) cards.getLayout()).show(cards, "player");
 					Game.SkinsOfPlayers[0] = 1;
+					// Resolution des problemes de focus avec Java sur OSX
 					cards.transferFocus();
 				}
 			}
@@ -409,6 +409,7 @@ public class Menu extends JFrame {
 				if (playercount == Game.PlayerNumber) {
 					((CardLayout) cards.getLayout()).show(cards, "map");
 					Game.LevelIndex = 0;
+					// Resolution des problemes de focus avec Java sur OSX
 					cards.transferFocus();
 				}
 			}
@@ -453,6 +454,7 @@ public class Menu extends JFrame {
 				SoundManager.sounds.get("buttonclick").play_once();
 				SoundManager.sounds.get("intro").pause();
 				((CardLayout) cards.getLayout()).show(cards, "play");
+				// Resolution des problemes de focus avec Java sur OSX
 				cards.transferFocus();
 			}
 		});
@@ -581,6 +583,7 @@ public class Menu extends JFrame {
 				((CardLayout) cards.getLayout()).show(cards, "mainmenu");
 				Game.CURRENT_STATE = State.IN_MENU;
 				SoundManager.sounds.get("buttonclick").play_once();
+				// Resolution des problemes de focus avec Java sur OSX
 				cards.transferFocus() ;
 			}
 		});
