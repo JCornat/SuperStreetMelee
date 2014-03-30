@@ -40,7 +40,7 @@ public class Player {
 			playerSpeed.speedOnVerticalAxis = -80;
 			playerInfoBoolean.isJumping = true;
 			currentStatus = PlayerStatus.FALLING ;
-			SoundManager.sounds.get("jump").play_once() ;
+			SoundManager.play_once("jump") ;
 		}
 		playerInfoBoolean.jump = b;
 		if(!b) {

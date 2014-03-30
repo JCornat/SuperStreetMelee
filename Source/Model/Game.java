@@ -2,7 +2,9 @@ package Model;
 
 import java.awt.CardLayout;
 import java.util.ArrayList;
+
 import javax.swing.JFrame;
+
 import Levels.Decor;
 import Levels.Levels;
 import Sound.SoundManager;
@@ -14,6 +16,7 @@ import Controller.Xbox360Controller;
 public class Game {
 
 	public static ArrayList<Player> listPlayers;
+	public static Player player;
 	public static Menu frame;
 	public static ArrayList<Decor> arrayDecor;
 	public static int gameDuration;
@@ -52,8 +55,8 @@ public class Game {
 		// Ajout du son
 		new SoundManager();
 
-		SoundManager.sounds.get("background").decrease_volume();
-		SoundManager.sounds.get("intro").loop();
+		SoundManager.decrease_volume("background") ;
+		SoundManager.loop("intro");
 
 	}
 
@@ -179,10 +182,10 @@ public class Game {
 				player.checkCombo();
 			}
 			// Si on est dans le jeu on joue la musique
-			SoundManager.sounds.get("background").resume();
+			SoundManager.resume("background") ;
 		} else {
 			// si on est pas dans le jeu on met la musique en pause
-			SoundManager.sounds.get("background").pause();
+			SoundManager.pause("background") ;
 		}
 
 		if (GraphicalView.init) {

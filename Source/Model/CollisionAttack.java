@@ -27,13 +27,13 @@ public class CollisionAttack {
 					}
 					
 					if (playerCombatMgr.currentAttack.getName().equals("Small")) {
-						SoundManager.sounds.get("smallhit").play_once() ;
+						SoundManager.play_once("smallhit") ;
 					} else if (playerCombatMgr.currentAttack.getName().equals("Big")) {
-						SoundManager.sounds.get("bighit").play_once() ;
+						SoundManager.play_once("bighit") ;
 					}else if (playerCombatMgr.currentAttack.getName().equals("Special1")) {
-						SoundManager.sounds.get("special1").play_once() ;
+						SoundManager.play_once("special1") ;
 					}else if (playerCombatMgr.currentAttack.getName().equals("Special2")) {
-						SoundManager.sounds.get("special2").play_once() ;
+						SoundManager.play_once("special2") ;
 					}else if (playerCombatMgr.currentAttack.getName().equals("Special3")) {
 						
 					}
