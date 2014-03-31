@@ -142,7 +142,6 @@ public class Game {
 		arrayDecor = a.levels;
 		controllerAdministrator = new ControllerAdministrator(frame,
 				listPlayers);
-		new GraphicalController();
 
 		graphicalView.initGView(arrayDecor, listPlayers);
 		

@@ -17,6 +17,7 @@ public class ControllerAdministrator {
 		tabJoueurs = tabJ;
 		xbox_controllers = Xbox360Controller
 				.initControllers();
+		new GraphicalController();
 	}
 	
 	public static void resetGame() {
