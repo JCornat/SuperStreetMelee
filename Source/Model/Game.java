@@ -137,10 +137,9 @@ public class Game {
 		default:
 			break;
 		}
-
-		Levels a = new Levels();
-		arrayDecor = a.levels.get(LevelIndex);
 		
+		Levels a = new Levels(LevelIndex);
+		arrayDecor = a.levels;
 		controllerAdministrator = new ControllerAdministrator(frame,
 				listPlayers);
 		controllerAdministrator.xbox_controllers = Xbox360Controller
