@@ -4,11 +4,8 @@ public class Start {
 
 	public static GameEngine game;
 	
-	public static void main(String[] args) {
-		if(args.length != 0) {
-			Constant.DEBUGGING = true;
-			System.out.println("Mode debugging actif");
-		}
+	public Start() {
+		
 		game = new GameEngine();
 	}
 }
