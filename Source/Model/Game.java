@@ -142,8 +142,6 @@ public class Game {
 		arrayDecor = a.levels;
 		controllerAdministrator = new ControllerAdministrator(frame,
 				listPlayers);
-		controllerAdministrator.xbox_controllers = Xbox360Controller
-				.initControllers();
 		new GraphicalController();
 
 		graphicalView.initGView(arrayDecor, listPlayers);

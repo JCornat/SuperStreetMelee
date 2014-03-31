@@ -15,6 +15,8 @@ public class ControllerAdministrator {
 	public ControllerAdministrator(Menu me, ArrayList<Player> tabJ) {
 		menu = me;
 		tabJoueurs = tabJ;
+		xbox_controllers = Xbox360Controller
+				.initControllers();
 	}
 	
 	public static void resetGame() {
