@@ -84,6 +84,14 @@ public class Menu extends JFrame {
 				"images/buttons/validatebutton.png");
 		final ImageIcon imgvalidatebuttonhover = new ImageIcon(
 				"images/buttons/validatebuttonhover.png");
+		final ImageIcon imgplayer1 = new ImageIcon(
+				"images/character/spriteC1Big.png");
+		final ImageIcon imgplayer2 = new ImageIcon(
+				"images/character/spriteC2Big.png");
+		final ImageIcon imgplayer3 = new ImageIcon(
+				"images/character/spriteC3Big.png");
+		final ImageIcon imgplayer4 = new ImageIcon(
+				"images/character/spriteC4Big.png");
 
 		this.playercount = 0;
 
@@ -146,20 +154,38 @@ public class Menu extends JFrame {
 		JPanel player1 = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.setColor(Color.BLACK);
-				g.fillRect(0, 0, this.getWidth(), this.getHeight());
+				g.drawImage(imgplayer1.getImage(),16 , 25, this);
 			}
 		};
 		player1.setLayout(null);
+		player1.setBackground(new Color(0,0,0,0)) ;
 
 		JPanel player2 = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.setColor(Color.WHITE);
-				g.fillRect(0, 0, this.getWidth(), this.getHeight());
+				g.drawImage(imgplayer2.getImage(), 16, 25, this);
 			}
 		};
 		player2.setLayout(null);
+		player2.setBackground(new Color(0,0,0,0)) ;
+
+		JPanel player3 = new JPanel() {
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(imgplayer3.getImage(),16, 25, this);
+			}
+		};
+		player3.setLayout(null);
+		player3.setBackground(new Color(0,0,0,0)) ;
+
+		JPanel player4 = new JPanel() {
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(imgplayer4.getImage(), 16, 25, this);
+			}
+		};
+		player4.setLayout(null);
+		player4.setBackground(new Color(0,0,0,0)) ;
 
 		JPanel map1 = new JPanel() {
 			protected void paintComponent(Graphics g) {
@@ -213,7 +239,8 @@ public class Menu extends JFrame {
 				((CardLayout) cards.getLayout()).show(cards, "play");
 				Game.CURRENT_STATE = State.IN_GAME;
 				// Resolution des problemes de focus avec Java sur OSX
-				SoundManager.play_once("buttonclick");				cards.transferFocus();
+				SoundManager.play_once("buttonclick");
+				cards.transferFocus();
 			}
 		});
 
@@ -258,28 +285,14 @@ public class Menu extends JFrame {
 				leftbuttonplayers.setIcon(imgleftbutton);
 			}
 		});
-		
-//		Action leftbuttonplayersaction = new AbstractAction(){
-//			public void actionPerformed(ActionEvent arg0) {	
-//				((CardLayout) players.getLayout()).previous(players);
-//				Game.CURRENT_STATE = State.IN_MENU;
-//				// Resolution des problemes de focus avec Java sur OSX
-//				SoundManager.sounds.get("buttonclick").play_once();
-//				players.transferFocus();
-//			}	
-//		} ;
-//		
-//		
-//		leftbuttonplayers.getInputMap().put(KeyStroke.getKeyStroke("LEFT"), "pressed") ;
-//		leftbuttonplayers.getActionMap().put("pressed", leftbuttonplayersaction) ;
-		
+
 		// ************* Left button maps ****************
 		final JButton leftbuttonmaps = new JButton("");
 		leftbuttonmaps.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				((CardLayout) maps.getLayout()).previous(maps);
 				Game.CURRENT_STATE = State.IN_MENU;
-				
+
 				// Resolution des problemes de focus avec Java sur OSX
 				SoundManager.play_once("buttonclick");
 				maps.transferFocus();
@@ -355,34 +368,6 @@ public class Menu extends JFrame {
 			}
 		});
 
-		// ************* validate button mode ****************
-		final JButton validatebuttonmode = new JButton("");
-		validatebuttonmode.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (Game.PlayerNumber != 0) {
-					Game.CURRENT_STATE = State.IN_MENU;
-					SoundManager.play_once("buttonclick");
-					((CardLayout) cards.getLayout()).show(cards, "player");
-					Game.SkinsOfPlayers[0] = 1;
-					cards.transferFocus();
-				}
-			}
-		});
-
-		validatebuttonmode.setBounds(WIDTH - 125, HEIGHT - 150, 75, 75);
-		validatebuttonmode.setBorderPainted(false);
-		validatebuttonmode.setBackground(new Color(0, 0, 0, 0));
-		validatebuttonmode.setIcon(imgvalidatebutton);
-
-		validatebuttonmode.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent evt) {
-				validatebuttonmode.setIcon(imgvalidatebuttonhover);
-			}
-
-			public void mouseExited(MouseEvent evt) {
-				validatebuttonmode.setIcon(imgvalidatebutton);
-			}
-		});
 
 		// ************* validate button player ****************
 		final JButton validatebuttonplayer = new JButton("");
@@ -398,6 +383,12 @@ public class Menu extends JFrame {
 							break;
 						case "player2":
 							Game.SkinsOfPlayers[playercount] = 2;
+							break;
+						case "player3":
+							Game.SkinsOfPlayers[playercount] = 3;
+							break;
+						case "player4":
+							Game.SkinsOfPlayers[playercount] = 4;
 							break;
 						default:
 							break;
@@ -450,7 +441,7 @@ public class Menu extends JFrame {
 				Game.resetGame();
 				Game.CURRENT_STATE = State.IN_GAME;
 				SoundManager.play_once("buttonclick");
-				SoundManager.pause("intro") ;
+				SoundManager.pause("intro");
 				((CardLayout) cards.getLayout()).show(cards, "play");
 				cards.transferFocus();
 			}
@@ -476,8 +467,13 @@ public class Menu extends JFrame {
 		oneplayerbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Game.PlayerNumber = 1;
-				Game.CURRENT_STATE = State.IN_MENU;
-				SoundManager.play_once("buttonclick");
+				if (Game.PlayerNumber != 0) {
+					Game.CURRENT_STATE = State.IN_MENU;
+					SoundManager.play_once("buttonclick");
+					((CardLayout) cards.getLayout()).show(cards, "player");
+					Game.SkinsOfPlayers[0] = 1;
+					cards.transferFocus();
+				}
 			}
 		});
 
@@ -501,8 +497,13 @@ public class Menu extends JFrame {
 		twoplayerbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Game.PlayerNumber = 2;
-				Game.CURRENT_STATE = State.IN_MENU;
-				SoundManager.play_once("buttonclick");
+				if (Game.PlayerNumber != 0) {
+					Game.CURRENT_STATE = State.IN_MENU;
+					SoundManager.play_once("buttonclick");
+					((CardLayout) cards.getLayout()).show(cards, "player");
+					Game.SkinsOfPlayers[0] = 1;
+					cards.transferFocus();
+				}
 			}
 		});
 
@@ -526,8 +527,13 @@ public class Menu extends JFrame {
 		threeplayerbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Game.PlayerNumber = 3;
-				Game.CURRENT_STATE = State.IN_MENU;
-				SoundManager.play_once("buttonclick");
+				if (Game.PlayerNumber != 0) {
+					Game.CURRENT_STATE = State.IN_MENU;
+					SoundManager.play_once("buttonclick");
+					((CardLayout) cards.getLayout()).show(cards, "player");
+					Game.SkinsOfPlayers[0] = 1;
+					cards.transferFocus();
+				}
 			}
 		});
 
@@ -551,8 +557,13 @@ public class Menu extends JFrame {
 		fourplayerbutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Game.PlayerNumber = 4;
-				Game.CURRENT_STATE = State.IN_MENU;
-				SoundManager.play_once("buttonclick");
+				if (Game.PlayerNumber != 0) {
+					Game.CURRENT_STATE = State.IN_MENU;
+					SoundManager.play_once("buttonclick");
+					((CardLayout) cards.getLayout()).show(cards, "player");
+					Game.SkinsOfPlayers[0] = 1;
+					cards.transferFocus();
+				}
 			}
 		});
 
@@ -575,12 +586,12 @@ public class Menu extends JFrame {
 		final JButton mainmenubutton = new JButton("");
 		mainmenubutton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				playercount = 0 ;
-				Game.listPlayers.clear() ;
+				playercount = 0;
+				Game.listPlayers.clear();
 				((CardLayout) cards.getLayout()).show(cards, "mainmenu");
 				Game.CURRENT_STATE = State.IN_MENU;
 				SoundManager.play_once("buttonclick");
-				cards.transferFocus() ;
+				cards.transferFocus();
 			}
 		});
 
@@ -630,8 +641,12 @@ public class Menu extends JFrame {
 
 		player1.setName("player1");
 		player2.setName("player2");
+		player3.setName("player3");
+		player4.setName("player4");
 		players.add("player1", player1);
 		players.add("player2", player2);
+		players.add("player3", player3);
+		players.add("player4", player4);
 		player.add(players);
 		player.add(leftbuttonplayers);
 		player.add(rightbuttonplayers);
@@ -650,7 +665,6 @@ public class Menu extends JFrame {
 		mode.add(twoplayerbutton);
 		mode.add(threeplayerbutton);
 		mode.add(fourplayerbutton);
-		mode.add(validatebuttonmode);
 
 		mainmenu.add(playbutton);
 		mainmenu.add(exitbutton);

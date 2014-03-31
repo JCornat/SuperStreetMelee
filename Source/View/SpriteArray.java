@@ -18,10 +18,21 @@ public class SpriteArray {
 		bufferedImageToLoad = new BufferedImageLoader();
 		bufferedImageContainingSprites = null;
 		try {
-			if(skin==1) {
-				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/characterSprite.png");
-			} else if(skin==2) {
-				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/characterSprite2.png");
+			switch (skin) {
+			case 1:
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/spriteSheetC1.png");
+				break;
+			case 2:
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/spriteSheetC2.png");
+				break;
+			case 3:
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/spriteSheetC3.png");
+				break;
+			case 4:
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/spriteSheetC4.png");
+				break;
+			default:
+				break;
 			}
 		} catch (IOException e) {
 			System.err.println(e);
@@ -56,7 +67,22 @@ public class SpriteArray {
 
 		
 		try {
-			bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/character1Attack.png");
+			switch (skin) {
+			case 1:
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/spriteSheetA1.png");
+				break;
+			case 2:
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/spriteSheetA2.png");
+				break;
+			case 3:
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/spriteSheetA3.png");
+				break;
+			case 4:
+				bufferedImageContainingSprites = bufferedImageToLoad.loadImage("images/character/spriteSheetA4.png");
+				break;
+			default:
+				break;
+			}
 		} catch (IOException e) {
 			System.err.println(e);
 		}
