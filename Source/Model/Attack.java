@@ -10,7 +10,7 @@ public class Attack {
 		et est utilisee notamment pour la mise a jour d'effectiveCooldown. */
 	long effectiveCooldown;
 
-	boolean isSpecialAttack, isBind;
+	boolean isSpecialAttack, isABind;
 
 	/**
 	 * /**
@@ -37,7 +37,7 @@ public class Attack {
 		this.powerX = powerX;
 		this.powerY = powerY;
 		this.isSpecialAttack = specialAttack;
-		this.isBind = false;
+		this.isABind = false;
 	}
 	
 	public String getName() {

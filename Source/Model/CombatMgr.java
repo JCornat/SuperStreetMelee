@@ -96,7 +96,7 @@ public class CombatMgr {
 		if (enable && playerInfo.atkState == Constant.ATK_STATE_READY && listAttacks.get(num).getEffectiveCooldown() <= GameEngine.engineLoop) {
 			if (!isWaitingForCombo)
 				attacks.set(num, enable);
-			else if (isWaitingForCombo && listAttacks.get(num).isBind)
+			else if (isWaitingForCombo && listAttacks.get(num).isABind)
 				listLastAttacksForCombo.add(listAttacks.get(num));
 		} else
 			attacks.set(num, false);
