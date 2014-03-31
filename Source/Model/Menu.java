@@ -92,6 +92,10 @@ public class Menu extends JFrame {
 				"images/character/spriteC3Big.png");
 		final ImageIcon imgplayer4 = new ImageIcon(
 				"images/character/spriteC4Big.png");
+		final ImageIcon imgmap1 = new ImageIcon(
+				"images/level/map1.png");
+		final ImageIcon imgmap2 = new ImageIcon(
+				"images/level/map2.png");
 
 		this.playercount = 0;
 
@@ -190,8 +194,7 @@ public class Menu extends JFrame {
 		JPanel map1 = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.setColor(Color.GREEN);
-				g.fillRect(0, 0, this.getWidth(), this.getHeight());
+				g.drawImage(imgmap1.getImage(), 0, 0, this);
 			}
 		};
 		map1.setLayout(null);
@@ -199,8 +202,7 @@ public class Menu extends JFrame {
 		JPanel map2 = new JPanel() {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.setColor(Color.CYAN);
-				g.fillRect(0, 0, this.getWidth(), this.getHeight());
+				g.drawImage(imgmap2.getImage(), 0, 0, this);
 			}
 		};
 		map2.setLayout(null);
